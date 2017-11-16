@@ -1,0 +1,24 @@
+{
+  "name": "biiif",
+  "version": "0.0.1",
+  "description": "A CLI to build IIIF collections",
+  "main": "index.js",
+  "bin": {
+    "biiif": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edsilv/biiif.git"
+  },
+  "keywords": [
+    "IIIF",
+    "nodejs",
+    "CLI"
+  ],
+  "author": "@edsilv",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edsilv/biiif/issues"
+  },
+  "homepage": "https://github.com/edsilv/biiif#readme"
+}
