@@ -10,5 +10,6 @@ program.arguments('<dir>')
 
 async function exec(env, options) { 
 	const dir: string = program.args[0];
-	await biiif(dir, program.url);	
+	await biiif(dir, program.url);
+	console.log("Done!");	
 }

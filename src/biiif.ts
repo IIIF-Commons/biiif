@@ -1,7 +1,15 @@
-//import { timeout } from './utils';
-const { existsSync, writeFile } = require('fs');
-const { join } = require('path');
+import { cloneJson } from './utils';
+const { existsSync, readFileSync, writeFileSync } = require('fs');
+const { join, basename } = require('path');
 const { glob } = require('glob');
+const yaml = require('js-yaml');
+
+// boilerplate json
+//const canvasBoilerplate = require('./boilerplate/canvas');
+const collectionBoilerplate = require('./boilerplate/collection');
+//const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
+const manifestBoilerplate = require('./boilerplate/manifest');
+//const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
 export const biiif = async (dir: string, url: string) => {
 
@@ -26,28 +34,63 @@ export const processDirectory = async (dir: string, url: string) => {
 
     // is it a collection or a manifest?
     // if there are child directories that don't start with an underscore, it's a collection.
-    const files: string[] = glob.sync(join(dir, "/*"), {
+    const files: string[] = glob.sync(join(dir, '/*'), {
         ignore: [
-            "*/*.*", // ignore files
-            "*/_*"   // ignore anything starting with an underscore
+            '*/*.*', // ignore files
+            '*/_*'   // ignore anything starting with an unders0core
         ]
     });
 
     isCollection = files.length > 0;
 
-    //console.log(files);
+    console.log(dir + ' is collection? ' + isCollection);
 
-    console.log(dir + " is collection? " + isCollection);
+    // if there's an info.yml
+    const ymlPath: string = join(dir, 'info.yml');
+    let infoYml: any;
+
+    if (existsSync(ymlPath)) {
+        infoYml = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
+    }
 
     // create an index.json
+    let indexJson: any;
 
-    writeFile(join(dir, 'index.json'), url, function(er) {
-        
-        if(er) {
-            throw er;
+    if (isCollection) {
+        indexJson = cloneJson(collectionBoilerplate);
+    } else {
+        indexJson = cloneJson(manifestBoilerplate);
+    }
+
+    indexJson.id = url;
+
+    if (infoYml) {
+
+        // if a label is set in the info.yml, use it
+        if (infoYml.label) {
+            indexJson.label = infoYml.label;
+        } else {
+            // otherwise default to the directory name
+            indexJson.label = basename(dir);
         }
-    
-        console.log("created " + dir + "/index.json");
-    });
+
+        // add manifest-specific properties
+        if (!isCollection) {
+
+            if (infoYml.attribution) {
+                indexJson.attribution = infoYml.attribution;
+            }
+
+            if (infoYml.description) {
+                indexJson.description = infoYml.description;
+            }
+        }
+    }
+
+    writeFileSync(join(dir, 'index.json'), JSON.stringify(indexJson, null, '  '));
+
+    console.log('created ' + join(dir, 'index.json'));
+
+
 
 }

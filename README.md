@@ -1,2 +1,4 @@
 # biiif
-A CLI to Build IIIF Collections
+
+A CLI to Build IIIF Collections (WIP)
+
