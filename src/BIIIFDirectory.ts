@@ -5,9 +5,10 @@ const { existsSync, readFileSync, writeFileSync } = require('fs');
 const yaml = require('js-yaml');
 import { cloneJson } from './Utils';
 // boilerplate json
-//const canvasBoilerplate = require('./boilerplate/canvas');
+const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
 const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
+//const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
 const manifestBoilerplate = require('./boilerplate/manifest');
 const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
@@ -102,7 +103,7 @@ export class BIIIFDirectory {
                     memberJson = cloneJson(manifestMemberBoilerplate);
                 }
 
-                memberJson.id = directory.url;
+                memberJson.id = directory.url + '/index.json';
                 memberJson.label = directory.metadata.label;
 
                 this.indexJson.members.push(memberJson); 
@@ -111,7 +112,21 @@ export class BIIIFDirectory {
         } else {
             this.indexJson = cloneJson(manifestBoilerplate);
 
-            // for each canvas, add a canvas
+            // for each canvas, add canvas json
+
+            this.canvases.forEach((canvas: string, index: number) => {
+                const canvasJson: any = cloneJson(canvasBoilerplate);
+
+                canvasJson.id = this.url + '/index.json/canvas/' + index;
+                canvasJson.content[0].id = this.url + '/index.json/canvas/' + index + '/annotationpage/0';
+
+                // for each jpg/pdf/mp4/obj in the canvas directory
+                // add a contentannotation
+                
+
+                // add canvas to sequence
+                this.indexJson.sequences[0].canvases.push(canvasJson);
+            });
         }
     
         this.indexJson.id = this.url + '/index.json';
