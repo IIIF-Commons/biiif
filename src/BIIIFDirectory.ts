@@ -22,11 +22,18 @@ export class BIIIFDirectory {
 
     constructor(filePath: string, url: string) {
         
+        // set the cwd to the current filePath
+        process.chdir(filePath);
+
         this.filePath = filePath;
         this.url = url;
         
         // canvases are directories starting with an undersore
-        this.canvases = glob.sync(join(filePath, '/_*'), {
+        const canvasesPattern: string = '/_*';
+
+        console.log('canvases pattern: ' + canvasesPattern);
+
+        this.canvases = glob.sync(canvasesPattern, {
             ignore: [
                 '*/*.*' // ignore files
             ]
@@ -34,7 +41,11 @@ export class BIIIFDirectory {
 
         // directories not starting with an underscore
         // these can be child manifests or child collections
-        const directories: string[] = glob.sync(join(filePath, '/*'), {
+        const directoriesPattern: string = '/*';
+
+        console.log('directories pattern: ' + directoriesPattern);
+
+        const directories: string[] = glob.sync(directoriesPattern, {
             ignore: [
                 '*/*.*', // ignore files
                 '*/_*'   // ignore canvases
@@ -42,7 +53,8 @@ export class BIIIFDirectory {
         });
 
         directories.forEach((directory: string) => {
-            this.directories.push(new BIIIFDirectory(directory, join(this.filePath, basename(directory)))); 
+            console.log(chalk.green('creating directory for: ') + directory);
+            this.directories.push(new BIIIFDirectory(directory, this.url + '/' + basename(directory))); 
         });
 
         this.isCollection = this.directories.length > 0;
@@ -86,7 +98,7 @@ export class BIIIFDirectory {
             // for each canvas, add a canvas
         }
     
-        this.indexJson.id = this.url;
+        this.indexJson.id = this.url + '/index.json';
 
         this._applyMetadata();
 
