@@ -6,6 +6,9 @@
   "bin": {
     "biiif": "./index.js"
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/edsilv/biiif.git"
@@ -20,5 +23,15 @@
   "bugs": {
     "url": "https://github.com/edsilv/biiif/issues"
   },
-  "homepage": "https://github.com/edsilv/biiif#readme"
+  "homepage": "https://github.com/edsilv/biiif#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.11.0",
+    "typescript": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.53",
+    "chalk": "^2.3.0"
+  }
 }
