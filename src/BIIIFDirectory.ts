@@ -7,9 +7,9 @@ import { cloneJson } from './Utils';
 // boilerplate json
 //const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
-//const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
+const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
 const manifestBoilerplate = require('./boilerplate/manifest');
-//const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
+const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
 export class BIIIFDirectory {
     filePath: string;
@@ -68,6 +68,8 @@ export class BIIIFDirectory {
 
     private _getMetadata(): any {
 
+        this.metadata = {};
+
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
@@ -77,6 +79,11 @@ export class BIIIFDirectory {
         } else {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
+
+        if (!this.metadata.label) {
+            // default to the directory name
+            this.metadata.label = basename(this.filePath);
+        }
     }
 
     private _createIndexJson(): void {
@@ -84,7 +91,23 @@ export class BIIIFDirectory {
         if (this.isCollection) {
             this.indexJson = cloneJson(collectionBoilerplate);
 
-            // for each child, add a collectionmember or manifestmember json boilerplate to members.
+            // for each child directory, add a collectionmember or manifestmember json boilerplate to members.
+
+            this.directories.forEach((directory: BIIIFDirectory) => {
+                let memberJson: any;
+
+                if (directory.isCollection) {
+                    memberJson = cloneJson(collectionMemberBoilerplate);
+                } else {
+                    memberJson = cloneJson(manifestMemberBoilerplate);
+                }
+
+                memberJson.id = directory.url;
+                memberJson.label = directory.metadata.label;
+
+                this.indexJson.members.push(memberJson); 
+            });
+
         } else {
             this.indexJson = cloneJson(manifestBoilerplate);
 
@@ -104,17 +127,7 @@ export class BIIIFDirectory {
 
     private _applyMetadata(): void {
 
-        // if a label is set in the info.yml, use it
-        if (this.metadata && this.metadata.label) {
-            this.indexJson.label = this.metadata.label;
-        } else {
-            // otherwise default to the directory name
-            this.indexJson.label = basename(this.filePath);
-        }
-
-        if (!this.metadata) {
-            return;
-        }
+        this.indexJson.label = this.metadata.label;
 
         // add manifest-specific properties
         if (!this.isCollection) {
