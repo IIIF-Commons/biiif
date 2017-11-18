@@ -11,16 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const program = require('commander');
 const withErrors_1 = require("./withErrors");
+const biiif_1 = require("./src/biiif");
 program.arguments('<dir>')
     .option('-u, --url <url>', 'The url to use as the base of all ids')
-    .action(withErrors_1.withErrors(myCommand))
+    .action(withErrors_1.withErrors(exec))
     .parse(process.argv);
-function myCommand(env, options) {
+function exec(env, options) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!program.url) {
-            throw new Error('You must pass a url parameter');
-        }
-        console.log(program.url);
-        //console.log('url: %s dir: %s', program.url, dir);
+        yield biiif_1.biiif(program.dir, program.url);
+        console.log("Done!");
     });
 }

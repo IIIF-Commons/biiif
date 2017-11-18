@@ -1,18 +1,14 @@
 #!/usr/bin/env node
 const program = require('commander');
 import { withErrors } from './withErrors';
+import { biiif } from './src/biiif';
 
 program.arguments('<dir>')
 	.option('-u, --url <url>', 'The url to use as the base of all ids')
-	.action(withErrors(myCommand))
+	.action(withErrors(exec))
 	.parse(process.argv);
 
-async function myCommand(env, options) { 
-
-	// validate inputs
-	if (!program.url) {
-		throw new Error('You must pass a url parameter');
-	}
-	
-
+async function exec(env, options) { 
+	await biiif(program.dir, program.url);
+	console.log("Done!");
 }
