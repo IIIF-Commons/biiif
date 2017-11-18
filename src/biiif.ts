@@ -1,15 +1,15 @@
 //import { timeout } from './utils';
-const { lstatSync, writeFile } = require('fs');
+const { existsSync, writeFile } = require('fs');
 const { join } = require('path');
 const { glob } = require('glob');
 
 export const biiif = async (dir: string, url: string) => {
 
+    console.log('biiifing ' + dir);
+
     // validate inputs
 
-    console.log(dir);
-    
-    if (!lstatSync(dir).isDirectory()) {
+    if (!existsSync(dir)) {
         throw new Error('Directory does not exist');
     }
 
@@ -25,22 +25,17 @@ export const processDirectory = async (dir: string, url: string) => {
     let isCollection: boolean = false;
 
     // is it a collection or a manifest?
-    // if there are child directories that don't start with an underscore, it's a manifest.
-    glob("*", {
+    // if there are child directories that don't start with an underscore, it's a collection.
+    const files: string[] = glob.sync(join(dir, "/*"), {
         ignore: [
-            "**/_*/**"  // Exclude directories starting with '_'.
+            "*/*.*", // ignore files
+            "*/_*"   // ignore anything starting with an underscore
         ]
-    }, (er, files) => {
-
-        if(er) {
-            throw er;
-        }
-
-        if (files) {
-            isCollection = true;
-        }
-
     });
+
+    isCollection = files.length > 0;
+
+    //console.log(files);
 
     console.log(dir + " is collection? " + isCollection);
 
