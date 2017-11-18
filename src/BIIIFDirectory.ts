@@ -23,32 +23,28 @@ export class BIIIFDirectory {
     constructor(filePath: string, url: string) {
         
         // set the cwd to the current filePath
-        process.chdir(filePath);
+        //process.chdir(filePath);
 
         this.filePath = filePath;
         this.url = url;
         
         // canvases are directories starting with an undersore
-        const canvasesPattern: string = '/_*';
-
-        console.log('canvases pattern: ' + canvasesPattern);
+        const canvasesPattern: string = filePath + '/_*';
 
         this.canvases = glob.sync(canvasesPattern, {
             ignore: [
-                '*/*.*' // ignore files
+                '**/*.*' // ignore files
             ]
         });
 
         // directories not starting with an underscore
         // these can be child manifests or child collections
-        const directoriesPattern: string = '/*';
-
-        console.log('directories pattern: ' + directoriesPattern);
+        const directoriesPattern: string = filePath + '/*';
 
         const directories: string[] = glob.sync(directoriesPattern, {
             ignore: [
-                '*/*.*', // ignore files
-                '*/_*'   // ignore canvases
+                '**/*.*', // ignore files
+                '**/_*'   // ignore canvases
             ]
         });
 
