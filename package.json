@@ -22,12 +22,8 @@
   },
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
-    "chai": "^4.1.2",
-    "co": "^4.6.0",
-    "co-prompt": "^1.0.0",
     "commander": "^2.11.0",
     "js-yaml": "^3.10.0",
-    "mocha": "^4.0.1",
     "typescript": "^2.6.1"
   },
   "devDependencies": {

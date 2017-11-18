@@ -22,9 +22,6 @@ export class BIIIFDirectory {
 
     constructor(filePath: string, url: string) {
         
-        // set the cwd to the current filePath
-        //process.chdir(filePath);
-
         this.filePath = filePath;
         this.url = url;
         
