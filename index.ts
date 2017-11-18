@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const program = require('commander');
-import { withErrors } from './withErrors';
+import { withErrors } from './src/withErrors';
 import { biiif } from './src/biiif';
 
 program.arguments('<dir>')
@@ -9,6 +9,6 @@ program.arguments('<dir>')
 	.parse(process.argv);
 
 async function exec(env, options) { 
-	await biiif(program.dir, program.url);
-	console.log("Done!");
+	const dir: string = program.args[0];
+	await biiif(dir, program.url);	
 }
