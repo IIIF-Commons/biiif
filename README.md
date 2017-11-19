@@ -36,6 +36,22 @@ You can also add metadata to your canvases by including an `info.yml` in the can
 label: Illustration of Gollum
 ```
 
+## Examples
+
+lord-of-the-rings                   // collection
+├── the-fellowship-of-the-ring      // manifest
+|    ├── _page-1                    // canvas
+|    ├── _page-2                    // canvas
+|    └── _page-n                    // canvas
+├── the-two-towers                  // manifest
+|    ├── _page-1                    // canvas
+|    ├── _page-2                    // canvas
+|    └── _page-n                    // canvas
+└── the-return-of-the-king          // manifest
+     ├── _page-1                    // canvas
+     ├── _page-2                    // canvas
+     └── _page-n                    // canvas
+
 
 
 
