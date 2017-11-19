@@ -7,7 +7,7 @@ const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
 const yaml = require('js-yaml');
 import { cloneJson } from './Utils';
 
-export class BIIIFCanvas {
+export class Canvas {
     filePath: string;
     url: string;
     metadata: any = {};

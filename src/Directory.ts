@@ -4,7 +4,7 @@ const { join, posix } = require('path');
 const chalk = require('chalk');
 const yaml = require('js-yaml');
 import { cloneJson } from './Utils';
-import { BIIIFCanvas } from './BIIIFCanvas';
+import { Canvas } from './Canvas';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
@@ -12,12 +12,12 @@ const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
 const manifestBoilerplate = require('./boilerplate/manifest');
 const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
-export class BIIIFDirectory {
+export class Directory {
     filePath: string;
     url: string;
     isCollection: boolean;
-    canvases: BIIIFCanvas[] = [];
-    directories: BIIIFDirectory[] = [];
+    canvases: Canvas[] = [];
+    directories: Directory[] = [];
     metadata: any;
     indexJson: any;
 
@@ -37,7 +37,7 @@ export class BIIIFDirectory {
 
         canvases.forEach((canvas: string)=> {
             console.log(chalk.green('creating canvas for: ') + canvas);
-            this.canvases.push(new BIIIFCanvas(canvas, this.url));
+            this.canvases.push(new Canvas(canvas, this.url));
         });
 
         // directories not starting with an underscore
@@ -53,7 +53,7 @@ export class BIIIFDirectory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new BIIIFDirectory(directory, this.url + '/' + posix.basename(directory))); 
+            this.directories.push(new Directory(directory, this.url + '/' + posix.basename(directory))); 
         });
 
         this.isCollection = this.directories.length > 0;
@@ -103,7 +103,7 @@ export class BIIIFDirectory {
 
             // for each child directory, add a collectionmember or manifestmember json boilerplate to members.
 
-            this.directories.forEach((directory: BIIIFDirectory) => {
+            this.directories.forEach((directory: Directory) => {
                 let memberJson: any;
 
                 if (directory.isCollection) {
@@ -123,7 +123,7 @@ export class BIIIFDirectory {
 
             // for each canvas, add canvas json
 
-            this.canvases.forEach((canvas: BIIIFCanvas, index: number) => {
+            this.canvases.forEach((canvas: Canvas, index: number) => {
                 const canvasJson: any = cloneJson(canvasBoilerplate);
 
                 canvasJson.id = this.url + '/index.json/canvas/' + index;

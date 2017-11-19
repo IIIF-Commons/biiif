@@ -1,4 +1,4 @@
-import { BIIIFDirectory } from './BIIIFDirectory';
+import { Directory } from './Directory';
 const chalk = require('chalk');
 const { existsSync } = require('fs');
 
@@ -18,6 +18,6 @@ export class BIIIF {
             throw new Error('You must pass a url parameter');
         }
     
-        new BIIIFDirectory(dir, url);
+        new Directory(dir, url);
     }
 }
