@@ -14,7 +14,7 @@
         },
         ".jpg": {
             "type": "Image",
-            "format": "image/jpg"
+            "format": "image/jpeg"
         }
     }
 }
