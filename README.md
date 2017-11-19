@@ -38,6 +38,7 @@ label: Illustration of Gollum
 
 ## Examples
 
+```
 lord-of-the-rings                   // collection
 ├── the-fellowship-of-the-ring      // manifest
 |    ├── _page-1                    // canvas
@@ -51,7 +52,7 @@ lord-of-the-rings                   // collection
      ├── _page-1                    // canvas
      ├── _page-2                    // canvas
      └── _page-n                    // canvas
-
+```
 
 
 
