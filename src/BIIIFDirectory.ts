@@ -1,14 +1,14 @@
-const { glob } = require('glob');
-const { join, basename } = require('path');
-const chalk = require('chalk');
 const { existsSync, readFileSync, writeFileSync } = require('fs');
+const { glob } = require('glob');
+const { join, posix } = require('path');
+const chalk = require('chalk');
 const yaml = require('js-yaml');
 import { cloneJson } from './Utils';
+import { BIIIFCanvas } from './BIIIFCanvas';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
 const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
-//const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
 const manifestBoilerplate = require('./boilerplate/manifest');
 const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
@@ -16,7 +16,7 @@ export class BIIIFDirectory {
     filePath: string;
     url: string;
     isCollection: boolean;
-    canvases: string[] = [];
+    canvases: BIIIFCanvas[] = [];
     directories: BIIIFDirectory[] = [];
     metadata: any;
     indexJson: any;
@@ -29,10 +29,15 @@ export class BIIIFDirectory {
         // canvases are directories starting with an undersore
         const canvasesPattern: string = filePath + '/_*';
 
-        this.canvases = glob.sync(canvasesPattern, {
+        const canvases: string[] = glob.sync(canvasesPattern, {
             ignore: [
                 '**/*.*' // ignore files
             ]
+        });
+
+        canvases.forEach((canvas: string)=> {
+            console.log(chalk.green('creating canvas for: ') + canvas);
+            this.canvases.push(new BIIIFCanvas(canvas, this.url));
         });
 
         // directories not starting with an underscore
@@ -48,7 +53,7 @@ export class BIIIFDirectory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new BIIIFDirectory(directory, this.url + '/' + basename(directory))); 
+            this.directories.push(new BIIIFDirectory(directory, this.url + '/' + posix.basename(directory))); 
         });
 
         this.isCollection = this.directories.length > 0;
@@ -56,14 +61,18 @@ export class BIIIFDirectory {
         this._getMetadata();
         this._createIndexJson();
 
-        if (this.isCollection && this.canvases.length) {
-            console.warn(chalk.yellow(this.canvases.length + ' unused canvas directories (starting with an underscore) found in the ' + this.filePath + ' collection. Remove directories not starting with an underscore to convert into a manifest.'));
-        }
-
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);
+            // if there are canvases, warn that they are being ignored
+            if (this.canvases.length) {
+                console.warn(chalk.yellow(this.canvases.length + ' unused canvas directories (starting with an underscore) found in the ' + this.filePath + ' collection. Remove directories not starting with an underscore to convert into a manifest.'));
+            }
         } else {
             console.log(chalk.green('created manifest: ') + this.filePath);
+            // if there aren't any canvases, warn that there should be
+            if (!this.canvases.length) {
+                console.warn(chalk.yellow(this.filePath + ' is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.'));
+            }
         }
     }
 
@@ -83,7 +92,7 @@ export class BIIIFDirectory {
 
         if (!this.metadata.label) {
             // default to the directory name
-            this.metadata.label = basename(this.filePath);
+            this.metadata.label = posix.basename(this.filePath);
         }
     }
 
@@ -114,15 +123,13 @@ export class BIIIFDirectory {
 
             // for each canvas, add canvas json
 
-            this.canvases.forEach((canvas: string, index: number) => {
+            this.canvases.forEach((canvas: BIIIFCanvas, index: number) => {
                 const canvasJson: any = cloneJson(canvasBoilerplate);
 
                 canvasJson.id = this.url + '/index.json/canvas/' + index;
                 canvasJson.content[0].id = this.url + '/index.json/canvas/' + index + '/annotationpage/0';
 
-                // for each jpg/pdf/mp4/obj in the canvas directory
-                // add a contentannotation
-                
+                canvas.getFiles(canvasJson);
 
                 // add canvas to sequence
                 this.indexJson.sequences[0].canvases.push(canvasJson);
@@ -136,9 +143,8 @@ export class BIIIFDirectory {
         // write index.json
         writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));
 
-        console.log(chalk.green('created infoJson for: ') + this.filePath);
+        console.log(chalk.green('created index.json for: ') + this.filePath);
     }
-        
 
     private _applyMetadata(): void {
 

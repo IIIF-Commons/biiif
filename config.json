@@ -1,0 +1,20 @@
+{
+    "canvasAnnotationTypes": {
+        ".obj": {
+            "type": "PhysicalObject",
+            "format": "text/plain"
+        },
+        ".pdf": {
+            "type": "PDF",
+            "format": "application/pdf"
+        },
+        ".mp4": {
+            "type": "Video",
+            "format": "video/mp4"
+        },
+        ".jpg": {
+            "type": "Image",
+            "format": "image/jpg"
+        }
+    }
+}
