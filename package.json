@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
+    "chalk": "^2.3.0",
     "commander": "^2.11.0",
-    "js-yaml": "^3.10.0",
-    "typescript": "^2.6.1"
+    "glob": "^7.1.2",
+    "js-yaml": "^3.10.0"
   },
   "devDependencies": {
     "@types/node": "^8.0.53",
-    "chalk": "^2.3.0",
-    "glob": "^7.1.2"
+    "typescript": "^2.6.1"
   }
 }
