@@ -2,7 +2,7 @@ const { glob } = require('glob');
 const { posix, dirname, extname, join } = require('path');
 const { existsSync, readFileSync } = require('fs');
 const chalk = require('chalk');
-const config = require('../config');
+const config = require('./config');
 const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
 const yaml = require('js-yaml');
 import { cloneJson } from './Utils';
