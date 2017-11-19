@@ -40,19 +40,26 @@ label: Illustration of Gollum
 
 ```
 lord-of-the-rings                   // collection
+├── info.yml                        // metadata
 ├── the-fellowship-of-the-ring      // manifest
 |    ├── _page-1                    // canvas
 |    ├── _page-2                    // canvas
-|    └── _page-n                    // canvas
+|    ├── _page-n                    // canvas
+|    └── info.yml                   // metadata
 ├── the-two-towers                  // manifest
 |    ├── _page-1                    // canvas
 |    ├── _page-2                    // canvas
-|    └── _page-n                    // canvas
+|    ├── _page-n                    // canvas
+|    └── info.yml                   // metadata
 └── the-return-of-the-king          // manifest
      ├── _page-1                    // canvas
      ├── _page-2                    // canvas
-     └── _page-n                    // canvas
+     ├── _page-n                    // canvas
+     └── info.yml                   // metadata
 ```
+
+
+
 
 
 
