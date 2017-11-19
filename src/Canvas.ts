@@ -49,6 +49,10 @@ export class Canvas {
                 matchingFiles.push(file);
             }
         });
+
+        if (!matchingFiles.length) {
+            console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.filePath));
+        }
     }
 
     private _getMetadata(): any {
