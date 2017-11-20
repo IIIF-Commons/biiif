@@ -29,7 +29,12 @@ export class Canvas {
 
         // for each jpg/pdf/mp4/obj in the canvas directory
         // add a contentannotation
-        const files: string[] = glob.sync(this.filePath + '/*.*');
+        const files: string[] = glob.sync(this.filePath + '/*.*', {
+            ignore: [
+                '**/thumb.*' // ignore thumbs
+            ]
+        });
+        
         const matchingFiles: string[] = [];
 
         files.forEach((file: string) => {
