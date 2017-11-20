@@ -46,7 +46,6 @@ Support for a `metadata` field for collections, manifests, and canvases.
 metadata:
     license: CC-BY-NC
     conditionsOfUse: ...
-
 ```
 
 ## Examples
@@ -61,26 +60,26 @@ BIIIF will accept a manifest folder too, generating a single manifest `index.jso
 lord-of-the-rings                   // collection
 ├── info.yml                        // collection metadata
 ├── the-fellowship-of-the-ring      // manifest
-|    ├── _page-1                    // canvas
-|    |   ├── page-1.jpg             // content annotation
-|    |   └── info.yml               // canvas metadata
-|    ├── _page-2                    // canvas
-|    |   ├── page-2.jpg             // content annotation
-|    |   └── info.yml               // canvas metadata
-|    ├── _page-n                    // canvas
-|    |   ├── page-n.jpg             // content annotation
-|    |   └── info.yml               // canvas metadata
-|    └── info.yml                   // manifest metadata
+|   ├── _page-1                    // canvas
+|   |   ├── page-1.jpg             // content annotation
+|   |   └── info.yml               // canvas metadata
+|   ├── _page-2                    // canvas
+|   |   ├── page-2.jpg             // content annotation
+|   |   └── info.yml               // canvas metadata
+|   ├── _page-n                    // canvas
+|   |   ├── page-n.jpg             // content annotation
+|   |   └── info.yml               // canvas metadata
+|   └── info.yml                   // manifest metadata
 ├── the-two-towers                  // manifest
-|    ├── _page-1                    // canvas
-|    ├── _page-2                    // canvas
-|    ├── _page-n                    // canvas
-|    └── info.yml                   // manifest metadata
+|   ├── _page-1                    // canvas
+|   ├── _page-2                    // canvas
+|   ├── _page-n                    // canvas
+|   └── info.yml                   // manifest metadata
 └── the-return-of-the-king          // manifest
-     ├── _page-1                    // canvas
-     ├── _page-2                    // canvas
-     ├── _page-n                    // canvas
-     └── info.yml                   // manifest metadata
+    ├── _page-1                    // canvas
+    ├── _page-2                    // canvas
+    ├── _page-n                    // canvas
+    └── info.yml                   // manifest metadata
 ```
 
 
