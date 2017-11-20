@@ -5,7 +5,7 @@ const chalk = require('chalk');
 const config = require('./config');
 const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
 const yaml = require('js-yaml');
-import { cloneJson } from './Utils';
+import { Utils } from './Utils';
 
 export class Canvas {
     filePath: string;
@@ -42,7 +42,7 @@ export class Canvas {
             const id: string = this.url + directoryName + fileName;
 
             if (matchingExtension) {
-                const annotationJson: any = cloneJson(contentAnnotationBoilerplate);
+                const annotationJson: any = Utils.cloneJson(contentAnnotationBoilerplate);
                 annotationJson.id = canvasJson.id + '/annotation/' + matchingFiles.length;
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
@@ -84,7 +84,7 @@ export class Canvas {
         this.canvasJson.label = this.infoYml.label; // defaults to directory name
 
         if (this.infoYml.metadata) {
-            this.canvasJson.metadata = this.infoYml.metadata;
+            this.canvasJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
         }
     }
 }
