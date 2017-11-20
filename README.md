@@ -49,7 +49,7 @@ metadata:
 
 ## Examples
 
-Here is an example of how to organise your files/folders for biiif.
+Here is an example of how to organise your files/folders for BIIIF.
 
 This example only has a single root collection, but BIIIF will happily build collections to any nested depth. 
 
