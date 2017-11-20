@@ -18,7 +18,7 @@ export class Directory {
     isCollection: boolean;
     canvases: Canvas[] = [];
     directories: Directory[] = [];
-    metadata: any;
+    infoYml: any;
     indexJson: any;
 
     constructor(filePath: string, url: string) {
@@ -78,21 +78,21 @@ export class Directory {
 
     private _getMetadata(): any {
 
-        this.metadata = {};
+        this.infoYml = {};
 
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
         if (existsSync(ymlPath)) {
-            this.metadata = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
+            this.infoYml = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
             console.log(chalk.green('got metadata for: ') + this.filePath);         
         } else {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 
-        if (!this.metadata.label) {
+        if (!this.infoYml.label) {
             // default to the directory name
-            this.metadata.label = posix.basename(this.filePath);
+            this.infoYml.label = posix.basename(this.filePath);
         }
     }
 
@@ -113,7 +113,7 @@ export class Directory {
                 }
 
                 memberJson.id = directory.url + '/index.json';
-                memberJson.label = directory.metadata.label;
+                memberJson.label = directory.infoYml.label;
 
                 this.indexJson.members.push(memberJson); 
             });
@@ -129,7 +129,7 @@ export class Directory {
                 canvasJson.id = this.url + '/index.json/canvas/' + index;
                 canvasJson.content[0].id = this.url + '/index.json/canvas/' + index + '/annotationpage/0';
 
-                canvas.getFiles(canvasJson);
+                canvas.create(canvasJson);
 
                 // add canvas to sequence
                 this.indexJson.sequences[0].canvases.push(canvasJson);
@@ -148,17 +148,21 @@ export class Directory {
 
     private _applyMetadata(): void {
 
-        this.indexJson.label = this.metadata.label;
+        this.indexJson.label = this.infoYml.label; // defaults to directory name
+
+        if (this.infoYml.metadata) {
+            this.indexJson.metadata = this.infoYml.metadata;
+        }
 
         // add manifest-specific properties
         if (!this.isCollection) {
 
-            if (this.metadata.attribution) {
-                this.indexJson.attribution = this.metadata.attribution;
+            if (this.infoYml.attribution) {
+                this.indexJson.attribution = this.infoYml.attribution;
             }
 
-            if (this.metadata.description) {
-                this.indexJson.description = this.metadata.description;
+            if (this.infoYml.description) {
+                this.indexJson.description = this.infoYml.description;
             }
         }
     }

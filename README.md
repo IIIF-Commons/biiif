@@ -24,28 +24,15 @@ You must pass a `-u` parameter to specify the base URL used to generate all of t
 
 ## Metadata
 
-To add metadata to your collections/manifests, include an `info.yml` file in the folder e.g.
+To add metadata to your collections/manifests/canvases, include an `info.yml` file in the folder e.g.
 
 ```
 label: The Lord of the Rings
 description: The Lord of the Rings Trilogy
-attribution: J. R. R. Tolkien 
-```
-
-You can also add metadata to your canvases by including an `info.yml` in the canvas folder, e.g.
-
-```
-label: Illustration of Gollum
-```
-
-**Coming soon**
-
-Support for a `metadata` field for collections, manifests, and canvases.
-
-```
+attribution: J. R. R. Tolkien
 metadata:
-    license: CC-BY-NC
-    conditionsOfUse: ...
+    license: Copyright Tolkien Estate
+    Author: J. R. R. Tolkien
 ```
 
 ## Examples

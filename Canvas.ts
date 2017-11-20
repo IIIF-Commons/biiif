@@ -10,14 +10,20 @@ import { cloneJson } from './Utils';
 export class Canvas {
     filePath: string;
     url: string;
-    metadata: any = {};
+    canvasJson: any;
+    infoYml: any = {};
 
     constructor(filePath: string, url: string) {
         this.filePath = filePath;
         this.url = url;
     }
 
-    public getFiles(canvasJson: any): void {
+    public create(canvasJson: any): void {
+
+        this.canvasJson = canvasJson;
+        this._getMetadata();
+        this._applyMetadata();
+
         // for each jpg/pdf/mp4/obj in the canvas directory
         // add a contentannotation
         const files: string[] = glob.sync(this.filePath + '/*.*');
@@ -36,14 +42,13 @@ export class Canvas {
             const id: string = this.url + directoryName + fileName;
 
             if (matchingExtension) {
-                this._getMetadata();
                 const annotationJson: any = cloneJson(contentAnnotationBoilerplate);
                 annotationJson.id = canvasJson.id + '/annotation/' + matchingFiles.length;
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
                 annotationJson.body.type = matchingExtension.type;
                 annotationJson.body.format = matchingExtension.format;
-                annotationJson.body.label = this.metadata.label;
+                annotationJson.body.label = this.infoYml.label;
                 canvasJson.content[0].items.push(annotationJson);
 
                 matchingFiles.push(file);
@@ -57,21 +62,29 @@ export class Canvas {
 
     private _getMetadata(): any {
         
-        this.metadata = {};
+        this.infoYml = {};
 
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
         if (existsSync(ymlPath)) {
-            this.metadata = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
+            this.infoYml = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
             console.log(chalk.green('got metadata for: ') + this.filePath);         
         } else {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 
-        if (!this.metadata.label) {
+        if (!this.infoYml.label) {
             // default to the directory name
-            this.metadata.label = posix.basename(this.filePath);
+            this.infoYml.label = posix.basename(this.filePath);
+        }
+    }
+
+    private _applyMetadata(): void {
+        this.canvasJson.label = this.infoYml.label; // defaults to directory name
+
+        if (this.infoYml.metadata) {
+            this.canvasJson.metadata = this.infoYml.metadata;
         }
     }
 }
