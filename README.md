@@ -57,9 +57,9 @@ This example only has a single root collection, but BIIIF will happily build col
 BIIIF will accept a manifest folder too, generating a single manifest `index.json`.
 
 ```
-lord-of-the-rings                   // collection
-├── info.yml                        // collection metadata
-├── the-fellowship-of-the-ring      // manifest
+lord-of-the-rings                  // collection
+├── info.yml                       // collection metadata
+├── the-fellowship-of-the-ring     // manifest
 |   ├── _page-1                    // canvas
 |   |   ├── page-1.jpg             // content annotation
 |   |   └── info.yml               // canvas metadata
@@ -70,12 +70,12 @@ lord-of-the-rings                   // collection
 |   |   ├── page-n.jpg             // content annotation
 |   |   └── info.yml               // canvas metadata
 |   └── info.yml                   // manifest metadata
-├── the-two-towers                  // manifest
+├── the-two-towers                 // manifest
 |   ├── _page-1                    // canvas
 |   ├── _page-2                    // canvas
 |   ├── _page-n                    // canvas
 |   └── info.yml                   // manifest metadata
-└── the-return-of-the-king          // manifest
+└── the-return-of-the-king         // manifest
     ├── _page-1                    // canvas
     ├── _page-2                    // canvas
     ├── _page-n                    // canvas
