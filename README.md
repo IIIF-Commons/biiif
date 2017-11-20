@@ -49,6 +49,10 @@ metadata:
 
 ## Examples
 
+Here is an example of how to organise your files/folders for biiif.
+
+This example only has a single root collection, but BIIIF will happily build collections to any nested depth. 
+
 ```
 lord-of-the-rings                   // collection
 ├── info.yml                        // collection metadata
