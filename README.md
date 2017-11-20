@@ -2,7 +2,7 @@
 
     npm i biiif -g
 
-BIIIF is a CLI that uses your file system to generate IIIF collections and manifests.
+BIIIF is a CLI that uses your file system to generate static IIIF collections and manifests.
 
 Example:
 
