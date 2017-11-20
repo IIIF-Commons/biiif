@@ -3,7 +3,7 @@ const { glob } = require('glob');
 const { join, posix } = require('path');
 const chalk = require('chalk');
 const yaml = require('js-yaml');
-import { cloneJson } from './Utils';
+import { Utils } from './Utils';
 import { Canvas } from './Canvas';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
@@ -99,7 +99,7 @@ export class Directory {
     private _createIndexJson(): void {
 
         if (this.isCollection) {
-            this.indexJson = cloneJson(collectionBoilerplate);
+            this.indexJson = Utils.cloneJson(collectionBoilerplate);
 
             // for each child directory, add a collectionmember or manifestmember json boilerplate to members.
 
@@ -107,9 +107,9 @@ export class Directory {
                 let memberJson: any;
 
                 if (directory.isCollection) {
-                    memberJson = cloneJson(collectionMemberBoilerplate);
+                    memberJson = Utils.cloneJson(collectionMemberBoilerplate);
                 } else {
-                    memberJson = cloneJson(manifestMemberBoilerplate);
+                    memberJson = Utils.cloneJson(manifestMemberBoilerplate);
                 }
 
                 memberJson.id = directory.url + '/index.json';
@@ -119,12 +119,12 @@ export class Directory {
             });
 
         } else {
-            this.indexJson = cloneJson(manifestBoilerplate);
+            this.indexJson = Utils.cloneJson(manifestBoilerplate);
 
             // for each canvas, add canvas json
 
             this.canvases.forEach((canvas: Canvas, index: number) => {
-                const canvasJson: any = cloneJson(canvasBoilerplate);
+                const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
 
                 canvasJson.id = this.url + '/index.json/canvas/' + index;
                 canvasJson.content[0].id = this.url + '/index.json/canvas/' + index + '/annotationpage/0';
@@ -151,7 +151,7 @@ export class Directory {
         this.indexJson.label = this.infoYml.label; // defaults to directory name
 
         if (this.infoYml.metadata) {
-            this.indexJson.metadata = this.infoYml.metadata;
+            this.indexJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
         }
 
         // add manifest-specific properties
