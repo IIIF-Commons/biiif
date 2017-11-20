@@ -36,6 +36,17 @@ You can also add metadata to your canvases by including an `info.yml` in the can
 label: Illustration of Gollum
 ```
 
+**Coming soon**
+
+Support for a `metadata` field for collections, manifests, and canvases.
+
+```
+metadata:
+    license: CC-BY-NC
+    conditionsOfUse: ...
+
+```
+
 ## Examples
 
 ```
