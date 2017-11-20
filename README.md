@@ -51,28 +51,28 @@ metadata:
 
 ```
 lord-of-the-rings                   // collection
-├── info.yml                        // metadata
+├── info.yml                        // collection metadata
 ├── the-fellowship-of-the-ring      // manifest
 |    ├── _page-1                    // canvas
 |    |   ├── page-1.jpg             // content annotation
-|    |   └── info.yml               // metadata
+|    |   └── info.yml               // canvas metadata
 |    ├── _page-2                    // canvas
 |    |   ├── page-2.jpg             // content annotation
-|    |   └── info.yml               // metadata
+|    |   └── info.yml               // canvas metadata
 |    ├── _page-n                    // canvas
 |    |   ├── page-n.jpg             // content annotation
-|    |   └── info.yml               // metadata
-|    └── info.yml                   // metadata
+|    |   └── info.yml               // canvas metadata
+|    └── info.yml                   // manifest metadata
 ├── the-two-towers                  // manifest
 |    ├── _page-1                    // canvas
 |    ├── _page-2                    // canvas
 |    ├── _page-n                    // canvas
-|    └── info.yml                   // metadata
+|    └── info.yml                   // manifest metadata
 └── the-return-of-the-king          // manifest
      ├── _page-1                    // canvas
      ├── _page-2                    // canvas
      ├── _page-n                    // canvas
-     └── info.yml                   // metadata
+     └── info.yml                   // manifest metadata
 ```
 
 
