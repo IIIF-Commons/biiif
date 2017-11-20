@@ -2,9 +2,11 @@ const { existsSync, readFileSync, writeFileSync } = require('fs');
 const { glob } = require('glob');
 const { join, posix } = require('path');
 const chalk = require('chalk');
+const urljoin = require('url-join');
 const yaml = require('js-yaml');
-import { Utils } from './Utils';
+const { URL } = require('url');
 import { Canvas } from './Canvas';
+import { Utils } from './Utils';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
@@ -14,7 +16,7 @@ const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
 
 export class Directory {
     filePath: string;
-    url: string;
+    url: URL;
     isCollection: boolean;
     canvases: Canvas[] = [];
     directories: Directory[] = [];
@@ -24,7 +26,7 @@ export class Directory {
     constructor(filePath: string, url: string) {
         
         this.filePath = filePath;
-        this.url = url;
+        this.url = new URL(url);
         
         // canvases are directories starting with an undersore
         const canvasesPattern: string = filePath + '/_*';
@@ -53,7 +55,7 @@ export class Directory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new Directory(directory, this.url + '/' + posix.basename(directory))); 
+            this.directories.push(new Directory(directory, urljoin(this.url.href, posix.basename(directory))));
         });
 
         this.isCollection = this.directories.length > 0;
@@ -112,7 +114,7 @@ export class Directory {
                     memberJson = Utils.cloneJson(manifestMemberBoilerplate);
                 }
 
-                memberJson.id = directory.url + '/index.json';
+                memberJson.id = urljoin(directory.url.href, 'index.json');
                 memberJson.label = directory.infoYml.label;
 
                 this.indexJson.members.push(memberJson); 
@@ -126,8 +128,8 @@ export class Directory {
             this.canvases.forEach((canvas: Canvas, index: number) => {
                 const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
 
-                canvasJson.id = this.url + '/index.json/canvas/' + index;
-                canvasJson.content[0].id = this.url + '/index.json/canvas/' + index + '/annotationpage/0';
+                canvasJson.id = urljoin(this.url.href, 'index.json/canvas', index);
+                canvasJson.content[0].id = urljoin(this.url.href, 'index.json/canvas', index, 'annotationpage/0');
 
                 canvas.create(canvasJson);
 
@@ -136,9 +138,11 @@ export class Directory {
             });
         }
     
-        this.indexJson.id = this.url + '/index.json';
+        this.indexJson.id = urljoin(this.url.href, 'index.json');
 
         this._applyMetadata();
+
+        Utils.getThumbnail(this.indexJson, this.url, this.filePath);
 
         // write index.json
         writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));

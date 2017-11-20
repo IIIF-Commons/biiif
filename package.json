@@ -25,7 +25,8 @@
     "chalk": "^2.3.0",
     "commander": "^2.11.0",
     "glob": "^7.1.2",
-    "js-yaml": "^3.10.0"
+    "js-yaml": "^3.10.0",
+    "url-join": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^8.0.53",

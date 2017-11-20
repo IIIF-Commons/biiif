@@ -35,6 +35,10 @@ metadata:
     Author: J. R. R. Tolkien
 ```
 
+## Thumbnails
+
+To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image extension will work) in the directory.
+
 ## Examples
 
 Here is an example of how to organise your files/folders for BIIIF.
@@ -49,12 +53,15 @@ lord-of-the-rings                  // collection
 ├── the-fellowship-of-the-ring     // manifest
 |   ├── _page-1                    // canvas
 |   |   ├── page-1.jpg             // content annotation
+|   |   ├── thumb.jpg              // thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-2                    // canvas
 |   |   ├── page-2.jpg             // content annotation
+|   |   ├── thumb.jpg              // thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-n                    // canvas
 |   |   ├── page-n.jpg             // content annotation
+|   |   ├── thumb.jpg              // thumbnail
 |   |   └── info.yml               // canvas metadata
 |   └── info.yml                   // manifest metadata
 ├── the-two-towers                 // manifest

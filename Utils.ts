@@ -1,3 +1,6 @@
+const { glob } = require('glob');
+const thumbnailBoilerplate = require('./boilerplate/thumbnail');
+const urljoin = require('url-join');
 
 export class Utils {
 
@@ -26,5 +29,17 @@ export class Utils {
         }
 
         return formattedMetadata;
+    }
+
+    public static getThumbnail(json: any, url: URL, filePath: string): void {
+        const thumbnailPattern: string = filePath + '/thumb.*';
+        const thumbnails: string[] = glob.sync(thumbnailPattern);
+
+        if (thumbnails.length) {
+            const thumbnail: string = thumbnails[0];
+            const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
+            thumbnailJson[0].id = urljoin(url.origin, thumbnail);
+            json.thumbnail = thumbnailJson;
+        }
     }
 }
