@@ -55,6 +55,8 @@ Here is an example of how to organise your files/folders for BIIIF.
 
 This example only has a single root collection, but BIIIF will happily build collections to any nested depth. 
 
+BIIIF will accept a manifest folder too, generating a single manifest `index.json`.
+
 ```
 lord-of-the-rings                   // collection
 ├── info.yml                        // collection metadata
