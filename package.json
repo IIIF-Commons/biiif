@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.53",
+    "mock-fs": "^4.4.2",
     "typescript": "^2.6.1"
   }
 }
