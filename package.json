@@ -3,9 +3,6 @@
   "version": "0.0.13",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
-  "bin": {
-    "biiif": "./index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/edsilv/biiif.git"
