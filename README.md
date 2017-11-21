@@ -1,9 +1,11 @@
 # BIIIF (Build IIIF)
 
-    npm i biiif -save
+`npm i biiif -save`
 
-    const biiif = require('biiif');
-    biiif('myfolder', 'http://example.com/myfolder');
+```
+const biiif = require('biiif');
+biiif('myfolder', 'http://example.com/myfolder');
+```
 
 BIIIF uses your file system to generate static IIIF collections and manifests.
 
