@@ -1,7 +1,7 @@
 # biiif (build iiif)
 
 ```
-npm i biiif -save
+npm i biiif --save
 ```
 
 ```
