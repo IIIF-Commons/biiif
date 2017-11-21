@@ -9,6 +9,8 @@ const biiif = require('biiif');
 biiif('myfolder', 'http://example.com/myfolder');
 ```
 
+Tested in Node v8.9.1
+
 biiif uses your file system to generate static [IIIF](http://iiif.io) collections and manifests.
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
