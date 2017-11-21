@@ -43,7 +43,7 @@ metadata:
 
 ## Thumbnails
 
-To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image extension will work) in the directory.
+To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image file extension will work) in the directory.
 
 ## Examples
 
