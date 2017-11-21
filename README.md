@@ -1,6 +1,6 @@
 # BIIIF (Build IIIF)
 
-    npm i biiif -g
+    npm i biiif -save
 
 BIIIF uses your file system to generate static IIIF collections and manifests.
 
@@ -10,7 +10,8 @@ Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/present
 
 Example:
 
-    biiif myfolder -u http://example.com
+    const biiif = require('biiif');
+    biiif('myfolder', 'http://example.com/myfolder');
 
 A collection is a folder with sub-folders whose names _do not_ start with an underscore.
 
