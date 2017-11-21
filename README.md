@@ -27,8 +27,6 @@ A manifest's sub-folders (with underscore) are treated as canvases to add to the
 
 Files within 'canvas folders' (.jpg, .pdf, .mp4, .obj) are annotated onto the canvas.
 
-You must pass a `-u` parameter to specify the base URL used to generate all of the `id` IRIs.
-
 ## Metadata
 
 To add metadata to your collections/manifests/canvases, include an `info.yml` file in the folder e.g.
