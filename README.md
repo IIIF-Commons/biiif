@@ -1,6 +1,8 @@
 # BIIIF (Build IIIF)
 
-`npm i biiif -save`
+```
+npm i biiif -save
+```
 
 ```
 const biiif = require('biiif');
