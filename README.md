@@ -8,7 +8,7 @@ Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
 Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/) (currently in alpha), but is compatible with the [Universal Viewer](http://universalviewer.io) v3 (in development).
 
-Example:
+## Example:
 
     const biiif = require('biiif');
     biiif('myfolder', 'http://example.com/myfolder');
