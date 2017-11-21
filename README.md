@@ -36,8 +36,9 @@ label: The Lord of the Rings
 description: The Lord of the Rings Trilogy
 attribution: J. R. R. Tolkien
 metadata:
-    license: Copyright Tolkien Estate
+    License: Copyright Tolkien Estate
     Author: J. R. R. Tolkien
+    Published Date: 29 July 1954
 ```
 
 ## Thumbnails
