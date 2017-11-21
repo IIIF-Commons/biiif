@@ -1,0 +1,12 @@
+{
+  "id": "http://test.com/testroot/collection/index.json",
+  "type": "Collection",
+  "label": "collection",
+  "members": [
+    {
+      "id": "http://test.com/testroot/collection/manifest/index.json",
+      "type": "Manifest",
+      "label": "My Manifest"
+    }
+  ]
+}

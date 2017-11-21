@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git+https://github.com/edsilv/biiif.git"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "keywords": [
     "IIIF",
     "nodejs",
@@ -26,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.53",
+    "mocha": "^4.0.1",
     "typescript": "^2.6.1"
   }
 }
