@@ -9,7 +9,7 @@ const biiif = require('biiif');
 biiif('myfolder', 'http://example.com/myfolder');
 ```
 
-BIIIF uses your file system to generate static IIIF collections and manifests.
+biiif uses your file system to generate static IIIF collections and manifests.
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
@@ -52,7 +52,7 @@ Here is an example of how to organise your files/folders for BIIIF.
 
 This example only has a single root collection, but BIIIF will happily build collections to any nested depth. 
 
-BIIIF will accept a manifest folder too, generating a single manifest `index.json`.
+biiif will accept a manifest folder too, generating a single manifest `index.json`.
 
 ```
 lord-of-the-rings                  // collection
