@@ -48,9 +48,9 @@ To add a thumbnail to your collection, manifest, or canvas simply include a file
 
 ## Examples
 
-Here is an example of how to organise your files/folders for BIIIF.
+Here is an example of how to organise your files/folders for biiif.
 
-This example only has a single root collection, but BIIIF will happily build collections to any nested depth. 
+This example only has a single root collection, but biiif will happily build collections to any nested depth. 
 
 biiif will accept a manifest folder too, generating a single manifest `index.json`.
 
