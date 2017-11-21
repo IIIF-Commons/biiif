@@ -2,7 +2,9 @@
 
     npm i biiif -g
 
-BIIIF is a CLI that uses your file system to generate static IIIF collections and manifests.
+BIIIF uses your file system to generate static IIIF collections and manifests.
+
+Use biiif-cli to run from a terminal. (work in progress)
 
 Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/) (currently in alpha), but is compatible with the [Universal Viewer](http://universalviewer.io) v3 (in development).
 

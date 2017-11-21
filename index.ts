@@ -1,15 +1,25 @@
-#!/usr/bin/env node
-const program = require('commander');
-import { withErrors } from './WithErrors';
-import { BIIIF } from './BIIIF';
+import { Directory } from './Directory';
+const chalk = require('chalk');
+const { existsSync } = require('fs');
 
-program.arguments('<dir>')
-	.option('-u, --url <url>', 'The url to use as the base of all ids')
-	.action(withErrors(exec))
-	.parse(process.argv);
+export default class BIIIF {
 
-async function exec(env, options) { 
-	const dir: string = program.args[0];
-	BIIIF.process(dir, program.url);
-	console.log("Done!");	
+    public static process(dir: string, url: string): void {
+
+        console.log(chalk.white('biiifing ' + dir));
+        
+        // validate inputs
+    
+        if (!existsSync(dir)) {
+            throw new Error('Directory does not exist');
+        }
+    
+        if (!url) {
+            throw new Error('You must pass a url parameter');
+        }
+    
+        new Directory(dir, url);
+
+        console.log("Done!");
+    }
 }
