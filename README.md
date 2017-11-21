@@ -13,6 +13,8 @@ Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/present
     const biiif = require('biiif');
     biiif('myfolder', 'http://example.com/myfolder');
 
+## Conventions
+
 A collection is a folder with sub-folders whose names _do not_ start with an underscore.
 
 A manifest is a folder with sub-folders whose names _do_ start with an underscore.
