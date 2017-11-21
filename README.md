@@ -1,4 +1,4 @@
-# BIIIF (Build IIIF)
+# biiif (build iiif)
 
 ```
 npm i biiif -save
