@@ -8,6 +8,7 @@
     "url": "git+https://github.com/edsilv/biiif.git"
   },
   "scripts": {
+    "build-ts": "tsc",
     "test": "mocha"
   },
   "keywords": [
