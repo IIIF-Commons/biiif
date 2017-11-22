@@ -1,6 +1,6 @@
 const { existsSync, readFileSync } = require('fs');
 const { glob } = require('glob');
-const { posix, dirname, extname, join } = require('path');
+const { basename, dirname, extname, join } = require('path');
 const urljoin = require('url-join');
 const chalk = require('chalk');
 const config = require('./config');
@@ -34,7 +34,7 @@ export class Canvas {
                 '**/thumb.*' // ignore thumbs
             ]
         });
-        
+
         const matchingFiles: string[] = [];
 
         files.forEach((file: string) => {
@@ -46,7 +46,7 @@ export class Canvas {
 
             let directoryName: string = dirname(file);
             directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
-            const fileName: string = posix.basename(file);
+            const fileName: string = basename(file);
             const id: string = urljoin(this.url.href, directoryName, fileName);
 
             if (matchingExtension) {
@@ -84,7 +84,7 @@ export class Canvas {
 
         if (!this.infoYml.label) {
             // default to the directory name
-            this.infoYml.label = posix.basename(this.filePath);
+            this.infoYml.label = basename(this.filePath);
         }
     }
 

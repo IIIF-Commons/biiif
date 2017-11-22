@@ -1,6 +1,6 @@
 const { existsSync, readFileSync, writeFileSync } = require('fs');
 const { glob } = require('glob');
-const { join, posix } = require('path');
+const { join, basename } = require('path');
 const chalk = require('chalk');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
@@ -55,7 +55,7 @@ export class Directory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new Directory(directory, urljoin(this.url.href, posix.basename(directory))));
+            this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory))));
         });
 
         this.isCollection = this.directories.length > 0;
@@ -94,7 +94,7 @@ export class Directory {
 
         if (!this.infoYml.label) {
             // default to the directory name
-            this.infoYml.label = posix.basename(this.filePath);
+            this.infoYml.label = basename(this.filePath);
         }
     }
 

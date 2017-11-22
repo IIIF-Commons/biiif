@@ -36,9 +36,11 @@ export class Utils {
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
         if (thumbnails.length) {
-            const thumbnail: string = thumbnails[0];
+            let thumbnail: string = thumbnails[0];
+            // get the part after and inclusive of the canvas
+            thumbnail = thumbnail.substr(thumbnail.lastIndexOf('_'));
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-            thumbnailJson[0].id = urljoin(url.origin, thumbnail);
+            thumbnailJson[0].id = urljoin(url.href, thumbnail);
             json.thumbnail = thumbnailJson;
         }
     }
