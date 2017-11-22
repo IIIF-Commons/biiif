@@ -8,8 +8,7 @@
     "url": "git+https://github.com/edsilv/biiif.git"
   },
   "scripts": {
-    "build-ts": "tsc",
-    "test": "npm run build-ts && mocha"
+    "test": "tsc && mocha"
   },
   "keywords": [
     "IIIF",
