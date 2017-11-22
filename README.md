@@ -1,6 +1,6 @@
 # biiif (build iiif) 👷✨📃
 
-https://travis-ci.org/edsilv/biiif.svg?branch=master
+<img src="https://travis-ci.org/edsilv/biiif.svg?branch=master" />
 
 ```
 npm i biiif --save
