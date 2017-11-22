@@ -8,11 +8,11 @@ const { URL } = require('url');
 import { Canvas } from './Canvas';
 import { Utils } from './Utils';
 // boilerplate json
-const canvasBoilerplate = require('./boilerplate/canvas');
-const collectionBoilerplate = require('./boilerplate/collection');
-const collectionMemberBoilerplate = require('./boilerplate/collectionMember');
-const manifestBoilerplate = require('./boilerplate/manifest');
-const manifestMemberBoilerplate = require('./boilerplate/manifestMember');
+const canvasBoilerplate = require('./boilerplate/canvas.json');
+const collectionBoilerplate = require('./boilerplate/collection.json');
+const collectionMemberBoilerplate = require('./boilerplate/collectionMember.json');
+const manifestBoilerplate = require('./boilerplate/manifest.json');
+const manifestMemberBoilerplate = require('./boilerplate/manifestMember.json');
 
 export class Directory {
     filePath: string;

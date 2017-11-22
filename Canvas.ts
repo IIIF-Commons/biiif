@@ -4,7 +4,7 @@ const { basename, dirname, extname, join } = require('path');
 const urljoin = require('url-join');
 const chalk = require('chalk');
 const config = require('./config');
-const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation');
+const contentAnnotationBoilerplate = require('./boilerplate/contentAnnotation.json');
 const yaml = require('js-yaml');
 import { Utils } from './Utils';
 
