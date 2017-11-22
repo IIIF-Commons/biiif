@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build-ts": "tsc",
-    "test": "mocha"
+    "test": "npm run build-ts && mocha"
   },
   "keywords": [
     "IIIF",
