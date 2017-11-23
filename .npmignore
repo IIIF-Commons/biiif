@@ -1,5 +1,3 @@
-src
 tsconfig.json
 test
 *.ts
-!*.js
