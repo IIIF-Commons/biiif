@@ -1,6 +1,7 @@
 # biiif (build iiif) 👷✨📃
 
-<img src="https://travis-ci.org/edsilv/biiif.svg?branch=master" />
+[![Build Status](https://travis-ci.org/edsilv/biiif.png?branch=master)](https://travis-ci.org/edsilv/biiif)
+[![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
 
 ```
 npm i biiif --save
@@ -11,7 +12,7 @@ const { build } = require('biiif');
 build('myfolder', 'http://example.com/myfolder');
 ```
 
-Tested in Node v8.9.1
+
 
 biiif uses your file system to generate static [IIIF](http://iiif.io) collections and manifests.
 
