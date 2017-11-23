@@ -1,5 +1,5 @@
 const assert = require('assert');
-const biiif = require('../index');
+const { build } = require('../index');
 const mock = require('mock-fs');
 const fs = require('fs');
 const jsonfile = require('jsonfile');
@@ -32,7 +32,7 @@ describe('biiif', async () => {
 
     it('can find collection', async () => {
         assert(fs.existsSync('/collection'));
-        biiif('/collection', 'http://test.com/collection');
+        build('/collection', 'http://test.com/collection');
     });
 
     it('can find collection index.json', async () => {

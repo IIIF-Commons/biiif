@@ -2,8 +2,7 @@ import { Directory } from './Directory';
 const chalk = require('chalk');
 const { existsSync } = require('fs');
 
-const biiif = (dir: string, url: string) => {
-
+export const build = (dir: string, url: string): void => {
     console.log(chalk.white('biiifing ' + dir));
     
     // validate inputs
@@ -20,5 +19,3 @@ const biiif = (dir: string, url: string) => {
 
     console.log("Done!");
 }
-
-module.exports = biiif;
