@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/edsilv/biiif.png?branch=master)](https://travis-ci.org/edsilv/biiif)
 [![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
+![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png)
 
 ```
 npm i biiif --save
