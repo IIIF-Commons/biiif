@@ -1,4 +1,4 @@
 src
 tsconfig.json
-testroot
+test
 *.ts
