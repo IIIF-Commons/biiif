@@ -7,8 +7,8 @@ npm i biiif --save
 ```
 
 ```
-const biiif = require('biiif');
-biiif('myfolder', 'http://example.com/myfolder');
+const { build } = require('biiif');
+build('myfolder', 'http://example.com/myfolder');
 ```
 
 Tested in Node v8.9.1
