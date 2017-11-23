@@ -6,7 +6,7 @@ const jsonfile = require('jsonfile');
 
 before(async () => {
     mock({
-        '/testdir': {
+        '/collection': {
             'info.yml': 'label: My Test Collection',
             'manifest': {
                 'info.yml': 'label: My Test Manifest',
@@ -30,27 +30,27 @@ describe('biiif', async () => {
     let canvasJson;
     let thumbnailJson;
 
-    it('can find testdir', async () => {
-        assert(fs.existsSync('/testdir'));
-        biiif('/testdir', 'http://test.com/testdir');
+    it('can find collection', async () => {
+        assert(fs.existsSync('/collection'));
+        biiif('/collection', 'http://test.com/collection');
     });
 
     it('can find collection index.json', async () => {
-        const file = '/testdir/index.json';
+        const file = '/collection/index.json';
         assert(fs.existsSync(file));
         collectionJson = jsonfile.readFileSync(file);
         assert(collectionJson.label === 'My Test Collection');
     });
 
     it('can find manifest index.json', async () => {
-        const file = '/testdir/manifest/index.json';
+        const file = '/collection/manifest/index.json';
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
         assert(manifestJson.label === 'My Test Manifest');
     });
 
     it('has correct collection id', async () => {
-        assert(collectionJson.id === 'http://test.com/testdir/index.json');
+        assert(collectionJson.id === 'http://test.com/collection/index.json');
     });
 
     it('can read collection label', async () => {
@@ -58,7 +58,7 @@ describe('biiif', async () => {
     });
 
     it('has correct manifest id', async () => {
-        assert(manifestJson.id === 'http://test.com/testdir/manifest/index.json');
+        assert(manifestJson.id === 'http://test.com/collection/manifest/index.json');
     });
 
     it('can read manifest label', async () => {
@@ -71,7 +71,7 @@ describe('biiif', async () => {
     });
 
     it('has correct canvas id', async () => {
-        assert(canvasJson.id === 'http://test.com/testdir/manifest/index.json/canvas/0');
+        assert(canvasJson.id === 'http://test.com/collection/manifest/index.json/canvas/0');
     });
 
     it('can read canvas label', async () => {
@@ -84,7 +84,7 @@ describe('biiif', async () => {
     });
 
     it('has the correct thumbnail id', async () => {
-        assert(thumbnailJson.id === 'http://test.com/testdir/manifest/_canvas/thumb.png');
+        assert(thumbnailJson.id === 'http://test.com/collection/manifest/_canvas/thumb.png');
     });
 
 });
