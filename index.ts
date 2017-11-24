@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const { existsSync } = require('fs');
 
 export const build = (dir: string, url: string): void => {
-    console.log(chalk.white('biiifing ' + dir));
+    console.log(chalk.white('started biiifing ' + dir));
     
     // validate inputs
 
@@ -17,5 +17,5 @@ export const build = (dir: string, url: string): void => {
 
     new Directory(dir, url);
 
-    console.log("Done!");
+    console.log(chalk.white('finished biiifing ' + dir));
 }
