@@ -48,7 +48,7 @@ describe('build', async () => {
     it('can build collection', async () => {
         assert(fs.existsSync('/collection'));
         build('/collection', 'http://test.com/collection');
-    });
+    }).timeout(100); // should be fast
 
 });
 
