@@ -42,9 +42,6 @@ let thumbnailJson;
 let annotationPage;
 let annotation;
 let imageAnnotation;
-let subCollectionJson;
-let subManifestJson;
-let subCanvasJson;
 
 describe('build', async () => {
 
@@ -143,33 +140,33 @@ describe('sub collection', async () => {
     it('can find subcollection index.json', async () => {
         const file = '/collection/subcollection/index.json';
         assert(fs.existsSync(file));
-        subCollectionJson = jsonfile.readFileSync(file);
+        collectionJson = jsonfile.readFileSync(file);
     });
 
     it('has correct subcollection id', async () => {
-        assert(subCollectionJson.id === 'http://test.com/collection/subcollection/index.json');
+        assert(collectionJson.id === 'http://test.com/collection/subcollection/index.json');
     });
 
     it('has correct subcollection label', async () => {
-        assert(subCollectionJson.label === 'My Test Subcollection');
+        assert(collectionJson.label === 'My Test Subcollection');
     });
 
     it('can find submanifest index.json', async () => {
         const file = '/collection/subcollection/manifest/index.json';
         assert(fs.existsSync(file));
-        subManifestJson = jsonfile.readFileSync(file);
+        manifestJson = jsonfile.readFileSync(file);
     });
 
     it('has correct submanifest id', async () => {
-        assert(subManifestJson.id === 'http://test.com/collection/subcollection/manifest/index.json');
+        assert(manifestJson.id === 'http://test.com/collection/subcollection/manifest/index.json');
     });
 
     it('has correct submanifest label', async () => {
-        assert(subManifestJson.label === 'My Test Submanifest');
+        assert(manifestJson.label === 'My Test Submanifest');
     });
 
     it('can find canvas', async () => {
-        canvasJson = subManifestJson.sequences[0].canvases[0];
+        canvasJson = manifestJson.sequences[0].canvases[0];
         assert(canvasJson);
     });
 
