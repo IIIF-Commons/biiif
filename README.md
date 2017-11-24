@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/edsilv/biiif.png?branch=master)](https://travis-ci.org/edsilv/biiif)
 [![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
 ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif?ref=badge_shield)
 
 ```
 npm i biiif --save
@@ -47,6 +48,9 @@ metadata:
     Published Date: 29 July 1954
 ```
 
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif?ref=badge_large)
+
 ## Thumbnails
 
 To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image file extension will work) in the directory.
@@ -87,9 +91,3 @@ lord-of-the-rings                  // collection
     ├── _page-n                    // canvas
     └── info.yml                   // manifest metadata
 ```
-
-
-
-
-
-
