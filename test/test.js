@@ -26,6 +26,51 @@ before(async () => {
                         'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     }
                 }
+            },
+            "abc": {
+                '_canvas': {
+                    'file.abc': 'abc'
+                }
+            },
+            "obj": {
+                '_canvas': {
+                    'file.obj': 'obj'
+                }
+            },
+            "ply": {
+                '_canvas': {
+                    'file.ply': 'ply'
+                }
+            },
+            "pdf": {
+                '_canvas': {
+                    'file.pdf': 'pdf'
+                }
+            },
+            "mp4": {
+                '_canvas': {
+                    'file.mp4': 'mp4'
+                }
+            },
+            "gltf": {
+                '_canvas': {
+                    'file.gltf': 'gltf'
+                }
+            },
+            "json": {
+                '_canvas': {
+                    'file.json': 'json'
+                }
+            },
+            "crt": {
+                '_canvas': {
+                    'file.crt': 'crt'
+                }
+            },
+            "drc": {
+                '_canvas': {
+                    'file.drc': 'drc'
+                }
             }
         }
     });
@@ -42,13 +87,15 @@ let thumbnailJson;
 let annotationPage;
 let annotation;
 let imageAnnotation;
+let contentAnnotation;
+const collectionUrl = 'http://test.com/collection'
 
 describe('build', async () => {
 
     it('can build collection', async () => {
         assert(fs.existsSync('/collection'));
-        build('/collection', 'http://test.com/collection');
-    }).timeout(100); // should be fast
+        build('/collection', collectionUrl);
+    }).timeout(1000); // should take less than a second
 
 });
 
@@ -67,7 +114,7 @@ describe('top collection', async () => {
     });
 
     it('has correct collection id', async () => {
-        assert(collectionJson.id === 'http://test.com/collection/index.json');
+        assert(collectionJson.id === collectionUrl + '/index.json');
     });
 
     it('has correct collection label', async () => {
@@ -75,7 +122,7 @@ describe('top collection', async () => {
     });
 
     it('has correct manifest id', async () => {
-        assert(manifestJson.id === 'http://test.com/collection/manifest/index.json');
+        assert(manifestJson.id === collectionUrl + '/manifest/index.json');
     });
 
     it('has correct manifest label', async () => {
@@ -88,7 +135,7 @@ describe('top collection', async () => {
     });
 
     it('has correct canvas id', async () => {
-        assert(canvasJson.id === 'http://test.com/collection/manifest/index.json/canvas/0');
+        assert(canvasJson.id === collectionUrl + '/manifest/index.json/canvas/0');
     });
 
     it('has correct canvas label', async () => {
@@ -101,7 +148,7 @@ describe('top collection', async () => {
     });
 
     it('has the correct thumbnail id', async () => {
-        assert(thumbnailJson.id === 'http://test.com/collection/manifest/_canvas/thumb.png');
+        assert(thumbnailJson.id === collectionUrl + '/manifest/_canvas/thumb.png');
     });
 
     it('has an annotation page', async () =>{
@@ -111,7 +158,7 @@ describe('top collection', async () => {
 
     it('has the correct annotation page id', async () =>{
         annotationPage = canvasJson.content[0];
-        assert(annotationPage.id === 'http://test.com/collection/manifest/index.json/canvas/0/annotationpage/0');
+        assert(annotationPage.id === collectionUrl + '/manifest/index.json/canvas/0/annotationpage/0');
     });
 
     it('has an annotation', async () =>{
@@ -130,7 +177,7 @@ describe('top collection', async () => {
     });
 
     it('image annotation has correct id', async () =>{
-        assert(imageAnnotation.id === 'http://test.com/collection/manifest/_canvas/page_1.jpg');
+        assert(imageAnnotation.id === collectionUrl + '/manifest/_canvas/page_1.jpg');
     });
 
 });
@@ -144,7 +191,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct subcollection id', async () => {
-        assert(collectionJson.id === 'http://test.com/collection/subcollection/index.json');
+        assert(collectionJson.id === collectionUrl + '/subcollection/index.json');
     });
 
     it('has correct subcollection label', async () => {
@@ -158,7 +205,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct submanifest id', async () => {
-        assert(manifestJson.id === 'http://test.com/collection/subcollection/manifest/index.json');
+        assert(manifestJson.id === collectionUrl + '/subcollection/manifest/index.json');
     });
 
     it('has correct submanifest label', async () => {
@@ -171,7 +218,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct canvas id', async () => {
-        assert(canvasJson.id === 'http://test.com/collection/subcollection/manifest/index.json/canvas/0');
+        assert(canvasJson.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0');
     });
 
     it('has correct canvas label', async () => {
@@ -184,7 +231,7 @@ describe('sub collection', async () => {
     });
 
     it('has the correct thumbnail id', async () => {
-        assert(thumbnailJson.id === 'http://test.com/collection/subcollection/manifest/_canvas/thumb.png');
+        assert(thumbnailJson.id === collectionUrl + '/subcollection/manifest/_canvas/thumb.png');
     });
 
     it('has an annotation page', async () =>{
@@ -194,7 +241,7 @@ describe('sub collection', async () => {
 
     it('has the correct annotation page id', async () =>{
         annotationPage = canvasJson.content[0];
-        assert(annotationPage.id === 'http://test.com/collection/subcollection/manifest/index.json/canvas/0/annotationpage/0');
+        assert(annotationPage.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0/annotationpage/0');
     });
 
     it('has an annotation', async () =>{
@@ -213,6 +260,64 @@ describe('sub collection', async () => {
     });
 
     it('image annotation has correct id', async () =>{
-        assert(imageAnnotation.id === 'http://test.com/collection/subcollection/manifest/_canvas/page_1.jpg');
+        assert(imageAnnotation.id === collectionUrl + '/subcollection/manifest/_canvas/page_1.jpg');
     });
 });
+
+describe('Content annotations', async () => {
+    testContentAnnotation('abc', collectionUrl + '/abc/_canvas/file.abc', true);
+    testContentAnnotation('obj', collectionUrl + '/obj/_canvas/file.obj');
+    testContentAnnotation('ply', collectionUrl + '/ply/_canvas/file.ply');
+    testContentAnnotation('pdf', collectionUrl + '/pdf/_canvas/file.pdf');
+    testContentAnnotation('mp4', collectionUrl + '/mp4/_canvas/file.mp4');
+    testContentAnnotation('gltf', collectionUrl + '/gltf/_canvas/file.gltf');
+    testContentAnnotation('json', collectionUrl + '/json/_canvas/file.json');
+    testContentAnnotation('crt', collectionUrl + '/crt/_canvas/file.crt');
+    testContentAnnotation('drc', collectionUrl + '/drc/_canvas/file.drc');
+});
+
+function testContentAnnotation(type, id, shouldNotExist) {
+
+    it('can find ' + type + ' index.json', async () => {
+        const file = '/collection/' + type + '/index.json';
+        assert(fs.existsSync(file));
+        manifestJson = jsonfile.readFileSync(file);
+    });
+
+    it('can find ' + type + ' canvas', async () => {
+        canvasJson = manifestJson.sequences[0].canvases[0];
+        assert(canvasJson);
+    });
+
+    it('has an annotation page', async () =>{
+        annotationPage = canvasJson.content[0];
+        assert(annotationPage);
+    });
+
+    it('has an annotation', async () =>{
+        if (shouldNotExist) {
+            annotation = null;
+            assert(annotationPage.items.length === 0);
+        } else {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        }        
+    });
+
+    it('has a ' + type + ' annotation body', async () =>{
+        if (shouldNotExist) {
+            assert(annotation === null);
+        } else {
+            contentAnnotation = annotation.body;
+            assert(contentAnnotation);
+        }
+    });
+
+    it('content annotation has correct id', async () =>{
+        if (shouldNotExist) {
+            assert(annotation === null);
+        } else {
+            assert(contentAnnotation.id === id);
+        }
+    });
+}

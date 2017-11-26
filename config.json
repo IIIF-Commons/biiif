@@ -1,9 +1,5 @@
 {
     "canvasAnnotationTypes": {
-        ".obj": {
-            "type": "PhysicalObject",
-            "format": "text/plain"
-        },
         ".pdf": {
             "type": "PDF",
             "format": "application/pdf"
@@ -15,6 +11,30 @@
         ".jpg": {
             "type": "Image",
             "format": "image/jpeg"
+        },
+        ".obj": {
+            "type": "PhysicalObject",
+            "format": "text/plain"
+        },
+        ".ply": {
+            "type": "PhysicalObject",
+            "format": "application/ply"
+        },
+        ".gltf": {
+            "type": "PhysicalObject",
+            "format": "model/gltf+json"
+        },
+        ".json": {
+            "type": "PhysicalObject",
+            "format": "application/vnd.threejs+json"
+        },
+        ".crt": {
+            "type": "PhysicalObject",
+            "format": "application/corto"
+        },
+        ".drc": {
+            "type": "PhysicalObject",
+            "format": "application/draco"
         }
     }
 }
