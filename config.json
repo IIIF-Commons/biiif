@@ -1,33 +1,5 @@
 {
     "canvasAnnotationTypes": {
-        ".pdf": {
-            "type": "PDF",
-            "format": "application/pdf"
-        },
-        ".mp4": {
-            "type": "Video",
-            "format": "video/mp4"
-        },
-        ".jpg": {
-            "type": "Image",
-            "format": "image/jpeg"
-        },
-        ".obj": {
-            "type": "PhysicalObject",
-            "format": "text/plain"
-        },
-        ".ply": {
-            "type": "PhysicalObject",
-            "format": "application/ply"
-        },
-        ".gltf": {
-            "type": "PhysicalObject",
-            "format": "model/gltf+json"
-        },
-        ".json": {
-            "type": "PhysicalObject",
-            "format": "application/vnd.threejs+json"
-        },
         ".crt": {
             "type": "PhysicalObject",
             "format": "application/corto"
@@ -35,6 +7,34 @@
         ".drc": {
             "type": "PhysicalObject",
             "format": "application/draco"
+        },
+        ".gltf": {
+            "type": "PhysicalObject",
+            "format": "model/gltf+json"
+        },
+        ".jpg": {
+            "type": "Image",
+            "format": "image/jpeg"
+        },
+        ".json": {
+            "type": "PhysicalObject",
+            "format": "application/vnd.threejs+json"
+        },
+        ".mp4": {
+            "type": "Video",
+            "format": "video/mp4"
+        },
+        ".obj": {
+            "type": "PhysicalObject",
+            "format": "text/plain"
+        },
+        ".pdf": {
+            "type": "PDF",
+            "format": "application/pdf"
+        },
+        ".ply": {
+            "type": "PhysicalObject",
+            "format": "application/ply"
         }
     }
 }

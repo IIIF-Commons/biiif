@@ -38,10 +38,14 @@ export class Utils {
         if (thumbnails.length) {
             let thumbnail: string = thumbnails[0];
             // get the part after and inclusive of the canvas
-            thumbnail = thumbnail.substr(thumbnail.lastIndexOf('_'));
+            thumbnail = Utils.getCanvasFromId(thumbnail);
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = urljoin(url.href, thumbnail);
             json.thumbnail = thumbnailJson;
         }
+    }
+
+    public static getCanvasFromId(id: string): string {
+        return id.substr(id.lastIndexOf('_'));
     }
 }

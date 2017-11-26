@@ -1,8 +1,10 @@
-const assert = require('assert');
 const { build } = require('../index');
-const mock = require('mock-fs');
+const { basename } = require('path');
+const assert = require('assert');
 const fs = require('fs');
 const jsonfile = require('jsonfile');
+const mock = require('mock-fs');
+const urljoin = require('url-join');
 
 before(async () => {
     mock({
@@ -27,50 +29,52 @@ before(async () => {
                     }
                 }
             },
-            "abc": {
-                '_canvas': {
-                    'file.abc': 'abc'
-                }
-            },
-            "obj": {
-                '_canvas': {
-                    'file.obj': 'obj'
-                }
-            },
-            "ply": {
-                '_canvas': {
-                    'file.ply': 'ply'
-                }
-            },
-            "pdf": {
-                '_canvas': {
-                    'file.pdf': 'pdf'
-                }
-            },
-            "mp4": {
-                '_canvas': {
-                    'file.mp4': 'mp4'
-                }
-            },
-            "gltf": {
-                '_canvas': {
+            "canvasperfile": {
+                '_crt': {
+                    'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                '_drc': {
+                    'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                '_gltf': {
                     'file.gltf': 'gltf'
-                }
-            },
-            "json": {
-                '_canvas': {
+                },
+                '_jpg': {
+                    'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                '_json': {
                     'file.json': 'json'
-                }
+                },
+                '_mp4': {
+                    'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                '_obj': {
+                    'file.obj': 'obj'
+                },
+                '_pdf': {
+                    'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                '_ply': {
+                    'file.ply': 'ply'
+                }                
             },
-            "crt": {
-                '_canvas': {
-                    'file.crt': 'crt'
-                }
+            "filespercanvas": {
+                "_files": {
+                    'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.gltf': 'gltf',
+                    'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.json': 'json',
+                    'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.obj': 'obj',
+                    'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.ply': 'ply' 
+                }        
             },
-            "drc": {
-                '_canvas': {
-                    'file.drc': 'drc'
-                }
+            "erroneousfile": {
+                "_files": {
+                    'file.abc': 'abc'
+                } 
             }
         }
     });
@@ -88,7 +92,7 @@ let annotationPage;
 let annotation;
 let imageAnnotation;
 let contentAnnotation;
-const collectionUrl = 'http://test.com/collection'
+const collectionUrl = 'http://test.com/collection';
 
 describe('build', async () => {
 
@@ -264,60 +268,86 @@ describe('sub collection', async () => {
     });
 });
 
-describe('Content annotations', async () => {
-    testContentAnnotation('abc', collectionUrl + '/abc/_canvas/file.abc', true);
-    testContentAnnotation('obj', collectionUrl + '/obj/_canvas/file.obj');
-    testContentAnnotation('ply', collectionUrl + '/ply/_canvas/file.ply');
-    testContentAnnotation('pdf', collectionUrl + '/pdf/_canvas/file.pdf');
-    testContentAnnotation('mp4', collectionUrl + '/mp4/_canvas/file.mp4');
-    testContentAnnotation('gltf', collectionUrl + '/gltf/_canvas/file.gltf');
-    testContentAnnotation('json', collectionUrl + '/json/_canvas/file.json');
-    testContentAnnotation('crt', collectionUrl + '/crt/_canvas/file.crt');
-    testContentAnnotation('drc', collectionUrl + '/drc/_canvas/file.drc');
-});
+describe('Canvas Per Content Annotation', async () => {
 
-function testContentAnnotation(type, id, shouldNotExist) {
+    const manifest = '/collection/canvasperfile';
+    let canvases;
 
-    it('can find ' + type + ' index.json', async () => {
-        const file = '/collection/' + type + '/index.json';
+    it('can find ' + manifest + ' index.json', async () => {
+        const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
+        canvases = manifestJson.sequences[0].canvases;
     });
 
-    it('can find ' + type + ' canvas', async () => {
+    it('has all content annotations', async () => {
+        canvasHasContentAnnotations(canvases[0], ['file.crt']);
+        canvasHasContentAnnotations(canvases[1], ['file.drc']);
+        canvasHasContentAnnotations(canvases[2], ['file.gltf']);
+        canvasHasContentAnnotations(canvases[3], ['file.jpg']);
+        canvasHasContentAnnotations(canvases[4], ['file.json']);
+        canvasHasContentAnnotations(canvases[5], ['file.mp4']);
+        canvasHasContentAnnotations(canvases[6], ['file.obj']);
+        canvasHasContentAnnotations(canvases[7], ['file.pdf']);
+        canvasHasContentAnnotations(canvases[8], ['file.ply']);
+    });
+
+});
+
+describe('Content Annotation Per Canvas', async () => {
+    
+    const manifest = '/collection/filespercanvas';
+    let canvases;
+
+    it('can find ' + manifest + ' index.json', async () => {
+        const file = urljoin(manifest, 'index.json');
+        assert(fs.existsSync(file));
+        manifestJson = jsonfile.readFileSync(file);
         canvasJson = manifestJson.sequences[0].canvases[0];
-        assert(canvasJson);
     });
 
-    it('has an annotation page', async () =>{
+    it('has all content annotations', async () => {
+        canvasHasContentAnnotations(canvasJson, ['file.crt', 'file.drc', 'file.gltf', 'file.jpg', 'file.json', 'file.mp4', 'file.obj', 'file.pdf', 'file.ply']);
+    });
+
+});
+
+describe('Erroneous File', async () => {
+    
+    const manifest = '/collection/erroneousfile';
+    let canvases;
+
+    it('can find ' + manifest + ' index.json', async () => {
+        const file = urljoin(manifest, 'index.json');
+        assert(fs.existsSync(file));
+        manifestJson = jsonfile.readFileSync(file);
+        canvasJson = manifestJson.sequences[0].canvases[0];
+    });
+
+    it('has no content annotations', async () => {
+        assert(canvasJson);        
         annotationPage = canvasJson.content[0];
         assert(annotationPage);
+        assert(annotationPage.items.length === 0);
     });
 
-    it('has an annotation', async () =>{
-        if (shouldNotExist) {
-            annotation = null;
-            assert(annotationPage.items.length === 0);
-        } else {
-            annotation = annotationPage.items[0];
-            assert(annotation);
-        }        
-    });
+});
 
-    it('has a ' + type + ' annotation body', async () =>{
-        if (shouldNotExist) {
-            assert(annotation === null);
-        } else {
-            contentAnnotation = annotation.body;
-            assert(contentAnnotation);
-        }
-    });
+function canvasHasContentAnnotations(canvasJson, files) {
 
-    it('content annotation has correct id', async () =>{
-        if (shouldNotExist) {
-            assert(annotation === null);
-        } else {
-            assert(contentAnnotation.id === id);
-        }
+    assert(canvasJson);
+
+    annotationPage = canvasJson.content[0];
+    assert(annotationPage);
+
+    files.forEach((file, index) => {
+
+        annotation = annotationPage.items[index];
+        assert(annotation);
+
+        contentAnnotation = annotation.body;
+        assert(contentAnnotation);
+
+        assert(basename(contentAnnotation.id) === file);
     });
 }
