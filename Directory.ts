@@ -22,7 +22,6 @@ export class Directory {
     directories: Directory[] = [];
     infoYml: any;
     indexJson: any;
-    thumbnailJson: any;
 
     constructor(filePath: string, url: string) {
         
@@ -118,10 +117,7 @@ export class Directory {
                 memberJson.id = urljoin(directory.url.href, 'index.json');
                 memberJson.label = directory.infoYml.label;
 
-                // get thumbnail
-                if (directory.thumbnailJson) {
-                    memberJson.thumbnail = directory.thumbnailJson;
-                }
+                Utils.getThumbnail(memberJson, directory.url, directory.filePath);
 
                 this.indexJson.members.push(memberJson); 
             });
@@ -148,11 +144,7 @@ export class Directory {
 
         this._applyMetadata();
 
-        this.thumbnailJson = Utils.getThumbnailJson(this.url, this.filePath);
-        
-        if (this.thumbnailJson) {
-            this.indexJson.thumbnail = this.thumbnailJson;
-        }
+        Utils.getThumbnail(this.indexJson, this.url, this.filePath);
 
         // write index.json
         writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));

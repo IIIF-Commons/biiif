@@ -30,8 +30,7 @@ export class Utils {
         return formattedMetadata;
     }
 
-    public static getThumbnailJson(url: URL, filePath: string): any {
-        let thumbnailJson: any = null;
+    public static getThumbnail(json: any, url: URL, filePath: string): any {
         const thumbnailPattern: string = filePath + '/thumb.*';
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
@@ -39,9 +38,8 @@ export class Utils {
             let thumbnail: string = thumbnails[0];
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
+            json.thumbnail = thumbnailJson;
         }
-
-        return thumbnailJson;
     }
 
     /*

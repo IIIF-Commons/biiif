@@ -26,6 +26,7 @@ before(async () => {
                 'info.yml': 'label: My Test Subcollection',
                 'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 'manifest': {
+                    'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'info.yml': 'label: My Test Submanifest',
                     '_canvas': {
                         'info.yml': 'label: My Test Subcanvas',
@@ -182,6 +183,10 @@ describe('top collection', async () => {
         assert(thumbnailJson);
     });
 
+    it('has correct member thumbnail id', async () => {
+        assert(thumbnailJson[0].id === 'http://test.com/collection/a_manifest/thumb.png');
+    });
+
     it('can find manifest index.json', async () => {
         const file = '/collection/a_manifest/index.json';
         assert(fs.existsSync(file));
@@ -271,9 +276,31 @@ describe('sub collection', async () => {
         assert(thumbnailJson);
     });
 
-    it('has the correct manifest thumbnail id', async () => {
+    it('has the correct collection thumbnail id', async () => {
         const id = collectionUrl + '/subcollection/thumb.png';
         assert(thumbnailJson.id === id);
+    });
+
+    it('has a member manifest', async () => {
+        member = collectionJson.members[0];
+        assert(member);
+    });
+
+    it('has correct member id', async () => {
+        assert(member.id === 'http://test.com/collection/subcollection/manifest/index.json');
+    });
+
+    it('has correct member label', async () => {
+        assert(member.label === 'My Test Submanifest');
+    });
+
+    it('has member thumbnail', async () => {
+        thumbnailJson = member.thumbnail;
+        assert(thumbnailJson);
+    });
+
+    it('has correct member thumbnail id', async () => {
+        assert(thumbnailJson[0].id === 'http://test.com/collection/subcollection/manifest/thumb.png');
     });
 
     it('can find manifest index.json', async () => {
@@ -282,7 +309,7 @@ describe('sub collection', async () => {
         manifestJson = jsonfile.readFileSync(file);
     });
 
-    it('has correct smanifest id', async () => {
+    it('has correct manifest id', async () => {
         assert(manifestJson.id === collectionUrl + '/subcollection/manifest/index.json');
     });
 
