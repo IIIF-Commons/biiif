@@ -1,6 +1,5 @@
 const { glob } = require('glob');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
-const urljoin = require('url-join');
 
 export class Utils {
 
@@ -31,21 +30,60 @@ export class Utils {
         return formattedMetadata;
     }
 
-    public static getThumbnail(json: any, url: URL, filePath: string): void {
+    public static getThumbnailJson(url: URL, filePath: string): any {
+        let thumbnailJson: any = null;
         const thumbnailPattern: string = filePath + '/thumb.*';
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
         if (thumbnails.length) {
             let thumbnail: string = thumbnails[0];
-            // get the part after and inclusive of the canvas
-            thumbnail = Utils.getCanvasFromId(thumbnail);
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-            thumbnailJson[0].id = urljoin(url.href, thumbnail);
-            json.thumbnail = thumbnailJson;
+            thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
         }
+
+        return thumbnailJson;
     }
 
-    public static getCanvasFromId(id: string): string {
-        return id.substr(id.lastIndexOf('_'));
+    /*
+        merge these two example paths:
+        url:        http://test.com/collection/manifest
+        filePath:   c:/user/documents/collection/manifest/_canvas/thumb.png
+
+        into:       http://test.com/collection/manifest/_canvas/thumb.png
+    */
+    public static mergePaths(url: URL, filePath: string): string {
+
+        // split the url (minus origin) and filePath into arrays
+        //                            ['collection', 'manifest']
+        // ['c:', 'user', 'documents', 'collection', 'manifest', '_canvas', 'thumb.jpg']
+        // walk backwards through the filePath array adding to the newPath array until the last item of the url array is found.
+        // then while the next url item matches the next filePath item, add it to newPath.
+        // the final path is the url origin plus a reversed newPath joined with a '/'
+
+        const urlParts: string[] = url.href.replace(url.origin, '').split('/');
+        filePath = filePath.replace(/\\/g, '/');
+        const fileParts: string[] = filePath.split('/');
+        const newPath: string[] = [];
+
+        for (let f = fileParts.length - 1; f >= 0; f--) {
+            const filePart: string = fileParts[f];
+            newPath.push(filePart);
+            
+            if (filePart === urlParts[urlParts.length - 1]) {
+                if (urlParts.length > 1) {
+                    for (let u = urlParts.length - 2; u >= 0; u--) {
+                        f--;
+                        if (fileParts[f] === urlParts[u]) {
+                            newPath.push(fileParts[f]);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        let id: string = [url.origin, ...newPath.reverse()].join('/');
+
+        return id;
     }
 }

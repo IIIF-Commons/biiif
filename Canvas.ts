@@ -12,6 +12,7 @@ export class Canvas {
     canvasJson: any;
     filePath: string;
     infoYml: any = {};
+    thumbnailJson: any;
     url: URL;
 
     constructor(filePath: string, url: URL) {
@@ -25,7 +26,11 @@ export class Canvas {
         this._getMetadata();
         this._applyMetadata();
 
-        Utils.getThumbnail(this.canvasJson, this.url, this.filePath);
+        this.thumbnailJson = Utils.getThumbnailJson(this.url, this.filePath);
+        
+        if (this.thumbnailJson) {
+            this.canvasJson.thumbnail = this.thumbnailJson;
+        }
 
         // for each jpg/pdf/mp4/obj in the canvas directory
         // add a contentannotation
