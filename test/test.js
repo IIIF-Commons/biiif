@@ -168,6 +168,7 @@ describe('top collection', async () => {
 
     it('has the correct collection thumbnail id', async () => {
         const id = urljoin(collectionUrl, 'thumb.png');
+        console.log(id);
         assert(thumbnailJson.id === id);
     });
 
