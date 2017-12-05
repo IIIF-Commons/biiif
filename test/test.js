@@ -167,8 +167,7 @@ describe('top collection', async () => {
     });
 
     it('has the correct collection thumbnail id', async () => {
-        const id = collectionUrl + '/thumb.png';
-        console.log(thumbnailJson.id);
+        const id = urljoin(collectionUrl, 'thumb.png');
         assert(thumbnailJson.id === id);
     });
 
@@ -227,7 +226,7 @@ describe('top collection', async () => {
     });
 
     it('has the correct canvas thumbnail id', async () => {
-        const id = collectionUrl + '/a_manifest/_canvas/thumb.png';
+        const id = urljoin(collectionUrl, '/a_manifest/_canvas/thumb.png');
         assert(thumbnailJson.id === id);
     });
 
@@ -284,7 +283,7 @@ describe('sub collection', async () => {
     });
 
     it('has the correct collection thumbnail id', async () => {
-        const id = collectionUrl + '/subcollection/thumb.png';
+        const id = urljoin(collectionUrl, '/subcollection/thumb.png');
         assert(thumbnailJson.id === id);
     });
 
@@ -343,7 +342,7 @@ describe('sub collection', async () => {
     });
 
     it('has the correct thumbnail id', async () => {
-        const id = collectionUrl + '/subcollection/manifest/_canvas/thumb.png';
+        const id = urljoin(collectionUrl, '/subcollection/manifest/_canvas/thumb.png');
         assert(thumbnailJson.id === id);
     });
 
