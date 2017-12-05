@@ -1,5 +1,6 @@
 const { glob } = require('glob');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
+const urljoin = require('url-join');
 
 export class Utils {
 
@@ -80,7 +81,7 @@ export class Utils {
             }
         }
 
-        let id: string = [url.origin, ...newPath.reverse()].join('/');
+        let id: string = urljoin(url.origin, ...newPath.reverse());
 
         return id;
     }
