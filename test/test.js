@@ -126,6 +126,12 @@ describe('utils', async () => {
         filePath = 'c:/user/documents/github/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png';
         id = Utils.mergePaths(url, filePath);
         assert(id === 'http://localhost:8888/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png');
+
+        url = new URL('https://edsilv.github.io/uv-app-starter/content/human_skull');
+        filePath = 'c:/Users/edsilv/github/uv-app-starter/content/human_skull/thumb.png';
+        id = Utils.mergePaths(url, filePath);
+        assert(id === 'https://edsilv.github.io/uv-app-starter/content/human_skull/thumb.png');
+
     });
 
 });
