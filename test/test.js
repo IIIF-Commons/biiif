@@ -168,8 +168,6 @@ describe('top collection', async () => {
 
     it('has the correct collection thumbnail id', async () => {
         const id = urljoin(collectionUrl, 'thumb.png');
-        console.log('expected', id);
-        console.log('actual', thumbnailJson.id);
         assert(thumbnailJson.id === id);
     });
 
@@ -257,7 +255,7 @@ describe('top collection', async () => {
         assert(imageAnnotation);
     });
 
-    it('image annotation has correct id', async () =>{
+    it('has correct annotation id', async () =>{
         assert(imageAnnotation.id === collectionUrl + '/a_manifest/_canvas/page_1.jpg');
     });
 
