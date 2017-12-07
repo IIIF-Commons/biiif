@@ -10,6 +10,18 @@ const urljoin = require('url-join');
 
 before(async () => {
     mock({
+        '/content': {
+            'vertebra': {
+                'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                'info.yml': 'label: Vertebra',
+                '_vertebra': {
+                    'diffuse.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'normal.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'vertebra.mtl': '...',
+                    'vertebra.obj': '...'
+                }
+            }
+        },
         '/collection': {
             'info.yml': 'label: My Test Collection',
             'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -91,6 +103,7 @@ after(async () => {
 })
 
 let url, filePath, id, collectionJson, member, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
+const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/content';
 const collectionUrl = 'http://test.com/collection';
 
 describe('utils', async () => {
@@ -135,6 +148,49 @@ describe('utils', async () => {
     });
 
 });
+
+describe('build for gh-pages', async () => {
+    
+    it('can build collection', async () => {
+        assert(fs.existsSync('/content'));
+        build('/content', githubpagesUrl);
+    }).timeout(1000); // should take less than a second
+
+});
+
+describe('gh-pages', async () => {
+    
+    it('can find collection index.json', async () => {
+        const file = '/content/index.json';
+        assert(fs.existsSync(file));
+        collectionJson = jsonfile.readFileSync(file);
+    });
+
+    it('has correct collection id', async () => {
+        assert(collectionJson.id === githubpagesUrl + '/index.json');
+    });
+
+    it('has a member manifest', async () => {
+        member = collectionJson.members[0];
+        assert(member);
+    });
+
+    it('has correct member id', async () => {
+        assert(member.id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/index.json');
+    });
+
+    it('has member thumbnail', async () => {
+        thumbnailJson = member.thumbnail;
+        assert(thumbnailJson);
+    });
+
+    it('has correct member thumbnail id', async () => {
+        const id = thumbnailJson[0].id;
+        assert(id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/thumb.jpg');
+    });
+
+});
+
 
 describe('build', async () => {
 

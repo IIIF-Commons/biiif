@@ -59,7 +59,7 @@ export class Utils {
         // then while the next url item matches the next filePath item, add it to newPath.
         // the final path is the url origin plus a reversed newPath joined with a '/'
 
-        const urlParts: string[] = url.href.replace(url.origin, '').split('/');
+        const urlParts: string[] = url.href.replace(url.origin + '/', '').split('/');
         filePath = filePath.replace(/\\/g, '/');
         const fileParts: string[] = filePath.split('/');
         const newPath: string[] = [];
@@ -74,6 +74,8 @@ export class Utils {
                         f--;
                         if (fileParts[f] === urlParts[u]) {
                             newPath.push(fileParts[f]);
+                        } else {
+                            newPath.push(urlParts[u]);
                         }
                     }
                 }
