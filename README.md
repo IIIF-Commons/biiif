@@ -22,7 +22,7 @@ Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
 Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/) (currently in alpha), but is compatible with the [Universal Viewer](http://universalviewer.io) v3 (in development).
 
-To get started quickly, try [uv-app-starter](https://github.com/UniversalViewer/uv-app-starter) which comes with biiif included!
+If you want to build a website with biiif, try [uv-app-starter](https://github.com/UniversalViewer/uv-app-starter) which comes with the [Universal Viewer](http://universalviewer.io) and biiif already set up.
 
 ## Conventions
 
