@@ -271,6 +271,19 @@ describe('collection', async () => {
         assert(thumbnailJson[0].id === 'http://test.com/collection/linkedmanifest1/thumb.jpg');
     });
 
+    it('has a linked member manifest', async () => {
+        member = collectionJson.members[7];
+        assert(member);
+    });
+
+    it('has correct linked member id', async () => {
+        assert(member.id === 'http://test.com/collection/linkedmanifest3/index.json');
+    });
+
+    it('has correct linked member label', async () => {
+        assert(member.label === 'linkedmanifest3');
+    });
+
     it('can find manifest index.json', async () => {
         const file = '/collection/a_manifest/index.json';
         assert(fs.existsSync(file));

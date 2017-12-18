@@ -10,5 +10,4 @@ module.exports =
   ] \n \
 - id: http://test.com/collection/linkedmanifest2/index.json \n \
   label: Linked Manifest 2 \n \
-- id: http://test.com/collection/linkedmanifest3/index.json \n \
-  label: Linked Manifest 3';
+- id: http://test.com/collection/linkedmanifest3/index.json'

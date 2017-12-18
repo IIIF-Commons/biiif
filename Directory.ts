@@ -134,6 +134,14 @@ export class Directory {
                     
                     if (manifest.label) {
                         memberJson.label = manifest.label;
+                    } else {
+                        // no label supplied, use the last fragment of the url
+                        const url: URL = new URL(memberJson.id);
+                        const pathname: string[] = url.pathname.split('/');
+
+                        if (pathname.length > 1) {
+                            memberJson.label = pathname[pathname.length - 2];
+                        }
                     }
 
                     if (manifest.thumbnail) {
