@@ -1,10 +1,10 @@
 const { existsSync, readFileSync, writeFileSync } = require('fs');
 const { glob } = require('glob');
 const { join, basename } = require('path');
+const { URL } = require('url');
 const chalk = require('chalk');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
-const { URL } = require('url');
 import { Canvas } from './Canvas';
 import { Utils } from './Utils';
 // boilerplate json
@@ -121,6 +121,32 @@ export class Directory {
 
                 this.indexJson.members.push(memberJson); 
             });
+
+            // check for manifests.yml. if it exists, parse and add to members
+            const manifestsPath: string = join(this.filePath, 'manifests.yml');
+            
+            if (existsSync(manifestsPath)) {
+                const manifestsYml: any = yaml.safeLoad(readFileSync(manifestsPath, 'utf8'));
+
+                manifestsYml.manifests.forEach((manifest: any) => {
+                    const memberJson = Utils.cloneJson(collectionMemberBoilerplate);
+                    memberJson.id = manifest.id;
+                    
+                    if (manifest.label) {
+                        memberJson.label = manifest.label;
+                    }
+
+                    if (manifest.thumbnail) {
+                        memberJson.thumbnail = manifest.thumbnail;
+                    }
+
+                    this.indexJson.members.push(memberJson);
+                });
+
+                console.log(chalk.green('parsed manifests.yml for: ') + this.filePath);         
+            } else {
+                console.log(chalk.green('no manifests.yml found for: ') + this.filePath);
+            }
 
         } else {
             this.indexJson = Utils.cloneJson(manifestBoilerplate);

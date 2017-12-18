@@ -31,7 +31,7 @@ before(async () => {
                 '_canvas': {
                     'info.yml': 'label: A Canvas',
                     'page_1.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 }
             },
             'subcollection': {
@@ -43,10 +43,11 @@ before(async () => {
                     '_canvas': {
                         'info.yml': 'label: My Test Subcanvas',
                         'page_1.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                        'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                        'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                     }
                 }
             },
+            'manifests.yml': require('./manifests'),
             "canvasperfile": {
                 '_crt': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
@@ -191,7 +192,6 @@ describe('gh-pages', async () => {
 
 });
 
-
 describe('build', async () => {
 
     it('can build collection', async () => {
@@ -201,7 +201,7 @@ describe('build', async () => {
 
 });
 
-describe('top collection', async () => {
+describe('collection', async () => {
 
     it('can find collection index.json', async () => {
         const file = '/collection/index.json';
@@ -227,6 +227,10 @@ describe('top collection', async () => {
         assert(thumbnailJson.id === id);
     });
 
+    it('has correct number of members', async () => {
+        assert(collectionJson.members.length === 8);
+    });
+
     it('has a member manifest', async () => {
         member = collectionJson.members[0];
         assert(member);
@@ -245,8 +249,26 @@ describe('top collection', async () => {
         assert(thumbnailJson);
     });
 
-    it('has correct member thumbnail id', async () => {
-        assert(thumbnailJson[0].id === 'http://test.com/collection/a_manifest/thumb.png');
+    it('has a linked member manifest', async () => {
+        member = collectionJson.members[5];
+        assert(member);
+    });
+
+    it('has correct linked member id', async () => {
+        assert(member.id === 'http://test.com/collection/linkedmanifest1/index.json');
+    });
+
+    it('has correct linked member label', async () => {
+        assert(member.label === 'Linked Manifest 1');
+    });
+
+    it('has linked member thumbnail', async () => {
+        thumbnailJson = member.thumbnail;
+        assert(thumbnailJson);
+    });
+
+    it('has correct linked member thumbnail id', async () => {
+        assert(thumbnailJson[0].id === 'http://test.com/collection/linkedmanifest1/thumb.jpg');
     });
 
     it('can find manifest index.json', async () => {
@@ -286,32 +308,32 @@ describe('top collection', async () => {
         assert(thumbnailJson.id === id);
     });
 
-    it('has an annotation page', async () =>{
+    it('has an annotation page', async () => {
         annotationPage = canvasJson.content[0];
         assert(annotationPage);
     });
 
-    it('has the correct annotation page id', async () =>{
+    it('has the correct annotation page id', async () => {
         annotationPage = canvasJson.content[0];
         assert(annotationPage.id === collectionUrl + '/a_manifest/index.json/canvas/0/annotationpage/0');
     });
 
-    it('has an annotation', async () =>{
+    it('has an annotation', async () => {
         annotation = annotationPage.items[0];
         assert(annotation);
     });
 
-    it('has an image annotation body', async () =>{
+    it('has an image annotation body', async () => {
         imageAnnotation = annotation.body;
         assert(imageAnnotation);
     });
 
-    it('has an annotation body', async () =>{
+    it('has an annotation body', async () => {
         imageAnnotation = annotation.body;
         assert(imageAnnotation);
     });
 
-    it('has correct annotation id', async () =>{
+    it('has correct annotation id', async () => {
         assert(imageAnnotation.id === collectionUrl + '/a_manifest/_canvas/page_1.jpg');
     });
 
@@ -402,32 +424,32 @@ describe('sub collection', async () => {
         assert(thumbnailJson.id === id);
     });
 
-    it('has an annotation page', async () =>{
+    it('has an annotation page', async () => {
         annotationPage = canvasJson.content[0];
         assert(annotationPage);
     });
 
-    it('has the correct annotation page id', async () =>{
+    it('has the correct annotation page id', async () => {
         annotationPage = canvasJson.content[0];
         assert(annotationPage.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0/annotationpage/0');
     });
 
-    it('has an annotation', async () =>{
+    it('has an annotation', async () => {
         annotation = annotationPage.items[0];
         assert(annotation);
     });
 
-    it('has an image annotation body', async () =>{
+    it('has an image annotation body', async () => {
         imageAnnotation = annotation.body;
         assert(imageAnnotation);
     });
 
-    it('has an annotation body', async () =>{
+    it('has an annotation body', async () => {
         imageAnnotation = annotation.body;
         assert(imageAnnotation);
     });
 
-    it('image annotation has correct id', async () =>{
+    it('image annotation has correct id', async () => {
         assert(imageAnnotation.id === collectionUrl + '/subcollection/manifest/_canvas/page_1.jpg');
     });
 });
