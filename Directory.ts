@@ -58,7 +58,7 @@ export class Directory {
             this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory))));
         });
 
-        this.isCollection = this.directories.length > 0;
+        this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);
 
         this._getMetadata();
         this._createIndexJson();
@@ -123,9 +123,9 @@ export class Directory {
             });
 
             // check for manifests.yml. if it exists, parse and add to members
-            const manifestsPath: string = join(this.filePath, 'manifests.yml');
-            
-            if (existsSync(manifestsPath)) {
+            if (Utils.hasManifestsYML(this.filePath)) {
+
+                const manifestsPath: string = join(this.filePath, 'manifests.yml');
                 const manifestsYml: any = yaml.safeLoad(readFileSync(manifestsPath, 'utf8'));
 
                 manifestsYml.manifests.forEach((manifest: any) => {

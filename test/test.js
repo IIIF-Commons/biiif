@@ -22,6 +22,9 @@ before(async () => {
                 }
             }
         },
+        '/collectionnomanifests': {
+            'manifests.yml': require('./manifests')
+        },
         '/collection': {
             'info.yml': 'label: My Test Collection',
             'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -192,7 +195,30 @@ describe('gh-pages', async () => {
 
 });
 
-describe('build', async () => {
+describe('build for collection with no manifests', async () => {
+    
+    it('can build collection', async () => {
+        assert(fs.existsSync('/collectionnomanifests'));
+        build('/collectionnomanifests', collectionUrl);
+    }).timeout(1000); // should take less than a second
+
+});
+
+describe('collection with no manifests', async () => {
+    
+    it('can find collection index.json', async () => {
+        const file = '/collectionnomanifests/index.json';
+        assert(fs.existsSync(file));
+        collectionJson = jsonfile.readFileSync(file);
+    });
+
+    it('has correct number of members', async () => {
+        assert(collectionJson.members.length === 3);
+    });
+
+});
+
+describe('build for collection', async () => {
 
     it('can build collection', async () => {
         assert(fs.existsSync('/collection'));

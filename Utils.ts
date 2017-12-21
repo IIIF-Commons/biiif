@@ -1,4 +1,6 @@
+const { existsSync } = require('fs');
 const { glob } = require('glob');
+const { join } = require('path');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 
@@ -29,6 +31,11 @@ export class Utils {
         }
 
         return formattedMetadata;
+    }
+
+    public static hasManifestsYML(filePath: string): boolean {
+        const manifestsPath: string = join(filePath, 'manifests.yml');
+        return existsSync(manifestsPath);
     }
 
     public static getThumbnail(json: any, url: URL, filePath: string): any {
