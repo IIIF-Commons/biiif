@@ -23,7 +23,7 @@ before(async () => {
             }
         },
         '/collectionnomanifests': {
-            'manifests.yml': require('./manifests')
+            'manifests.yml': require('./fixtures/manifests')
         },
         '/collection': {
             'info.yml': 'label: My Test Collection',
@@ -50,7 +50,7 @@ before(async () => {
                     }
                 }
             },
-            'manifests.yml': require('./manifests'),
+            'manifests.yml': require('./fixtures/manifests'),
             "canvasperfile": {
                 '_crt': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])

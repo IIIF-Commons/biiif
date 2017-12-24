@@ -54,6 +54,29 @@ metadata:
 
 To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image file extension will work) in the directory.
 
+## Linked Manifests
+
+Sometimes you may need to include IIIF manifests in your collection from elsewhere. To do this, include a `manifests.yml` file in your collection folder e.g.
+
+```
+manifests:
+- id: http://test.com/collection/linkedmanifest1/index.json
+  label: Linked Manifest 1
+  thumbnail: [
+    {
+        "id": "http://test.com/collection/linkedmanifest1/thumb.jpg",
+        "type": "Image"
+    }
+  ]
+- id: http://test.com/collection/linkedmanifest2/index.json
+  label: Linked Manifest 2
+- id: http://test.com/collection/linkedmanifest3/index.json'
+```
+
+If you leave the `label` property blank, it will default to the name of the last folder in the `id` URL.
+
+Including a `manifests.yml` file in a folder without any sub-folders forces it to behave like a collection.
+
 ## Examples
 
 Here is an example of how to organise your files/folders for biiif.
