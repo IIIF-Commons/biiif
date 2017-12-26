@@ -1,5 +1,5 @@
 node_modules
 .vscode
 *.js
-!test/**/.js
+!test/**/*.js
 testroot/**/index.json
