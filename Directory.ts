@@ -129,7 +129,7 @@ export class Directory {
                 const manifestsYml: any = yaml.safeLoad(readFileSync(manifestsPath, 'utf8'));
 
                 manifestsYml.manifests.forEach((manifest: any) => {
-                    const memberJson = Utils.cloneJson(collectionMemberBoilerplate);
+                    const memberJson: any = Utils.cloneJson(collectionMemberBoilerplate);
                     memberJson.id = manifest.id;
                     
                     if (manifest.label) {
@@ -155,6 +155,13 @@ export class Directory {
             } else {
                 console.log(chalk.green('no manifests.yml found for: ') + this.filePath);
             }
+
+            // sort members              
+            this.indexJson.members.sort((a, b) => {
+                if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
+                if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
+                return 0;
+            });
 
         } else {
             this.indexJson = Utils.cloneJson(manifestBoilerplate);

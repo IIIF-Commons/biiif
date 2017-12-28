@@ -276,7 +276,7 @@ describe('collection', async () => {
     });
 
     it('has a linked member manifest', async () => {
-        member = collectionJson.members[5];
+        member = collectionJson.members[4];
         assert(member);
     });
 
@@ -298,7 +298,7 @@ describe('collection', async () => {
     });
 
     it('has a linked member manifest', async () => {
-        member = collectionJson.members[7];
+        member = collectionJson.members[6];
         assert(member);
     });
 
