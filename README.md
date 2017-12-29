@@ -16,7 +16,7 @@ build('myfolder', 'http://example.com/myfolder');
 
 
 
-biiif uses your file system to generate static [IIIF](http://iiif.io) collections and manifests.
+Organise your files according to a simple [naming convention](https://github.com/edsilv/biiif#examples) to generate [IIIF](http://iiif.io) json.
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
@@ -88,30 +88,34 @@ biiif will accept a manifest folder too, generating a single manifest `index.jso
 ```
 lord-of-the-rings                  // collection
 ├── info.yml                       // collection metadata
+├── thumb.jpg                      // collection thumbnail
 ├── the-fellowship-of-the-ring     // manifest
 |   ├── _page-1                    // canvas
 |   |   ├── page-1.jpg             // content annotation
-|   |   ├── thumb.jpg              // thumbnail
+|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-2                    // canvas
 |   |   ├── page-2.jpg             // content annotation
-|   |   ├── thumb.jpg              // thumbnail
+|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-n                    // canvas
 |   |   ├── page-n.jpg             // content annotation
-|   |   ├── thumb.jpg              // thumbnail
+|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
-|   └── info.yml                   // manifest metadata
+|   ├── info.yml                   // manifest metadata
+|   └── thumb.jpg                  // manifest thumbnail
 ├── the-two-towers                 // manifest
 |   ├── _page-1                    // canvas
 |   ├── _page-2                    // canvas
 |   ├── _page-n                    // canvas
-|   └── info.yml                   // manifest metadata
+|   ├── info.yml                   // manifest metadata
+|   └── thumb.jpg                  // manifest thumbnail
 └── the-return-of-the-king         // manifest
     ├── _page-1                    // canvas
     ├── _page-2                    // canvas
     ├── _page-n                    // canvas
-    └── info.yml                   // manifest metadata
+    ├── info.yml                   // manifest metadata
+    └── thumb.jpg                  // manifest thumbnail
 ```
 
 
