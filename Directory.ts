@@ -13,6 +13,7 @@ const collectionBoilerplate = require('./boilerplate/collection');
 const collectionMemberBoilerplate = require('./boilerplate/collectionmember');
 const manifestBoilerplate = require('./boilerplate/manifest');
 const manifestMemberBoilerplate = require('./boilerplate/manifestmember');
+const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
     filePath: string;
@@ -145,7 +146,13 @@ export class Directory {
                     }
 
                     if (manifest.thumbnail) {
-                        memberJson.thumbnail = manifest.thumbnail;
+                        if (typeof manifest.thumbnail === 'string') {
+                            const thumbnail: any[] = Utils.cloneJson(thumbnailBoilerplate);
+                            thumbnail[0].id = manifest.thumbnail;
+                            memberJson.thumbnail = thumbnail;
+                        } else {
+                            memberJson.thumbnail = manifest.thumbnail;
+                        }
                     }
 
                     this.indexJson.members.push(memberJson);

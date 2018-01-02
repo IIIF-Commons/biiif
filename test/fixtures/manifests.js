@@ -5,9 +5,4 @@ module.exports =
 - id: http://test.com/collection/linkedmanifest3/index.json \n \
 - id: http://test.com/collection/linkedmanifest1/index.json \n \
   label: Linked Manifest 1 \n \
-  thumbnail: [ \n \
-    { \n \
-        "id": "http://test.com/collection/linkedmanifest1/thumb.jpg", \n \
-        "type": "Image" \n \
-    } \n \
-  ]'
+  thumbnail: http://test.com/collection/linkedmanifest1/thumb.jpg'

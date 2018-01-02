@@ -62,15 +62,10 @@ Sometimes you may need to include IIIF manifests in your collection from elsewhe
 manifests:
 - id: http://test.com/collection/linkedmanifest1/index.json
   label: Linked Manifest 1
-  thumbnail: [
-    {
-        "id": "http://test.com/collection/linkedmanifest1/thumb.jpg",
-        "type": "Image"
-    }
-  ]
+  thumbnail: http://test.com/collection/linkedmanifest1/thumb.jpg
 - id: http://test.com/collection/linkedmanifest2/index.json
   label: Linked Manifest 2
-- id: http://test.com/collection/linkedmanifest3/index.json'
+- id: http://test.com/collection/linkedmanifest3/index.json
 ```
 
 If you leave the `label` property blank, it will default to the name of the last folder in the `id` URL.
