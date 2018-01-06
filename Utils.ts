@@ -1,6 +1,7 @@
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
+const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 
@@ -22,9 +23,10 @@ export class Utils {
             if (metadata.hasOwnProperty(key)) {
                 const value: string = metadata[key];
 
-                const item: any = {}
-                item.label = key;
-                item.value = value;
+                const item: any = {};
+
+                item.label = Utils.getLabel(key);
+                item.value = Utils.getLabel(value);
 
                 formattedMetadata.push(item);
             }
@@ -48,6 +50,12 @@ export class Utils {
             thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
             json.thumbnail = thumbnailJson;
         }
+    }
+
+    public static getLabel(value: string): any {
+        const labelJson: any = Utils.cloneJson(labelBoilerplate);
+        labelJson['@none'].push(value);
+        return labelJson;
     }
 
     /*

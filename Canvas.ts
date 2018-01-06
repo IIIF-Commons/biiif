@@ -56,7 +56,7 @@ export class Canvas {
                 annotationJson.body.id = id;
                 annotationJson.body.type = matchingExtension.type;
                 annotationJson.body.format = matchingExtension.format;
-                annotationJson.body.label = this.infoYml.label;
+                annotationJson.body.label = Utils.getLabel(this.infoYml.label);
                 canvasJson.items[0].items.push(annotationJson);
 
                 matchingFiles.push(file);
@@ -89,7 +89,7 @@ export class Canvas {
     }
 
     private _applyMetadata(): void {
-        this.canvasJson.label = this.infoYml.label; // defaults to directory name
+        this.canvasJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
 
         if (this.infoYml.metadata) {
             this.canvasJson.metadata = Utils.formatMetadata(this.infoYml.metadata);

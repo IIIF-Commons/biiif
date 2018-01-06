@@ -95,7 +95,7 @@ export class Directory {
 
         if (!this.infoYml.label) {
             // default to the directory name
-            this.infoYml.label = basename(this.filePath);
+            this.infoYml.label =basename(this.filePath);
         }
     }
 
@@ -116,7 +116,7 @@ export class Directory {
                 }
 
                 itemJson.id = urljoin(directory.url.href, 'index.json');
-                itemJson.label = directory.infoYml.label;
+                itemJson.label = Utils.getLabel(directory.infoYml.label);
 
                 Utils.getThumbnail(itemJson, directory.url, directory.filePath);
 
@@ -134,14 +134,14 @@ export class Directory {
                     itemJson.id = manifest.id;
                     
                     if (manifest.label) {
-                        itemJson.label = manifest.label;
+                        itemJson.label = Utils.getLabel(manifest.label);
                     } else {
                         // no label supplied, use the last fragment of the url
                         const url: URL = new URL(itemJson.id);
                         const pathname: string[] = url.pathname.split('/');
 
                         if (pathname.length > 1) {
-                            itemJson.label = pathname[pathname.length - 2];
+                            itemJson.label = Utils.getLabel(pathname[pathname.length - 2]);
                         }
                     }
 
@@ -165,8 +165,8 @@ export class Directory {
 
             // sort items              
             this.indexJson.items.sort((a, b) => {
-                if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
-                if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
+                if (a.label['@none'][0].toLowerCase() < b.label['@none'][0].toLowerCase()) return -1;
+                if (a.label['@none'][0].toLowerCase() > b.label['@none'][0].toLowerCase()) return 1;
                 return 0;
             });
 
@@ -202,7 +202,7 @@ export class Directory {
 
     private _applyMetadata(): void {
 
-        this.indexJson.label = this.infoYml.label; // defaults to directory name
+        this.indexJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
 
         if (this.infoYml.metadata) {
             this.indexJson.metadata = Utils.formatMetadata(this.infoYml.metadata);

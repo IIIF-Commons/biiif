@@ -240,7 +240,7 @@ describe('collection', async () => {
     });
 
     it('has correct collection label', async () => {
-        assert(collectionJson.label === 'My Test Collection');
+        assert(collectionJson.label['@none'][0] === 'My Test Collection');
     });
 
     it('has a collection thumbnail', async () => {
@@ -267,7 +267,7 @@ describe('collection', async () => {
     });
 
     it('has correct item label', async () => {
-        assert(item.label === 'A Manifest');
+        assert(item.label['@none'][0] === 'A Manifest');
     });
 
     it('has item thumbnail', async () => {
@@ -285,7 +285,7 @@ describe('collection', async () => {
     });
 
     it('has correct linked item label', async () => {
-        assert(item.label === 'Linked Manifest 1');
+        assert(item.label['@none'][0] === 'Linked Manifest 1');
     });
 
     it('has linked item thumbnail', async () => {
@@ -307,7 +307,7 @@ describe('collection', async () => {
     });
 
     it('has correct linked item label', async () => {
-        assert(item.label === 'linkedmanifest3');
+        assert(item.label['@none'][0] === 'linkedmanifest3');
     });
 
     it('can find manifest index.json', async () => {
@@ -321,7 +321,7 @@ describe('collection', async () => {
     });
 
     it('has correct manifest label', async () => {
-        assert(manifestJson.label === 'A Manifest');
+        assert(manifestJson.label['@none'][0] === 'A Manifest');
     });
 
     it('can find canvas', async () => {
@@ -334,7 +334,7 @@ describe('collection', async () => {
     });
 
     it('has correct canvas label', async () => {
-        assert(canvasJson.label === 'A Canvas');
+        assert(canvasJson.label['@none'][0] === 'A Canvas');
     });
 
     it('has a canvas thumbnail', async () => {
@@ -391,7 +391,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct collection label', async () => {
-        assert(collectionJson.label === 'My Test Subcollection');
+        assert(collectionJson.label['@none'][0] === 'My Test Subcollection');
     });
 
     it('has a collection thumbnail', async () => {
@@ -414,7 +414,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct item label', async () => {
-        assert(item.label === 'My Test Submanifest');
+        assert(item.label['@none'][0] === 'My Test Submanifest');
     });
 
     it('has item thumbnail', async () => {
@@ -437,7 +437,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct manifest label', async () => {
-        assert(manifestJson.label === 'My Test Submanifest');
+        assert(manifestJson.label['@none'][0] === 'My Test Submanifest');
     });
 
     it('can find canvas', async () => {
@@ -450,7 +450,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct canvas label', async () => {
-        assert(canvasJson.label === 'My Test Subcanvas');
+        assert(canvasJson.label['@none'][0] === 'My Test Subcanvas');
     });
 
     it('has a thumbnail', async () => {
