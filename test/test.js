@@ -106,7 +106,7 @@ after(async () => {
     mock.restore();
 })
 
-let url, filePath, id, collectionJson, member, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
+let url, filePath, id, collectionJson, item, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
 const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/content';
 const collectionUrl = 'http://test.com/collection';
 
@@ -174,21 +174,21 @@ describe('gh-pages', async () => {
         assert(collectionJson.id === githubpagesUrl + '/index.json');
     });
 
-    it('has a member manifest', async () => {
-        member = collectionJson.members[0];
-        assert(member);
+    it('has a item manifest', async () => {
+        item = collectionJson.items[0];
+        assert(item);
     });
 
-    it('has correct member id', async () => {
-        assert(member.id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/index.json');
+    it('has correct item id', async () => {
+        assert(item.id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/index.json');
     });
 
-    it('has member thumbnail', async () => {
-        thumbnailJson = member.thumbnail;
+    it('has item thumbnail', async () => {
+        thumbnailJson = item.thumbnail;
         assert(thumbnailJson);
     });
 
-    it('has correct member thumbnail id', async () => {
+    it('has correct item thumbnail id', async () => {
         const id = thumbnailJson[0].id;
         assert(id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/thumb.jpg');
     });
@@ -212,8 +212,8 @@ describe('collection with no manifests', async () => {
         collectionJson = jsonfile.readFileSync(file);
     });
 
-    it('has correct number of members', async () => {
-        assert(collectionJson.members.length === 3);
+    it('has correct number of items', async () => {
+        assert(collectionJson.items.length === 3);
     });
 
 });
@@ -253,61 +253,61 @@ describe('collection', async () => {
         assert(thumbnailJson.id === id);
     });
 
-    it('has correct number of members', async () => {
-        assert(collectionJson.members.length === 8);
+    it('has correct number of items', async () => {
+        assert(collectionJson.items.length === 8);
     });
 
-    it('has a member manifest', async () => {
-        member = collectionJson.members[0];
-        assert(member);
+    it('has a item manifest', async () => {
+        item = collectionJson.items[0];
+        assert(item);
     });
 
-    it('has correct member id', async () => {
-        assert(member.id === 'http://test.com/collection/a_manifest/index.json');
+    it('has correct item id', async () => {
+        assert(item.id === 'http://test.com/collection/a_manifest/index.json');
     });
 
-    it('has correct member label', async () => {
-        assert(member.label === 'A Manifest');
+    it('has correct item label', async () => {
+        assert(item.label === 'A Manifest');
     });
 
-    it('has member thumbnail', async () => {
-        thumbnailJson = member.thumbnail;
+    it('has item thumbnail', async () => {
+        thumbnailJson = item.thumbnail;
         assert(thumbnailJson);
     });
 
-    it('has a linked member manifest', async () => {
-        member = collectionJson.members[4];
-        assert(member);
+    it('has a linked item manifest', async () => {
+        item = collectionJson.items[4];
+        assert(item);
     });
 
-    it('has correct linked member id', async () => {
-        assert(member.id === 'http://test.com/collection/linkedmanifest1/index.json');
+    it('has correct linked item id', async () => {
+        assert(item.id === 'http://test.com/collection/linkedmanifest1/index.json');
     });
 
-    it('has correct linked member label', async () => {
-        assert(member.label === 'Linked Manifest 1');
+    it('has correct linked item label', async () => {
+        assert(item.label === 'Linked Manifest 1');
     });
 
-    it('has linked member thumbnail', async () => {
-        thumbnailJson = member.thumbnail;
+    it('has linked item thumbnail', async () => {
+        thumbnailJson = item.thumbnail;
         assert(thumbnailJson);
     });
 
-    it('has correct linked member thumbnail id', async () => {
+    it('has correct linked item thumbnail id', async () => {
         assert(thumbnailJson[0].id === 'http://test.com/collection/linkedmanifest1/thumb.jpg');
     });
 
-    it('has a linked member manifest', async () => {
-        member = collectionJson.members[6];
-        assert(member);
+    it('has a linked item manifest', async () => {
+        item = collectionJson.items[6];
+        assert(item);
     });
 
-    it('has correct linked member id', async () => {
-        assert(member.id === 'http://test.com/collection/linkedmanifest3/index.json');
+    it('has correct linked item id', async () => {
+        assert(item.id === 'http://test.com/collection/linkedmanifest3/index.json');
     });
 
-    it('has correct linked member label', async () => {
-        assert(member.label === 'linkedmanifest3');
+    it('has correct linked item label', async () => {
+        assert(item.label === 'linkedmanifest3');
     });
 
     it('can find manifest index.json', async () => {
@@ -325,7 +325,7 @@ describe('collection', async () => {
     });
 
     it('can find canvas', async () => {
-        canvasJson = manifestJson.sequences[0].canvases[0];
+        canvasJson = manifestJson.items[0].items[0];
         assert(canvasJson);
     });
 
@@ -348,12 +348,12 @@ describe('collection', async () => {
     });
 
     it('has an annotation page', async () => {
-        annotationPage = canvasJson.content[0];
+        annotationPage = canvasJson.items[0];
         assert(annotationPage);
     });
 
     it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.content[0];
+        annotationPage = canvasJson.items[0];
         assert(annotationPage.id === collectionUrl + '/a_manifest/index.json/canvas/0/annotationpage/0');
     });
 
@@ -404,25 +404,25 @@ describe('sub collection', async () => {
         assert(thumbnailJson.id === id);
     });
 
-    it('has a member manifest', async () => {
-        member = collectionJson.members[0];
-        assert(member);
+    it('has a item manifest', async () => {
+        item = collectionJson.items[0];
+        assert(item);
     });
 
-    it('has correct member id', async () => {
-        assert(member.id === 'http://test.com/collection/subcollection/manifest/index.json');
+    it('has correct item id', async () => {
+        assert(item.id === 'http://test.com/collection/subcollection/manifest/index.json');
     });
 
-    it('has correct member label', async () => {
-        assert(member.label === 'My Test Submanifest');
+    it('has correct item label', async () => {
+        assert(item.label === 'My Test Submanifest');
     });
 
-    it('has member thumbnail', async () => {
-        thumbnailJson = member.thumbnail;
+    it('has item thumbnail', async () => {
+        thumbnailJson = item.thumbnail;
         assert(thumbnailJson);
     });
 
-    it('has correct member thumbnail id', async () => {
+    it('has correct item thumbnail id', async () => {
         assert(thumbnailJson[0].id === 'http://test.com/collection/subcollection/manifest/thumb.png');
     });
 
@@ -441,7 +441,7 @@ describe('sub collection', async () => {
     });
 
     it('can find canvas', async () => {
-        canvasJson = manifestJson.sequences[0].canvases[0];
+        canvasJson = manifestJson.items[0].items[0];
         assert(canvasJson);
     });
 
@@ -464,12 +464,12 @@ describe('sub collection', async () => {
     });
 
     it('has an annotation page', async () => {
-        annotationPage = canvasJson.content[0];
+        annotationPage = canvasJson.items[0];
         assert(annotationPage);
     });
 
     it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.content[0];
+        annotationPage = canvasJson.items[0];
         assert(annotationPage.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0/annotationpage/0');
     });
 
@@ -502,7 +502,7 @@ describe('Canvas Per Content Annotation', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvases = manifestJson.sequences[0].canvases;
+        canvases = manifestJson.items[0].items;
     });
 
     it('has all content annotations', async () => {
@@ -528,7 +528,7 @@ describe('Content Annotation Per Canvas', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvasJson = manifestJson.sequences[0].canvases[0];
+        canvasJson = manifestJson.items[0].items[0];
     });
 
     it('has all content annotations', async () => {
@@ -546,12 +546,12 @@ describe('Erroneous File', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvasJson = manifestJson.sequences[0].canvases[0];
+        canvasJson = manifestJson.items[0].items[0];
     });
 
     it('has no content annotations', async () => {
         assert(canvasJson);        
-        annotationPage = canvasJson.content[0];
+        annotationPage = canvasJson.items[0];
         assert(annotationPage);
         assert(annotationPage.items.length === 0);
     });
@@ -562,7 +562,7 @@ function canvasHasContentAnnotations(canvasJson, files) {
 
     assert(canvasJson);
 
-    annotationPage = canvasJson.content[0];
+    annotationPage = canvasJson.items[0];
     assert(annotationPage);
 
     files.forEach((file, index) => {

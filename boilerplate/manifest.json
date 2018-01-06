@@ -2,10 +2,10 @@
     "id": "",
     "type": "Manifest",
     "label": "",
-    "sequences": [
+    "items": [
         {
             "type": "Sequence",
-            "canvases": [
+            "items": [
                 
             ]
         }

@@ -57,7 +57,7 @@ export class Canvas {
                 annotationJson.body.type = matchingExtension.type;
                 annotationJson.body.format = matchingExtension.format;
                 annotationJson.body.label = this.infoYml.label;
-                canvasJson.content[0].items.push(annotationJson);
+                canvasJson.items[0].items.push(annotationJson);
 
                 matchingFiles.push(file);
             }

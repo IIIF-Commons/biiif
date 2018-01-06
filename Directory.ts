@@ -10,16 +10,16 @@ import { Utils } from './Utils';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
 const collectionBoilerplate = require('./boilerplate/collection');
-const collectionMemberBoilerplate = require('./boilerplate/collectionmember');
+const collectionItemBoilerplate = require('./boilerplate/collectionitem');
 const manifestBoilerplate = require('./boilerplate/manifest');
-const manifestMemberBoilerplate = require('./boilerplate/manifestmember');
+const manifestItemBoilerplate = require('./boilerplate/manifestitem');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
     filePath: string;
     url: URL;
     isCollection: boolean;
-    canvases: Canvas[] = [];
+    items: Canvas[] = [];
     directories: Directory[] = [];
     infoYml: any;
     indexJson: any;
@@ -40,7 +40,7 @@ export class Directory {
 
         canvases.forEach((canvas: string)=> {
             console.log(chalk.green('creating canvas for: ') + canvas);
-            this.canvases.push(new Canvas(canvas, this.url));
+            this.items.push(new Canvas(canvas, this.url));
         });
 
         // directories not starting with an underscore
@@ -67,13 +67,13 @@ export class Directory {
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);
             // if there are canvases, warn that they are being ignored
-            if (this.canvases.length) {
-                console.warn(chalk.yellow(this.canvases.length + ' unused canvas directories (starting with an underscore) found in the ' + this.filePath + ' collection. Remove directories not starting with an underscore to convert into a manifest.'));
+            if (this.items.length) {
+                console.warn(chalk.yellow(this.items.length + ' unused canvas directories (starting with an underscore) found in the ' + this.filePath + ' collection. Remove directories not starting with an underscore to convert into a manifest.'));
             }
         } else {
             console.log(chalk.green('created manifest: ') + this.filePath);
             // if there aren't any canvases, warn that there should be
-            if (!this.canvases.length) {
+            if (!this.items.length) {
                 console.warn(chalk.yellow(this.filePath + ' is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.'));
             }
         }
@@ -104,44 +104,44 @@ export class Directory {
         if (this.isCollection) {
             this.indexJson = Utils.cloneJson(collectionBoilerplate);
 
-            // for each child directory, add a collectionmember or manifestmember json boilerplate to members.
+            // for each child directory, add a collectionitem or manifestitem json boilerplate to items.
 
             this.directories.forEach((directory: Directory) => {
-                let memberJson: any;
+                let itemJson: any;
 
                 if (directory.isCollection) {
-                    memberJson = Utils.cloneJson(collectionMemberBoilerplate);
+                    itemJson = Utils.cloneJson(collectionItemBoilerplate);
                 } else {
-                    memberJson = Utils.cloneJson(manifestMemberBoilerplate);
+                    itemJson = Utils.cloneJson(manifestItemBoilerplate);
                 }
 
-                memberJson.id = urljoin(directory.url.href, 'index.json');
-                memberJson.label = directory.infoYml.label;
+                itemJson.id = urljoin(directory.url.href, 'index.json');
+                itemJson.label = directory.infoYml.label;
 
-                Utils.getThumbnail(memberJson, directory.url, directory.filePath);
+                Utils.getThumbnail(itemJson, directory.url, directory.filePath);
 
-                this.indexJson.members.push(memberJson); 
+                this.indexJson.items.push(itemJson); 
             });
 
-            // check for manifests.yml. if it exists, parse and add to members
+            // check for manifests.yml. if it exists, parse and add to items
             if (Utils.hasManifestsYML(this.filePath)) {
 
                 const manifestsPath: string = join(this.filePath, 'manifests.yml');
                 const manifestsYml: any = yaml.safeLoad(readFileSync(manifestsPath, 'utf8'));
 
                 manifestsYml.manifests.forEach((manifest: any) => {
-                    const memberJson: any = Utils.cloneJson(collectionMemberBoilerplate);
-                    memberJson.id = manifest.id;
+                    const itemJson: any = Utils.cloneJson(collectionItemBoilerplate);
+                    itemJson.id = manifest.id;
                     
                     if (manifest.label) {
-                        memberJson.label = manifest.label;
+                        itemJson.label = manifest.label;
                     } else {
                         // no label supplied, use the last fragment of the url
-                        const url: URL = new URL(memberJson.id);
+                        const url: URL = new URL(itemJson.id);
                         const pathname: string[] = url.pathname.split('/');
 
                         if (pathname.length > 1) {
-                            memberJson.label = pathname[pathname.length - 2];
+                            itemJson.label = pathname[pathname.length - 2];
                         }
                     }
 
@@ -149,13 +149,13 @@ export class Directory {
                         if (typeof manifest.thumbnail === 'string') {
                             const thumbnail: any[] = Utils.cloneJson(thumbnailBoilerplate);
                             thumbnail[0].id = manifest.thumbnail;
-                            memberJson.thumbnail = thumbnail;
+                            itemJson.thumbnail = thumbnail;
                         } else {
-                            memberJson.thumbnail = manifest.thumbnail;
+                            itemJson.thumbnail = manifest.thumbnail;
                         }
                     }
 
-                    this.indexJson.members.push(memberJson);
+                    this.indexJson.items.push(itemJson);
                 });
 
                 console.log(chalk.green('parsed manifests.yml for: ') + this.filePath);         
@@ -163,8 +163,8 @@ export class Directory {
                 console.log(chalk.green('no manifests.yml found for: ') + this.filePath);
             }
 
-            // sort members              
-            this.indexJson.members.sort((a, b) => {
+            // sort items              
+            this.indexJson.items.sort((a, b) => {
                 if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
                 if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
                 return 0;
@@ -175,16 +175,16 @@ export class Directory {
 
             // for each canvas, add canvas json
 
-            this.canvases.forEach((canvas: Canvas, index: number) => {
+            this.items.forEach((canvas: Canvas, index: number) => {
                 const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
 
                 canvasJson.id = urljoin(this.url.href, 'index.json/canvas', index);
-                canvasJson.content[0].id = urljoin(this.url.href, 'index.json/canvas', index, 'annotationpage/0');
+                canvasJson.items[0].id = urljoin(this.url.href, 'index.json/canvas', index, 'annotationpage/0');
 
                 canvas.create(canvasJson);
 
                 // add canvas to sequence
-                this.indexJson.sequences[0].canvases.push(canvasJson);
+                this.indexJson.items[0].items.push(canvasJson);
             });
         }
     
