@@ -149,6 +149,11 @@ describe('utils', async () => {
         id = Utils.mergePaths(url, filePath);
         assert(id === 'https://edsilv.github.io/uv-app-starter/content/human_skull/thumb.png');
 
+        url = new URL('dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection');
+        filePath = 'c:/Users/edsilv/github/uv-app-starter/collection/human_skull/thumb.png';
+        id = Utils.mergePaths(url, filePath);
+        assert(id === 'dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection/human_skull/thumb.png');
+
     });
 
 });

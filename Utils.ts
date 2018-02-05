@@ -74,7 +74,16 @@ export class Utils {
         // then while the next url item matches the next filePath item, add it to newPath.
         // the final path is the url origin plus a reversed newPath joined with a '/'
 
-        const urlParts: string[] = url.href.replace(url.origin + '/', '').split('/');
+        let origin: string = url.origin;
+        let urlParts: string[];
+
+        if (url.protocol === 'dat:') {
+            origin = 'dat://';
+            urlParts = url.href.replace(origin, '').split('/');
+        } else {
+            urlParts = url.href.replace(origin + '/', '').split('/');
+        }
+
         filePath = filePath.replace(/\\/g, '/');
         const fileParts: string[] = filePath.split('/');
         const newPath: string[] = [];
@@ -98,7 +107,7 @@ export class Utils {
             }
         }
 
-        let id: string = urljoin(url.origin, ...newPath.reverse());
+        let id: string = urljoin(origin, ...newPath.reverse());
 
         return id;
     }
