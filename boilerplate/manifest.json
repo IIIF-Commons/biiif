@@ -1,12 +1,5 @@
 {
     "id": "",
     "type": "Manifest",
-    "items": [
-        {
-            "type": "Sequence",
-            "items": [
-                
-            ]
-        }
-    ]
+    "items": []
 }

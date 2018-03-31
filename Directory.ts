@@ -183,8 +183,8 @@ export class Directory {
 
                 canvas.create(canvasJson);
 
-                // add canvas to sequence
-                this.indexJson.items[0].items.push(canvasJson);
+                // add canvas to items
+                this.indexJson.items.push(canvasJson);
             });
         }
     

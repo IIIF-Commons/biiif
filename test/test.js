@@ -330,7 +330,7 @@ describe('collection', async () => {
     });
 
     it('can find canvas', async () => {
-        canvasJson = manifestJson.items[0].items[0];
+        canvasJson = manifestJson.items[0];
         assert(canvasJson);
     });
 
@@ -446,7 +446,7 @@ describe('sub collection', async () => {
     });
 
     it('can find canvas', async () => {
-        canvasJson = manifestJson.items[0].items[0];
+        canvasJson = manifestJson.items[0];
         assert(canvasJson);
     });
 
@@ -507,7 +507,7 @@ describe('Canvas Per Content Annotation', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvases = manifestJson.items[0].items;
+        canvases = manifestJson.items;
     });
 
     it('has all content annotations', async () => {
@@ -533,7 +533,7 @@ describe('Content Annotation Per Canvas', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvasJson = manifestJson.items[0].items[0];
+        canvasJson = manifestJson.items[0];
     });
 
     it('has all content annotations', async () => {
@@ -551,7 +551,7 @@ describe('Erroneous File', async () => {
         const file = urljoin(manifest, 'index.json');
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
-        canvasJson = manifestJson.items[0].items[0];
+        canvasJson = manifestJson.items[0];
     });
 
     it('has no content annotations', async () => {
