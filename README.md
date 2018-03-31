@@ -84,7 +84,7 @@ biiif will accept a manifest folder too, generating a single manifest `index.jso
 lord-of-the-rings                  // collection
 ├── info.yml                       // collection metadata
 ├── thumb.jpg                      // collection thumbnail
-├── 0-the-fellowship-of-the-ring     // manifest
+├── 0-the-fellowship-of-the-ring   // manifest
 |   ├── _page-1                    // canvas
 |   |   ├── page-1.jpg             // content annotation
 |   |   ├── thumb.jpg              // canvas thumbnail
@@ -99,13 +99,13 @@ lord-of-the-rings                  // collection
 |   |   └── info.yml               // canvas metadata
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
-├── 1-the-two-towers                 // manifest
+├── 1-the-two-towers               // manifest
 |   ├── _page-1                    // canvas
 |   ├── _page-2                    // canvas
 |   ├── _page-n                    // canvas
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
-└── 2-the-return-of-the-king         // manifest
+└── 2-the-return-of-the-king       // manifest
     ├── _page-1                    // canvas
     ├── _page-2                    // canvas
     ├── _page-n                    // canvas
