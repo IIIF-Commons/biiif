@@ -10,7 +10,7 @@ const urljoin = require('url-join');
 
 before(async () => {
     mock({
-        '/content': {
+        '/gh-collection': {
             'vertebra': {
                 'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 'info.yml': 'label: Vertebra',
@@ -22,7 +22,7 @@ before(async () => {
                 }
             }
         },
-        '/collectionnomanifests': {
+        '/collectionnmanifests': {
             'manifests.yml': require('./fixtures/manifests')
         },
         '/collection': {
@@ -107,7 +107,7 @@ after(async () => {
 })
 
 let url, filePath, id, collectionJson, item, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
-const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/content';
+const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/gh-collection';
 const collectionUrl = 'http://test.com/collection';
 
 describe('utils', async () => {
@@ -144,10 +144,10 @@ describe('utils', async () => {
         id = Utils.mergePaths(url, filePath);
         assert(id === 'http://localhost:8888/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png');
 
-        url = new URL('https://edsilv.github.io/uv-app-starter/content/human_skull');
-        filePath = 'c:/Users/edsilv/github/uv-app-starter/content/human_skull/thumb.png';
+        url = new URL('https://edsilv.github.io/uv-app-starter/gh-collection/human_skull');
+        filePath = 'c:/Users/edsilv/github/uv-app-starter/gh-collection/human_skull/thumb.png';
         id = Utils.mergePaths(url, filePath);
-        assert(id === 'https://edsilv.github.io/uv-app-starter/content/human_skull/thumb.png');
+        assert(id === 'https://edsilv.github.io/uv-app-starter/gh-collection/human_skull/thumb.png');
 
         url = new URL('dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection');
         filePath = 'c:/Users/edsilv/github/uv-app-starter/collection/human_skull/thumb.png';
@@ -161,8 +161,8 @@ describe('utils', async () => {
 describe('build for gh-pages', async () => {
     
     it('can build collection', async () => {
-        assert(fs.existsSync('/content'));
-        build('/content', githubpagesUrl);
+        assert(fs.existsSync('/gh-collection'));
+        build('/gh-collection', githubpagesUrl);
     }).timeout(1000); // should take less than a second
 
 });
@@ -170,7 +170,7 @@ describe('build for gh-pages', async () => {
 describe('gh-pages', async () => {
     
     it('can find collection index.json', async () => {
-        const file = '/content/index.json';
+        const file = '/gh-collection/index.json';
         assert(fs.existsSync(file));
         collectionJson = jsonfile.readFileSync(file);
     });
@@ -185,7 +185,7 @@ describe('gh-pages', async () => {
     });
 
     it('has correct item id', async () => {
-        assert(item.id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/index.json');
+        assert(item.id === 'https://username.github.io/uv-app-starter-fork/gh-collection/vertebra/index.json');
     });
 
     it('has item thumbnail', async () => {
@@ -195,7 +195,7 @@ describe('gh-pages', async () => {
 
     it('has correct item thumbnail id', async () => {
         const id = thumbnailJson[0].id;
-        assert(id === 'https://username.github.io/uv-app-starter-fork/content/vertebra/thumb.jpg');
+        assert(id === 'https://username.github.io/uv-app-starter-fork/gh-collection/vertebra/thumb.jpg');
     });
 
 });
@@ -203,8 +203,8 @@ describe('gh-pages', async () => {
 describe('build for collection with no manifests', async () => {
     
     it('can build collection', async () => {
-        assert(fs.existsSync('/collectionnomanifests'));
-        build('/collectionnomanifests', collectionUrl);
+        assert(fs.existsSync('/collectionnmanifests'));
+        build('/collectionnmanifests', collectionUrl);
     }).timeout(1000); // should take less than a second
 
 });
@@ -212,7 +212,7 @@ describe('build for collection with no manifests', async () => {
 describe('collection with no manifests', async () => {
     
     it('can find collection index.json', async () => {
-        const file = '/collectionnomanifests/index.json';
+        const file = '/collectionnmanifests/index.json';
         assert(fs.existsSync(file));
         collectionJson = jsonfile.readFileSync(file);
     });
