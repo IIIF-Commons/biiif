@@ -111,7 +111,8 @@ before(async () => {
                 'assets': { 
                     'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
-                'painting.yml': require('./fixtures/painting')
+                'painting.yml': require('./fixtures/painting'),
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
             }
         }
     });
@@ -597,71 +598,130 @@ describe('custom-annotations-manifest', async () => {
         manifestJson = jsonfile.readFileSync(file);
     });
 
-    it('can find canvas', async () => {
-        canvasJson = manifestJson.items[0];
-        assert(canvasJson);
+    describe('commenting canvas', async () => {
+
+        it('can find canvas', async () => {
+            canvasJson = manifestJson.items[0];
+            assert(canvasJson);
+        });
+    
+        it('has correct canvas id', async () => {
+            assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/0');
+        });
+    
+        it('has correct canvas label', async () => {
+            assert(canvasJson.label['@none'][0] === '_commenting');
+        });
+
+        it('has an annotation page', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage);
+        });
+    
+        it('has the correct annotation page id', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotationpage/0');
+        });
+
+        it('has annotation', async () => {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        });
+
+        it('has correct annotation id', async () => {
+            assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotation/0');
+        });
+    
+        it('has correct annotation motivation', async () => {
+            assert(annotation.motivation === 'commenting');
+        });
+    
+        it('has correct annotation target', async () => {
+            assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/0');
+        });
+    
+        it('has an annotation body', async () => {
+            annotationBody = annotation.body;
+            assert(annotationBody);
+        });
+    
+        it('has correct annotation body id', async () => {
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting');
+        });
+    
+        it('has correct annotation body type', async () => {
+            assert(annotationBody.type === 'TextualBody');
+        });
+    
+        it('has correct annotation body value', async () => {
+            assert(annotationBody.value === 'This is a comment on the image');
+        });
+
     });
 
-    it('has correct canvas id', async () => {
-        assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/0');
-    });
+    describe('painting canvas', async () => {
 
-    it('has correct canvas label', async () => {
-        assert(canvasJson.label['@none'][0] === '_commenting');
-    });
+        it('can find canvas', async () => {
+            canvasJson = manifestJson.items[1];
+            assert(canvasJson);
+        });
+    
+        it('has correct canvas id', async () => {
+            assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/1');
+        });
+    
+        it('has correct canvas label', async () => {
+            assert(canvasJson.label['@none'][0] === '_painting');
+        });
 
-    // it('has a canvas thumbnail', async () => {
-    //     thumbnailJson = canvasJson.thumbnail[0];
-    //     assert(thumbnailJson);
-    // });
+        it('has an annotation page', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage);
+        });
+    
+        it('has the correct annotation page id', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/1/annotationpage/0');
+        });
 
-    // it('has the correct canvas thumbnail id', async () => {
-    //     const id = urljoin(collectionUrl, '/a_manifest/_canvas/thumb.png');
-    //     assert(thumbnailJson.id === id);
-    // });
+        it('has annotation', async () => {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        });
 
-    it('has an annotation page', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage);
-    });
+        it('has only one annotation', async () => {
+            assert(annotationPage.items.length === 1);
+        });
 
-    it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotationpage/0');
-    });
+        it('has correct id', async () => {
+            assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/1/annotation/0');
+        });
+    
+        it('has correct motivation', async () => {
+            assert(annotation.motivation === 'painting');
+        });
+    
+        it('has correct annotation target', async () => {
+            assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/1');
+        });
+    
+        it('has an annotation body', async () => {
+            annotationBody = annotation.body;
+            assert(annotationBody);
+        });
+    
+        it('has correct annotation body id', async () => {
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting/assets/file.jpg');
+        });
+    
+        it('has correct annotation body type', async () => {
+            assert(annotationBody.type === 'Image');
+        });
+    
+        it('has correct annotation body value', async () => {
+            assert(annotationBody.value === 'assets/file.jpg');
+        });
 
-    it('has an annotation', async () => {
-        annotation = annotationPage.items[0];
-        assert(annotation);
-    });
-
-    it('has correct annotation id', async () => {
-        assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotation/0');
-    });
-
-    it('has correct annotation motivation', async () => {
-        assert(annotation.motivation === 'commenting');
-    });
-
-    it('has correct annotation target', async () => {
-        assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/0');
-    });
-
-    it('has an annotation body', async () => {
-        annotationBody = annotation.body;
-        assert(annotationBody);
-    });
-
-    it('has correct annotation body id', async () => {
-        assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting');
-    });
-
-    it('has correct annotation body type', async () => {
-        assert(annotationBody.type === 'TextualBody');
-    });
-
-    it('has correct annotation body value', async () => {
-        assert(annotationBody.value === 'This is a comment on the image');
     });
 
     /*

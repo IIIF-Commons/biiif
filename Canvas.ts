@@ -44,8 +44,6 @@ export class Canvas {
             let directoryName: string = dirname(file);
             directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
             const name: string = basename(file, extname(file));
-            const id: string = urljoin(this.url.href, 'index.json', 'annotations', name);
-
             const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
             const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
 
@@ -60,14 +58,20 @@ export class Canvas {
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
                 annotationJson.motivation = yml.motivation;
                 annotationJson.target = canvasJson.id;
+
+                let id: string;
+
+                if (yml.motivation.toLowerCase() === 'painting' && yml.value) {                    
+                    hasPaintingAnnotation = true;
+                    id = urljoin(this.url.href, directoryName, yml.value);
+                } else {
+                    id = urljoin(this.url.href, 'index.json', 'annotations', name);
+                }
+
                 annotationJson.body.id = id;
                 annotationJson.body.type = yml.type;
                 annotationJson.body.format = yml.format;
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
-
-                if (yml.motivation.toLowerCase() === 'painting') {
-                    hasPaintingAnnotation = true;
-                }
 
                 if (yml.value) {
                     annotationJson.body.value = yml.value;
