@@ -22,7 +22,7 @@ before(async () => {
                 }
             }
         },
-        '/collectionnmanifests': {
+        '/manifests-collection': {
             'manifests.yml': require('./fixtures/manifests')
         },
         '/collection': {
@@ -51,7 +51,7 @@ before(async () => {
                 }
             },
             'manifests.yml': require('./fixtures/manifests'),
-            "canvasperfile": {
+            'canvasperfile': {
                 '_crt': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
@@ -80,8 +80,8 @@ before(async () => {
                     'file.ply': 'ply'
                 }                
             },
-            "filespercanvas": {
-                "_files": {
+            'filespercanvas': {
+                '_files': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.gltf': 'gltf',
@@ -93,10 +93,15 @@ before(async () => {
                     'file.ply': 'ply' 
                 }        
             },
-            "erroneousfile": {
-                "_files": {
+            'erroneousfile': {
+                '_files': {
                     'file.abc': 'abc'
                 } 
+            }
+        },
+        '/custom-annotations-collection': {
+            '_commenting': {
+                'commenting.yml': require('./fixtures/commenting')
             }
         }
     });
@@ -109,6 +114,7 @@ after(async () => {
 let url, filePath, id, collectionJson, item, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
 const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/gh-collection';
 const collectionUrl = 'http://test.com/collection';
+const customAnnotationsCollectionUrl = 'http://test.com/custom-annotations-collection';
 
 describe('utils', async () => {
 
@@ -203,8 +209,8 @@ describe('gh-pages', async () => {
 describe('build for collection with no manifests', async () => {
     
     it('can build collection', async () => {
-        assert(fs.existsSync('/collectionnmanifests'));
-        build('/collectionnmanifests', collectionUrl);
+        assert(fs.existsSync('/manifests-collection'));
+        build('/manifests-collection', collectionUrl);
     }).timeout(1000); // should take less than a second
 
 });
@@ -212,7 +218,7 @@ describe('build for collection with no manifests', async () => {
 describe('collection with no manifests', async () => {
     
     it('can find collection index.json', async () => {
-        const file = '/collectionnmanifests/index.json';
+        const file = '/manifests-collection/index.json';
         assert(fs.existsSync(file));
         collectionJson = jsonfile.readFileSync(file);
     });
@@ -561,6 +567,24 @@ describe('Erroneous File', async () => {
         assert(annotationPage.items.length === 0);
     });
 
+});
+
+describe('build for custom-annotations-collection', async () => {
+
+    it('can build custom annotations collection', async () => {
+        assert(fs.existsSync('/custom-annotations-collection'));
+        build('/custom-annotations-collection', customAnnotationsCollectionUrl);
+    }).timeout(1000); // should take less than a second
+
+});
+
+describe('custom-annotations-collection', async () => {
+
+    it('can find collection index.json', async () => {
+        const file = '/collection/index.json';
+        assert(fs.existsSync(file));
+        collectionJson = jsonfile.readFileSync(file);
+    });
 });
 
 function canvasHasContentAnnotations(canvasJson, files) {
