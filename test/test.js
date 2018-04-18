@@ -103,7 +103,7 @@ before(async () => {
                 } 
             }
         },
-        '/custom-annotations-collection': {
+        '/custom-annotations-manifest': {
             '_commenting': {
                 'commenting.yml': require('./fixtures/commenting')
             }
@@ -118,7 +118,7 @@ after(async () => {
 let url, filePath, id, collectionJson, item, manifestJson, canvasJson, thumbnailJson, annotationPage, annotation, imageAnnotation, contentAnnotation;
 const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/gh-collection';
 const collectionUrl = 'http://test.com/collection';
-const customAnnotationsCollectionUrl = 'http://test.com/custom-annotations-collection';
+const customAnnotationsManifestUrl = 'http://test.com/custom-annotations-manifest';
 
 describe('utils', async () => {
 
@@ -189,7 +189,7 @@ describe('gh-pages', async () => {
         assert(collectionJson.id === githubpagesUrl + '/index.json');
     });
 
-    it('has a item manifest', async () => {
+    it('has an item manifest', async () => {
         item = collectionJson.items[0];
         assert(item);
     });
@@ -272,7 +272,7 @@ describe('collection', async () => {
         assert(collectionJson.items.length === 8);
     });
 
-    it('has a item manifest', async () => {
+    it('has an item manifest', async () => {
         item = collectionJson.items[0];
         assert(item);
     });
@@ -574,22 +574,95 @@ describe('Erroneous File', async () => {
 
 });
 
-describe('build for custom-annotations-collection', async () => {
+describe('build for custom-annotations-manifest', async () => {
 
     it('can build custom annotations collection', async () => {
-        assert(fs.existsSync('/custom-annotations-collection'));
-        build('/custom-annotations-collection', customAnnotationsCollectionUrl);
+        assert(fs.existsSync('/custom-annotations-manifest'));
+        build('/custom-annotations-manifest', customAnnotationsManifestUrl);
     }).timeout(1000); // should take less than a second
 
 });
 
-describe('custom-annotations-collection', async () => {
+describe('custom-annotations-manifest', async () => {
 
-    it('can find collection index.json', async () => {
-        const file = '/collection/index.json';
+    it('can find manifest index.json', async () => {
+        const file = '/custom-annotations-manifest/index.json';
         assert(fs.existsSync(file));
-        collectionJson = jsonfile.readFileSync(file);
+        manifestJson = jsonfile.readFileSync(file);
     });
+
+    it('can find canvas', async () => {
+        canvasJson = manifestJson.items[0];
+        assert(canvasJson);
+    });
+
+    it('has correct canvas id', async () => {
+        assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/0');
+    });
+
+    it('has correct canvas label', async () => {
+        assert(canvasJson.label['@none'][0] === '_commenting');
+    });
+
+    // it('has a canvas thumbnail', async () => {
+    //     thumbnailJson = canvasJson.thumbnail[0];
+    //     assert(thumbnailJson);
+    // });
+
+    // it('has the correct canvas thumbnail id', async () => {
+    //     const id = urljoin(collectionUrl, '/a_manifest/_canvas/thumb.png');
+    //     assert(thumbnailJson.id === id);
+    // });
+
+    it('has an annotation page', async () => {
+        annotationPage = canvasJson.items[0];
+        assert(annotationPage);
+    });
+
+    it('has the correct annotation page id', async () => {
+        annotationPage = canvasJson.items[0];
+        assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotationpage/0');
+    });
+
+    it('has an annotation', async () => {
+        annotation = annotationPage.items[0];
+        assert(annotation);
+    });
+
+    it('has correct annotation id', async () => {
+        assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotation/0');
+    });
+
+    it('has correct annotation motivation', async () => {
+        assert(annotation.motivation === 'commenting');
+    });
+
+    it('has correct annotation target', async () => {
+        assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/0');
+    });
+
+    it('has an annotation body', async () => {
+        annotationBody = annotation.body;
+        assert(annotationBody);
+    });
+
+    it('has correct annotation body id', async () => {
+        assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting');
+    });
+
+    it('has correct annotation body type', async () => {
+        assert(annotationBody.type === 'TextualBody');
+    });
+
+    it('has correct annotation body value', async () => {
+        assert(annotationBody.value === 'This is a comment on the image');
+    });
+
+    /*
+        - test that a custom painting annotation works, and means no other files are painted
+        - 
+    */
+
 });
 
 function canvasHasContentAnnotations(canvasJson, files) {

@@ -31,31 +31,54 @@ export class Canvas {
         // if there are, loop through them creating the custom annotations.
         // if none of them were painting.yml, loop through all paintable file types adding to canvas.
 
-        // const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
-        //     ignore: [
-        //         '**/info.yml'
-        //     ]
-        // });
+        const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
+            ignore: [
+                '**/info.yml'
+            ]
+        });
 
-        // customAnnotationFiles.forEach((file: string) => {
+        let hasPaintingAnnotation: boolean = false;
 
-        //     let directoryName: string = dirname(file);
-        //     directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
-        //     const fileName: string = basename(file);
-        //     const motivation: string = basename(file, extname(file));
-        //     const id: string = urljoin(this.url.href, directoryName, motivation);
+        customAnnotationFiles.forEach((file: string) => {
 
-        //     const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
-        //     annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-        //     annotationJson.target = canvasJson.id;
-        //     annotationJson.body.id = id;
-        //     annotationJson.body.type = defaultPaintingExtension.type;
-        //     annotationJson.body.format = defaultPaintingExtension.format;
-        //     annotationJson.body.label = Utils.getLabel(this.infoYml.label);
-        //     canvasJson.items[0].items.push(annotationJson);
-        // });
+            let directoryName: string = dirname(file);
+            directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
+            const motivation: string = basename(file, extname(file));
 
-        this._annotatePaintableFiles(canvasJson);
+            if (motivation.toLowerCase() === 'painting') {
+                hasPaintingAnnotation = true;
+            }
+
+            const id: string = urljoin(this.url.href, 'index.json', 'annotations', motivation);
+
+            const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
+            const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
+
+            // annotations need to have a type, format, and value
+            if (!yml.type) {
+                console.warn(chalk.yellow('type property missing in ' + file));
+            } else if (!yml.format) {
+                console.warn(chalk.yellow('format property missing in ' + file));
+            } else {
+                annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
+                annotationJson.motivation = motivation;
+                annotationJson.target = canvasJson.id;
+                annotationJson.body.id = id;
+                annotationJson.body.type = yml.type;
+                annotationJson.body.format = yml.format;
+                annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+
+                if (yml.value) {
+                    annotationJson.body.value = yml.value;
+                }
+
+                canvasJson.items[0].items.push(annotationJson);
+            }           
+        });
+
+        if (!hasPaintingAnnotation) {
+            this._annotatePaintableFiles(canvasJson);
+        }
 
         if (!canvasJson.items[0].items.length) {
             console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.filePath));

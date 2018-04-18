@@ -95,7 +95,7 @@ export class Directory {
 
         if (!this.infoYml.label) {
             // default to the directory name
-            this.infoYml.label =basename(this.filePath);
+            this.infoYml.label = basename(this.filePath);
         }
     }
 
