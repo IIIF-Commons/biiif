@@ -78,7 +78,10 @@ before(async () => {
                 },
                 '_ply': {
                     'file.ply': 'ply'
-                }                
+                },
+                '_png': {
+                    'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                }              
             },
             'filespercanvas': {
                 '_files': {
@@ -90,7 +93,8 @@ before(async () => {
                     'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.obj': 'obj',
                     'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'file.ply': 'ply' 
+                    'file.ply': 'ply',
+                    'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 }        
             },
             'erroneousfile': {
@@ -526,6 +530,7 @@ describe('Canvas Per Content Annotation', async () => {
         canvasHasContentAnnotations(canvases[6], ['file.obj']);
         canvasHasContentAnnotations(canvases[7], ['file.pdf']);
         canvasHasContentAnnotations(canvases[8], ['file.ply']);
+        canvasHasContentAnnotations(canvases[9], ['file.png']);
     });
 
 });
@@ -543,7 +548,7 @@ describe('Content Annotation Per Canvas', async () => {
     });
 
     it('has all content annotations', async () => {
-        canvasHasContentAnnotations(canvasJson, ['file.crt', 'file.drc', 'file.gltf', 'file.jpg', 'file.json', 'file.mp4', 'file.obj', 'file.pdf', 'file.ply']);
+        canvasHasContentAnnotations(canvasJson, ['file.crt', 'file.drc', 'file.gltf', 'file.jpg', 'file.json', 'file.mp4', 'file.obj', 'file.pdf', 'file.ply', 'file.png']);
     });
 
 });

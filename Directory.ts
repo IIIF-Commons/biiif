@@ -38,7 +38,7 @@ export class Directory {
             ]
         });
 
-        canvases.forEach((canvas: string)=> {
+        canvases.forEach((canvas: string) => {
             console.log(chalk.green('creating canvas for: ') + canvas);
             this.items.push(new Canvas(canvas, this.url));
         });
