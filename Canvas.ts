@@ -43,30 +43,31 @@ export class Canvas {
 
             let directoryName: string = dirname(file);
             directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
-            const motivation: string = basename(file, extname(file));
-
-            if (motivation.toLowerCase() === 'painting') {
-                hasPaintingAnnotation = true;
-            }
-
-            const id: string = urljoin(this.url.href, 'index.json', 'annotations', motivation);
+            const name: string = basename(file, extname(file));
+            const id: string = urljoin(this.url.href, 'index.json', 'annotations', name);
 
             const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
             const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
 
-            // annotations need to have a type, format, and value
-            if (!yml.type) {
+            // annotations need to have a motivation, type, and format
+            if (!yml.motivation) {
+                console.warn(chalk.yellow('motivation property missing in ' + file));
+            } else if (!yml.type) {
                 console.warn(chalk.yellow('type property missing in ' + file));
             } else if (!yml.format) {
                 console.warn(chalk.yellow('format property missing in ' + file));
             } else {
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-                annotationJson.motivation = motivation;
+                annotationJson.motivation = yml.motivation;
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
                 annotationJson.body.type = yml.type;
                 annotationJson.body.format = yml.format;
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+
+                if (yml.motivation.toLowerCase() === 'painting') {
+                    hasPaintingAnnotation = true;
+                }
 
                 if (yml.value) {
                     annotationJson.body.value = yml.value;

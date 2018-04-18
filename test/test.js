@@ -106,6 +106,12 @@ before(async () => {
         '/custom-annotations-manifest': {
             '_commenting': {
                 'commenting.yml': require('./fixtures/commenting')
+            },
+            '_painting': {
+                'assets': { 
+                    'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                'painting.yml': require('./fixtures/painting')
             }
         }
     });
