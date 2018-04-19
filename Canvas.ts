@@ -29,7 +29,7 @@ export class Canvas {
 
         // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
         // if there are, loop through them creating the custom annotations.
-        // if none of them were painting.yml, loop through all paintable file types adding to canvas.
+        // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
 
         const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
             ignore: [
@@ -126,7 +126,7 @@ export class Canvas {
             
             annotationJson.body.label = Utils.getLabel(this.infoYml.label);
 
-            if (yml.value) {
+            if (yml.value && motivation !== 'painting') {
                 annotationJson.body.value = yml.value;
             }
 

@@ -729,8 +729,8 @@ describe('custom-annotations-manifest', async () => {
             assert(annotationBody.type === 'PhysicalObject');
         });
     
-        it('has correct annotation body value', async () => {
-            assert(annotationBody.value === 'assets/file.gltf');
+        it('has no annotation body value', async () => {
+            assert(annotationBody.value === undefined);
         });
 
     });
@@ -794,8 +794,8 @@ describe('custom-annotations-manifest', async () => {
             assert(annotationBody.type === 'Image');
         });
     
-        it('has correct annotation body value', async () => {
-            assert(annotationBody.value === 'assets/file.jpg');
+        it('has no annotation body value', async () => {
+            assert(annotationBody.value === undefined);
         });
 
     });
