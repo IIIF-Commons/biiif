@@ -47,38 +47,73 @@ export class Canvas {
             const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
             const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
 
-            // annotations need to have a motivation, type, and format
-            if (!yml.motivation) {
-                console.warn(chalk.yellow('motivation property missing in ' + file));
-            } else if (!yml.type) {
-                console.warn(chalk.yellow('type property missing in ' + file));
-            } else if (!yml.format) {
-                console.warn(chalk.yellow('format property missing in ' + file));
+            annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
+
+            let motivation: string | undefined = yml.motivation;
+
+            if (!motivation) {
+                // assume painting
+                motivation = 'painting';
+                console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
+            }
+
+            annotationJson.motivation = motivation;
+
+            annotationJson.target = canvasJson.id;
+
+            let id: string;
+
+            if (motivation.toLowerCase() === 'painting' && yml.value) {                    
+                hasPaintingAnnotation = true;
+                id = urljoin(this.url.href, directoryName, yml.value);
             } else {
-                annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-                annotationJson.motivation = yml.motivation;
-                annotationJson.target = canvasJson.id;
+                id = urljoin(this.url.href, 'index.json', 'annotations', name);
+            }
 
-                let id: string;
+            annotationJson.body.id = id;
 
-                if (yml.motivation.toLowerCase() === 'painting' && yml.value) {                    
-                    hasPaintingAnnotation = true;
-                    id = urljoin(this.url.href, directoryName, yml.value);
-                } else {
-                    id = urljoin(this.url.href, 'index.json', 'annotations', name);
-                }
-
-                annotationJson.body.id = id;
+            if (yml.type) {
                 annotationJson.body.type = yml.type;
-                annotationJson.body.format = yml.format;
-                annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+            } else if (yml.value) {
+                // guess the type
+                const ext: any = config.annotation.extensions[extname(yml.value)];
 
-                if (yml.value) {
-                    annotationJson.body.value = yml.value;
+                if (ext) {
+                    const type: string = ext[0].type;
+                    annotationJson.body.type = type;
+                    console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                } else {
+                    console.warn(chalk.yellow('unable to determine type of ' + file));
                 }
+                
+            } else {
+                console.warn(chalk.yellow('unable to determine type of ' + file));
+            }
 
-                canvasJson.items[0].items.push(annotationJson);
-            }           
+            if (yml.format) {
+                annotationJson.body.format = yml.format;
+            } else if (yml.value) {
+                // guess format
+                const ext: any = config.annotation.extensions[extname(yml.value)];
+
+                if (ext) {
+                    const format: string = ext[0].format;
+                    annotationJson.body.format = format;
+                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                } else {
+                    console.warn(chalk.yellow('unable to determine format of ' + file));
+                }
+            } else {
+                console.warn(chalk.yellow('unable to determine format of ' + file));
+            }
+            
+            annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+
+            if (yml.value) {
+                annotationJson.body.value = yml.value;
+            }
+
+            canvasJson.items[0].items.push(annotationJson);          
         });
 
         if (!hasPaintingAnnotation) {
@@ -103,8 +138,8 @@ export class Canvas {
 
             const extName: string = extname(file);
 
-            // if config.annotation.types.painting has a matching extension
-            const defaultPaintingExtension: any = config.annotation.types.painting[extName];
+            // if config.annotation.extensions has a matching extension
+            let defaultPaintingExtension: any = config.annotation.extensions[extName];
 
             let directoryName: string = dirname(file);
             directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
@@ -112,6 +147,7 @@ export class Canvas {
             const id: string = urljoin(this.url.href, directoryName, fileName);
 
             if (defaultPaintingExtension) {
+                defaultPaintingExtension = defaultPaintingExtension[0];
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
                 annotationJson.motivation = "painting";

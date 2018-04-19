@@ -1,48 +1,66 @@
 {
     "annotation": {
-        "types": {
-            "painting": {
-                ".crt": {
+        "extensions": {
+            ".crt": [
+                {
                     "type": "PhysicalObject",
                     "format": "application/corto"
-                },
-                ".drc": {
+                }
+            ],
+            ".drc": [
+                {
                     "type": "PhysicalObject",
                     "format": "application/draco"
-                },
-                ".gltf": {
+                }
+            ],
+            ".gltf": [
+                {
                     "type": "PhysicalObject",
                     "format": "model/gltf+json"
-                },
-                ".jpg": {
+                }
+            ],
+            ".jpg": [
+                {
                     "type": "Image",
                     "format": "image/jpeg"
-                },
-                ".json": {
+                }
+            ],
+            ".json": [
+                {
                     "type": "PhysicalObject",
                     "format": "application/vnd.threejs+json"
-                },
-                ".mp4": {
+                }
+            ],
+            ".mp4": [
+                {
                     "type": "Video",
                     "format": "video/mp4"
-                },
-                ".obj": {
+                }
+            ],
+            ".obj": [
+                {
                     "type": "PhysicalObject",
                     "format": "text/plain"
-                },
-                ".pdf": {
+                }
+            ],
+            ".pdf": [
+                {
                     "type": "PDF",
                     "format": "application/pdf"
-                },
-                ".ply": {
+                }
+            ],
+            ".ply": [
+                {
                     "type": "PhysicalObject",
                     "format": "application/ply"
-                },
-                ".png": {
+                }
+            ],
+            ".png": [
+                {
                     "type": "Image",
                     "format": "image/png"
                 }
-            }
+            ]
         }
     }
 }

@@ -5,11 +5,11 @@
 [![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
 <!-- ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png) -->
 
-```
+```bash
 npm i biiif --save
 ```
 
-```
+```bash
 const { build } = require('biiif');
 build('myfolder', 'http://example.com/myfolder');
 ```
@@ -34,13 +34,42 @@ A collection's sub-folders (no underscore) are treated as further nested collect
 
 A manifest's sub-folders (with underscore) are treated as canvases to add to the manifest.
 
-Files within 'canvas folders' (.jpg, .pdf, .mp4, .obj) are annotated onto the canvas.
+Files within 'canvas folders' (.jpg, .pdf, .mp4, .obj) are annotated onto the canvas with a `painting` motivation.
+
+## Annotations
+
+By default, biiif will annotate any files it finds in a canvas directory (except `info.yml` and `thumb.jpg`) onto the canvas with a `painting` motivation.
+
+This is handy as a quick way to generate simple manifests. However, what if you want to annotate some text onto a canvas with a `commenting` motivation?
+
+Or what happens when you have obj or gltf files that require image textures to be located in the same directory? You don't want these files to be annotated onto the canvas too!
+
+This is where custom annotations come in. Just create a file `my-annotation.yml` in the canvas directory and set the desired properties in that.
+
+For example, here is a `my-comment.yml`:
+
+```yml
+motivation: commenting
+type: TextualBody
+format: text/plain
+value: This is my comment on the image
+```
+
+What about the gltf example? Here's how it could look:
+
+```yml
+value: assets/file.gltf
+```
+
+Here we've excluded the motivation (`painting` is assumed), type (`PhysicalObject` is assumed), and format (`model/gltf+json` is assumed).
+
+biiif knows that because it's a gltf file, it's likely to have all of the above values. You just need to include a `value` property pointing to where you've put the gltf file itself. In this case, an `assets` folder within the canvas directory. The associated image textures can live in the `assets` folder too, they won't get annotated unless you specifically as for them to be.
 
 ## Metadata
 
 To add metadata to your collections/manifests/canvases, include an `info.yml` file in the folder e.g.
 
-```
+```yml
 label: The Lord of the Rings
 description: The Lord of the Rings Trilogy
 attribution: J. R. R. Tolkien
@@ -58,7 +87,7 @@ To add a thumbnail to your collection, manifest, or canvas simply include a file
 
 Sometimes you may need to include IIIF manifests in your collection from elsewhere. To do this, include a `manifests.yml` file in your collection folder e.g.
 
-```
+```yml
 manifests:
 - id: http://test.com/collection/linkedmanifest1/index.json
   label: Linked Manifest 1
@@ -80,7 +109,7 @@ This example only has a single root collection, but biiif will happily build col
 
 biiif will accept a manifest folder too, generating a single manifest `index.json`.
 
-```
+```yml
 lord-of-the-rings                  // collection
 ├── info.yml                       // collection metadata
 ├── thumb.jpg                      // collection thumbnail
