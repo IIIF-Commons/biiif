@@ -38,6 +38,8 @@ Files within 'canvas folders' (.jpg, .pdf, .mp4, .obj) are annotated onto the ca
 
 ## Annotations
 
+IIIF Presentation 3.0 uses the [Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) to annotate canvases.
+
 By default, biiif will annotate any files it finds in a canvas directory (except `info.yml` and `thumb.jpg`) onto the canvas with a `painting` motivation.
 
 This is handy as a quick way to generate simple manifests. However, what if you want to annotate some text onto a canvas with a `commenting` motivation?
