@@ -48,7 +48,7 @@ Or what happens when you have obj or gltf files that require image textures to b
 
 This is where custom annotations come in. Just create a file `my-annotation.yml` in the canvas directory and set the desired properties in that.
 
-For example, here is a `my-comment.yml`:
+For example, here is `my-comment.yml`:
 
 ```yml
 motivation: commenting
@@ -60,7 +60,7 @@ Here we've excluded the `type` (`TextualBody` is assumed), and `format` (`text/p
 What about the gltf example? Here's how `my-3d-object.yml` could look:
 
 ```yml
-value: assets/file.gltf
+value: assets/myobject.gltf
 ```
 
 Here we've excluded the `motivation` (`painting` is assumed), `type` (`PhysicalObject` is assumed), and `format` (`model/gltf+json` is assumed).
