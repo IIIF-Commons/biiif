@@ -35,6 +35,10 @@
             ],
             ".json": [
                 {
+                    "type": "Text",
+                    "format": "application/json"
+                },
+                {
                     "type": "PhysicalObject",
                     "format": "application/vnd.threejs+json"
                 }

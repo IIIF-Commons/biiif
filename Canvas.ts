@@ -63,7 +63,8 @@ export class Canvas {
 
             let id: string;
 
-            if (motivation.toLowerCase() === 'painting' && yml.value) {                    
+            // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
+            if ((motivation.toLowerCase() === 'painting' || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                 hasPaintingAnnotation = true;
                 id = urljoin(this.url.href, directoryName, yml.value);
             } else {
@@ -79,6 +80,7 @@ export class Canvas {
                 const guess: any = config.annotation.extensions[extname(yml.value)];
 
                 if (guess && guess.length) {
+
                     const type: string = guess[0].type;
                     annotationJson.body.type = type;
                     console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
@@ -126,7 +128,8 @@ export class Canvas {
             
             annotationJson.body.label = Utils.getLabel(this.infoYml.label);
 
-            if (yml.value && motivation !== 'painting') {
+            // if there's a value, and we're using a recognised motivation (except painting)
+            if (yml.value && config.annotation.motivations[motivation] && motivation !== 'painting') {
                 annotationJson.body.value = yml.value;
             }
 

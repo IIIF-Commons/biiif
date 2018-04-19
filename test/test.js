@@ -107,6 +107,9 @@ before(async () => {
             '_commenting-text': {
                 'commenting-text.yml': require('./fixtures/commenting-text')
             },
+            '_json-value': {
+                'json-value.yml': require('./fixtures/json-value')
+            },
             '_painting-gltf': {
                 'assets': { 
                     'file.gltf': 'gltf',
@@ -120,6 +123,13 @@ before(async () => {
                 },
                 'painting-jpg.yml': require('./fixtures/painting-jpg'),
                 'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_painting-threejson': {
+                'assets': { 
+                    'file.json': 'json',
+                    'texture.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                'painting-threejson.yml': require('./fixtures/painting-threejson')
             }
         }
     });
@@ -670,7 +680,7 @@ describe('custom-annotations-manifest', async () => {
 
     });
 
-    describe('painting gltf', async () => {
+    describe('json value', async () => {
 
         it('can find canvas', async () => {
             canvasJson = manifestJson.items[1];
@@ -682,7 +692,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct canvas label', async () => {
-            assert(canvasJson.label['@none'][0] === '_painting-gltf');
+            assert(canvasJson.label['@none'][0] === '_json-value');
         });
 
         it('has an annotation page', async () => {
@@ -709,7 +719,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation motivation', async () => {
-            assert(annotation.motivation === 'painting');
+            assert(annotation.motivation === 'data');
         });
     
         it('has correct annotation target', async () => {
@@ -722,11 +732,11 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation body id', async () => {
-            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-gltf/assets/file.gltf');
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_json-value/assets/data.json');
         });
     
         it('has correct annotation body type', async () => {
-            assert(annotationBody.type === 'PhysicalObject');
+            assert(annotationBody.type === 'Text');
         });
     
         it('has no annotation body value', async () => {
@@ -735,7 +745,7 @@ describe('custom-annotations-manifest', async () => {
 
     });
 
-    describe('painting jpg', async () => {
+    describe('painting gltf', async () => {
 
         it('can find canvas', async () => {
             canvasJson = manifestJson.items[2];
@@ -747,7 +757,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct canvas label', async () => {
-            assert(canvasJson.label['@none'][0] === '_painting-jpg');
+            assert(canvasJson.label['@none'][0] === '_painting-gltf');
         });
 
         it('has an annotation page', async () => {
@@ -787,11 +797,141 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation body id', async () => {
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-gltf/assets/file.gltf');
+        });
+    
+        it('has correct annotation body type', async () => {
+            assert(annotationBody.type === 'PhysicalObject');
+        });
+    
+        it('has no annotation body value', async () => {
+            assert(annotationBody.value === undefined);
+        });
+
+    });
+
+    describe('painting jpg', async () => {
+
+        it('can find canvas', async () => {
+            canvasJson = manifestJson.items[3];
+            assert(canvasJson);
+        });
+    
+        it('has correct canvas id', async () => {
+            assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/3');
+        });
+    
+        it('has correct canvas label', async () => {
+            assert(canvasJson.label['@none'][0] === '_painting-jpg');
+        });
+
+        it('has an annotation page', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage);
+        });
+    
+        it('has the correct annotation page id', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/3/annotationpage/0');
+        });
+
+        it('has annotation', async () => {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        });
+
+        it('has only one annotation', async () => {
+            assert(annotationPage.items.length === 1);
+        });
+
+        it('has correct annotation id', async () => {
+            assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/3/annotation/0');
+        });
+    
+        it('has correct annotation motivation', async () => {
+            assert(annotation.motivation === 'painting');
+        });
+    
+        it('has correct annotation target', async () => {
+            assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/3');
+        });
+    
+        it('has an annotation body', async () => {
+            annotationBody = annotation.body;
+            assert(annotationBody);
+        });
+    
+        it('has correct annotation body id', async () => {
             assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-jpg/assets/file.jpg');
         });
     
         it('has correct annotation body type', async () => {
             assert(annotationBody.type === 'Image');
+        });
+    
+        it('has no annotation body value', async () => {
+            assert(annotationBody.value === undefined);
+        });
+
+    });
+
+    describe('painting three.js json', async () => {
+
+        it('can find canvas', async () => {
+            canvasJson = manifestJson.items[4];
+            assert(canvasJson);
+        });
+    
+        it('has correct canvas id', async () => {
+            assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/4');
+        });
+    
+        it('has correct canvas label', async () => {
+            assert(canvasJson.label['@none'][0] === '_painting-threejson');
+        });
+
+        it('has an annotation page', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage);
+        });
+    
+        it('has the correct annotation page id', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/4/annotationpage/0');
+        });
+
+        it('has annotation', async () => {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        });
+
+        it('has only one annotation', async () => {
+            assert(annotationPage.items.length === 1);
+        });
+
+        it('has correct annotation id', async () => {
+            assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/4/annotation/0');
+        });
+    
+        it('has correct annotation motivation', async () => {
+            assert(annotation.motivation === 'painting');
+        });
+    
+        it('has correct annotation target', async () => {
+            assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/4');
+        });
+    
+        it('has an annotation body', async () => {
+            annotationBody = annotation.body;
+            assert(annotationBody);
+        });
+    
+        it('has correct annotation body id', async () => {
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-threejson/assets/file.json');
+        });
+    
+        it('has correct annotation body type', async () => {
+            assert(annotationBody.type === 'PhysicalObject');
         });
     
         it('has no annotation body value', async () => {
