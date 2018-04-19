@@ -87,7 +87,7 @@ To add a thumbnail to your collection, manifest, or canvas simply include a file
 
 ## Linked Manifests
 
-Sometimes you may need to include IIIF manifests in your collection from elsewhere. To do this, include a `manifests.yml` file in your collection folder e.g.
+Often it's necessary to include IIIF manifests in your collection from elsewhere. To do this, include a `manifests.yml` file in your collection folder e.g.
 
 ```yml
 manifests:
