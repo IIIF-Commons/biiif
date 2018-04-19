@@ -55,7 +55,7 @@ value: This is my comment on the image
 
 Here we've excluded the `type` (`TextualBody` is assumed), and `format` (`text/plain` is assumed).
 
-What about the gltf example? Here's how it could look:
+What about the gltf example? Here's how `my-3d-object.yml` could look:
 
 ```yml
 value: assets/file.gltf
