@@ -104,14 +104,21 @@ before(async () => {
             }
         },
         '/custom-annotations-manifest': {
-            '_commenting': {
-                'commenting.yml': require('./fixtures/commenting')
+            '_commenting-text': {
+                'commenting-text.yml': require('./fixtures/commenting-text')
             },
-            '_painting': {
+            '_painting-gltf': {
+                'assets': { 
+                    'file.gltf': 'gltf',
+                    'texture.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                },
+                'painting-gltf.yml': require('./fixtures/painting-gltf')
+            },
+            '_painting-jpg': {
                 'assets': { 
                     'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
-                'painting.yml': require('./fixtures/painting'),
+                'painting-jpg.yml': require('./fixtures/painting-jpg'),
                 'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
             }
         }
@@ -598,7 +605,7 @@ describe('custom-annotations-manifest', async () => {
         manifestJson = jsonfile.readFileSync(file);
     });
 
-    describe('commenting canvas', async () => {
+    describe('commenting text', async () => {
 
         it('can find canvas', async () => {
             canvasJson = manifestJson.items[0];
@@ -610,7 +617,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct canvas label', async () => {
-            assert(canvasJson.label['@none'][0] === '_commenting');
+            assert(canvasJson.label['@none'][0] === '_commenting-text');
         });
 
         it('has an annotation page', async () => {
@@ -646,7 +653,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation body id', async () => {
-            assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting');
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting-text');
         });
     
         it('has correct annotation body type', async () => {
@@ -659,7 +666,7 @@ describe('custom-annotations-manifest', async () => {
 
     });
 
-    describe('painting canvas', async () => {
+    describe('painting gltf', async () => {
 
         it('can find canvas', async () => {
             canvasJson = manifestJson.items[1];
@@ -671,7 +678,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct canvas label', async () => {
-            assert(canvasJson.label['@none'][0] === '_painting');
+            assert(canvasJson.label['@none'][0] === '_painting-gltf');
         });
 
         it('has an annotation page', async () => {
@@ -693,11 +700,11 @@ describe('custom-annotations-manifest', async () => {
             assert(annotationPage.items.length === 1);
         });
 
-        it('has correct id', async () => {
+        it('has correct annotation id', async () => {
             assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/1/annotation/0');
         });
     
-        it('has correct motivation', async () => {
+        it('has correct annotation motivation', async () => {
             assert(annotation.motivation === 'painting');
         });
     
@@ -711,7 +718,72 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation body id', async () => {
-            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting/assets/file.jpg');
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-gltf/assets/file.gltf');
+        });
+    
+        it('has correct annotation body type', async () => {
+            assert(annotationBody.type === 'PhysicalObject');
+        });
+    
+        it('has correct annotation body value', async () => {
+            assert(annotationBody.value === 'assets/file.gltf');
+        });
+
+    });
+
+    describe('painting jpg', async () => {
+
+        it('can find canvas', async () => {
+            canvasJson = manifestJson.items[2];
+            assert(canvasJson);
+        });
+    
+        it('has correct canvas id', async () => {
+            assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/2');
+        });
+    
+        it('has correct canvas label', async () => {
+            assert(canvasJson.label['@none'][0] === '_painting-jpg');
+        });
+
+        it('has an annotation page', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage);
+        });
+    
+        it('has the correct annotation page id', async () => {
+            annotationPage = canvasJson.items[0];
+            assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/2/annotationpage/0');
+        });
+
+        it('has annotation', async () => {
+            annotation = annotationPage.items[0];
+            assert(annotation);
+        });
+
+        it('has only one annotation', async () => {
+            assert(annotationPage.items.length === 1);
+        });
+
+        it('has correct annotation id', async () => {
+            assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/2/annotation/0');
+        });
+    
+        it('has correct annotation motivation', async () => {
+            assert(annotation.motivation === 'painting');
+        });
+    
+        it('has correct annotation target', async () => {
+            assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/2');
+        });
+    
+        it('has an annotation body', async () => {
+            annotationBody = annotation.body;
+            assert(annotationBody);
+        });
+    
+        it('has correct annotation body id', async () => {
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-jpg/assets/file.jpg');
         });
     
         it('has correct annotation body type', async () => {
@@ -723,11 +795,6 @@ describe('custom-annotations-manifest', async () => {
         });
 
     });
-
-    /*
-        - test that a custom painting annotation works, and means no other files are painted
-        - 
-    */
 
 });
 
