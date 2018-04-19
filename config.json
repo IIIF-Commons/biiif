@@ -1,5 +1,13 @@
 {
     "annotation": {
+        "motivations": {
+            "commenting": [
+                {
+                    "type": "TextualBody",
+                    "format": "text/plain"
+                }
+            ]
+        },
         "extensions": {
             ".crt": [
                 {

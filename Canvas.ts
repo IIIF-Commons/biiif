@@ -1,10 +1,10 @@
+const { basename, dirname, extname, join } = require('path');
 const { existsSync, readFileSync } = require('fs');
 const { glob } = require('glob');
-const { basename, dirname, extname, join } = require('path');
-const urljoin = require('url-join');
+const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
 const config = require('./config');
-const annotationBoilerplate = require('./boilerplate/annotation');
+const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Utils } from './Utils';
 
@@ -74,37 +74,54 @@ export class Canvas {
 
             if (yml.type) {
                 annotationJson.body.type = yml.type;
-            } else if (yml.value) {
-                // guess the type
-                const ext: any = config.annotation.extensions[extname(yml.value)];
+            } else if (yml.value && extname(yml.value)) {
+                // guess the type from the extension
+                const guess: any = config.annotation.extensions[extname(yml.value)];
 
-                if (ext) {
-                    const type: string = ext[0].type;
+                if (guess && guess.length) {
+                    const type: string = guess[0].type;
                     annotationJson.body.type = type;
                     console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
                 } else {
                     console.warn(chalk.yellow('unable to determine type of ' + file));
                 }
-                
             } else {
-                console.warn(chalk.yellow('unable to determine type of ' + file));
+                // guess the type from the motivation
+                const guess: any = config.annotation.motivations[motivation];
+
+                if (guess && guess.length) {
+                    const type: string = guess[0].type;
+                    annotationJson.body.type = type;
+                    console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                } else {
+                    console.warn(chalk.yellow('unable to determine type of ' + file));
+                }
             }
 
             if (yml.format) {
                 annotationJson.body.format = yml.format;
-            } else if (yml.value) {
-                // guess format
-                const ext: any = config.annotation.extensions[extname(yml.value)];
+            } else if (yml.value && extname(yml.value)) {
+                // guess the format from the extension
+                const guess: any = config.annotation.extensions[extname(yml.value)];
 
-                if (ext) {
-                    const format: string = ext[0].format;
+                if (guess && guess.length) {
+                    const format: string = guess[0].format;
                     annotationJson.body.format = format;
                     console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
                 } else {
                     console.warn(chalk.yellow('unable to determine format of ' + file));
                 }
             } else {
-                console.warn(chalk.yellow('unable to determine format of ' + file));
+                // guess the format from the motivation
+                const guess: any = config.annotation.motivations[motivation];
+
+                if (guess && guess.length) {
+                    const format: string = guess[0].format;
+                    annotationJson.body.format = format;
+                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                } else {
+                    console.warn(chalk.yellow('unable to determine format of ' + file));
+                }
             }
             
             annotationJson.body.label = Utils.getLabel(this.infoYml.label);

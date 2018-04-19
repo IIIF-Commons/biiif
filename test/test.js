@@ -659,6 +659,10 @@ describe('custom-annotations-manifest', async () => {
         it('has correct annotation body type', async () => {
             assert(annotationBody.type === 'TextualBody');
         });
+
+        it('has correct annotation body format', async () => {
+            assert(annotationBody.format === 'text/plain');
+        });
     
         it('has correct annotation body value', async () => {
             assert(annotationBody.value === 'This is a comment on the image');

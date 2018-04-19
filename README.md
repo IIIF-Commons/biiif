@@ -50,10 +50,10 @@ For example, here is a `my-comment.yml`:
 
 ```yml
 motivation: commenting
-type: TextualBody
-format: text/plain
 value: This is my comment on the image
 ```
+
+Here we've excluded the `type` (`TextualBody` is assumed), and `format` (`text/plain` is assumed).
 
 What about the gltf example? Here's how it could look:
 
@@ -61,9 +61,9 @@ What about the gltf example? Here's how it could look:
 value: assets/file.gltf
 ```
 
-Here we've excluded the motivation (`painting` is assumed), type (`PhysicalObject` is assumed), and format (`model/gltf+json` is assumed).
+Here we've excluded the `motivation` (`painting` is assumed), `type` (`PhysicalObject` is assumed), and `format` (`model/gltf+json` is assumed).
 
-biiif knows that because it's a gltf file, it's likely to have all of the above values. You just need to include a `value` property pointing to where you've put the gltf file itself. In this case, an `assets` folder within the canvas directory. The associated image textures can live in the `assets` folder too, they won't get annotated unless you specifically as for them to be.
+biiif knows that because it's a gltf file, it's likely to have all of the above values. You just need to include a `value` property pointing to where you've put the gltf file itself. In this case, an `assets` folder within the canvas directory. The associated image textures can live in the `assets` folder too, they won't get annotated unless you specifically ask for them to be.
 
 ## Metadata
 
