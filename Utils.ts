@@ -1,11 +1,93 @@
+import { TypeFormat } from "./TypeFormat";
+
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
+const config = require('./config');
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 
 export class Utils {
+
+    public static getTypeByExtension(motivation: string, extension: string): string | undefined {
+        const m: any = config.annotation.motivations[motivation];
+
+        if (m) {
+            if (m[extension] && m[extension].length) {
+                return m[extension][0].type;
+            }
+        }
+
+        return undefined;
+    }
+
+    public static getFormatByExtension(motivation: string, extension: string): string | undefined {
+        const m: any = config.annotation.motivations[motivation];
+
+        if (m) {
+            if (m[extension] && m[extension].length) {
+                return m[extension][0].format;
+            }
+        }
+
+        return undefined;
+    }
+
+    public static getFormatByExtensionAndType(motivation: string, extension: string, type: string): string | undefined {
+        const m: any = config.annotation.motivations[motivation];
+
+        if (m) {
+            if (m[extension] && m[extension].length) {
+                const typeformats: TypeFormat[] = m[extension];
+                for (let i = 0; i < typeformats.length; i++) {
+                    const typeformat: TypeFormat = typeformats[i];
+                    if (typeformat.type === type) {
+                        return typeformat.format;
+                    }
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    public static getTypeByFormat(motivation: string, format: string): string | undefined {
+        const m: any = config.annotation.motivations[motivation];
+
+        if (m) {
+            for (const extension in m) {
+                const typeformats: TypeFormat[] = m[extension];
+                for (let i = 0; i < typeformats.length; i++) {
+                    const typeformat: TypeFormat = typeformats[i];
+                    if (typeformat.format === format) {
+                        return typeformat.type;
+                    }
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    public static getFormatByType(motivation: string, type: string): string | undefined {
+        const m: any = config.annotation.motivations[motivation];
+
+        // only able to categorically say there's a matching format 
+        // if there's a single extension with a single type
+
+        if (m) {
+            if (Object.keys(m).length === 1) {
+                const typeformats: TypeFormat[] = m[Object.keys(m)[0]];
+
+                if (typeformats.length === 1) {
+                    return typeformats[0].format;
+                }
+            }
+        }
+
+        return undefined;
+    }
 
     public static timeout(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));

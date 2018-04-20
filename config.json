@@ -1,78 +1,80 @@
 {
     "annotation": {
         "motivations": {
-            "commenting": [
-                {
-                    "type": "TextualBody",
-                    "format": "text/plain"
-                }
-            ]
-        },
-        "extensions": {
-            ".crt": [
-                {
-                    "type": "PhysicalObject",
-                    "format": "application/corto"
-                }
-            ],
-            ".drc": [
-                {
-                    "type": "PhysicalObject",
-                    "format": "application/draco"
-                }
-            ],
-            ".gltf": [
-                {
-                    "type": "PhysicalObject",
-                    "format": "model/gltf+json"
-                }
-            ],
-            ".jpg": [
-                {
-                    "type": "Image",
-                    "format": "image/jpeg"
-                }
-            ],
-            ".json": [
-                {
-                    "type": "Text",
-                    "format": "application/json"
-                },
-                {
-                    "type": "PhysicalObject",
-                    "format": "application/vnd.threejs+json"
-                }
-            ],
-            ".mp4": [
-                {
-                    "type": "Video",
-                    "format": "video/mp4"
-                }
-            ],
-            ".obj": [
-                {
-                    "type": "PhysicalObject",
-                    "format": "text/plain"
-                }
-            ],
-            ".pdf": [
-                {
-                    "type": "PDF",
-                    "format": "application/pdf"
-                }
-            ],
-            ".ply": [
-                {
-                    "type": "PhysicalObject",
-                    "format": "application/ply"
-                }
-            ],
-            ".png": [
-                {
-                    "type": "Image",
-                    "format": "image/png"
-                }
-            ]
+            "painting": {
+                ".crt": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/corto"
+                    }
+                ],
+                ".drc": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/draco"
+                    }
+                ],
+                ".gltf": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "model/gltf+json"
+                    }
+                ],
+                ".jpg": [
+                    {
+                        "type": "Image",
+                        "format": "image/jpeg"
+                    }
+                ],
+                ".json": [
+                    {
+                        "type": "Text",
+                        "format": "application/json"
+                    },
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/vnd.threejs+json"
+                    }
+                ],
+                ".mp4": [
+                    {
+                        "type": "Video",
+                        "format": "video/mp4"
+                    }
+                ],
+                ".obj": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "text/plain"
+                    }
+                ],
+                ".pdf": [
+                    {
+                        "type": "PDF",
+                        "format": "application/pdf"
+                    }
+                ],
+                ".ply": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/ply"
+                    }
+                ],
+                ".png": [
+                    {
+                        "type": "Image",
+                        "format": "image/png"
+                    }
+                ]
+            },
+            "commenting": {
+                ".txt": [
+                    {
+                        "type": "TextualBody",
+                        "format": "text/plain"
+                    }
+                ]
+            }
         }
     }
 }

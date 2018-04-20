@@ -7,6 +7,7 @@ const config = require('./config');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Utils } from './Utils';
+import { Motivations } from './Motivations';
 
 export class Canvas {
     canvasJson: any;
@@ -53,7 +54,7 @@ export class Canvas {
 
             if (!motivation) {
                 // assume painting
-                motivation = 'painting';
+                motivation = Motivations.PAINTING;
                 console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
             }
 
@@ -64,7 +65,7 @@ export class Canvas {
             let id: string;
 
             // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
-            if ((motivation.toLowerCase() === 'painting' || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
+            if ((motivation.toLowerCase() === Motivations.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                 hasPaintingAnnotation = true;
                 id = urljoin(this.url.href, directoryName, yml.value);
             } else {
@@ -77,59 +78,65 @@ export class Canvas {
                 annotationJson.body.type = yml.type;
             } else if (yml.value && extname(yml.value)) {
                 // guess the type from the extension
-                const guess: any = config.annotation.extensions[extname(yml.value)];
+                const type: string | undefined = Utils.getTypeByExtension(motivation, extname(yml.value));
 
-                if (guess && guess.length) {
-
-                    const type: string = guess[0].type;
+                if (type) {
                     annotationJson.body.type = type;
                     console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
-                } else {
-                    console.warn(chalk.yellow('unable to determine type of ' + file));
                 }
-            } else {
-                // guess the type from the motivation
-                const guess: any = config.annotation.motivations[motivation];
 
-                if (guess && guess.length) {
-                    const type: string = guess[0].type;
+            } else if (yml.format) {
+                // guess the type from the format
+                const type: string | undefined = Utils.getTypeByFormat(motivation, yml.format);
+
+                if (type) {
                     annotationJson.body.type = type;
                     console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
-                } else {
-                    console.warn(chalk.yellow('unable to determine type of ' + file));
                 }
+            }
+
+            if (!annotationJson.body.type) {
+                delete annotationJson.body.type;
+                console.warn(chalk.yellow('unable to determine type of ' + file));
             }
 
             if (yml.format) {
                 annotationJson.body.format = yml.format;
+            } else if (yml.value && extname(yml.value) && yml.type) {
+                // guess the format from the extension and type
+                const format: string | undefined = Utils.getFormatByExtensionAndType(motivation, extname(yml.value), yml.type);
+
+                if (format) {
+                    annotationJson.body.format = format;
+                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                }
             } else if (yml.value && extname(yml.value)) {
                 // guess the format from the extension
-                const guess: any = config.annotation.extensions[extname(yml.value)];
+                const format: string | undefined = Utils.getFormatByExtension(motivation, extname(yml.value));
 
-                if (guess && guess.length) {
-                    const format: string = guess[0].format;
+                if (format) {
                     annotationJson.body.format = format;
                     console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
-                } else {
-                    console.warn(chalk.yellow('unable to determine format of ' + file));
                 }
-            } else {
-                // guess the format from the motivation
-                const guess: any = config.annotation.motivations[motivation];
+            } else if (yml.type) {
+                // can only guess the format from the type if there is one typeformat for this motivation.
+                const format: string | undefined = Utils.getFormatByType(motivation, yml.type);
 
-                if (guess && guess.length) {
-                    const format: string = guess[0].format;
+                if (format) {
                     annotationJson.body.format = format;
                     console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
-                } else {
-                    console.warn(chalk.yellow('unable to determine format of ' + file));
-                }
+                } 
+            }
+
+            if (!annotationJson.body.format) {
+                delete annotationJson.body.format;
+                console.warn(chalk.yellow('unable to determine format of ' + file));
             }
             
             annotationJson.body.label = Utils.getLabel(this.infoYml.label);
 
             // if there's a value, and we're using a recognised motivation (except painting)
-            if (yml.value && config.annotation.motivations[motivation] && motivation !== 'painting') {
+            if (yml.value && config.annotation.motivations[motivation] && motivation !== Motivations.PAINTING) {
                 annotationJson.body.value = yml.value;
             }
 
@@ -158,8 +165,8 @@ export class Canvas {
 
             const extName: string = extname(file);
 
-            // if config.annotation.extensions has a matching extension
-            let defaultPaintingExtension: any = config.annotation.extensions[extName];
+            // if config.annotation has a matching extension
+            let defaultPaintingExtension: any = config.annotation.motivations.painting[extName];
 
             let directoryName: string = dirname(file);
             directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
@@ -170,7 +177,7 @@ export class Canvas {
                 defaultPaintingExtension = defaultPaintingExtension[0];
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-                annotationJson.motivation = "painting";
+                annotationJson.motivation = Motivations.PAINTING;
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
                 annotationJson.body.type = defaultPaintingExtension.type;
