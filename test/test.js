@@ -37,8 +37,8 @@ before(async () => {
                     'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 }
             },
-            'subcollection': {
-                'info.yml': 'label: My Test Subcollection',
+            'sub-collection': {
+                'info.yml': 'label: My Test Sub-collection',
                 'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 'manifest': {
                     'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -51,7 +51,7 @@ before(async () => {
                 }
             },
             'manifests.yml': require('./fixtures/manifests'),
-            'canvasperfile': {
+            'canvas-per-file': {
                 '_crt': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
@@ -83,7 +83,7 @@ before(async () => {
                     'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 }              
             },
-            'filespercanvas': {
+            'files-per-canvas': {
                 '_files': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -97,7 +97,7 @@ before(async () => {
                     'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 }        
             },
-            'erroneousfile': {
+            'erroneous-file': {
                 '_files': {
                     'file.abc': 'abc'
                 } 
@@ -139,12 +139,12 @@ before(async () => {
                 'painting-jpg.yml': require('./fixtures/painting-jpg'),
                 'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
             },
-            '_painting-threejson-with-type': {
+            '_painting-threejs-json-with-type': {
                 'assets': { 
                     'file.json': 'json',
                     'texture.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
-                'painting-threejson-with-type.yml': require('./fixtures/painting-threejson-with-type')
+                'painting-threejs-json-with-type.yml': require('./fixtures/painting-threejs-json-with-type')
             }
         }
     });
@@ -183,15 +183,15 @@ describe('utils', async () => {
         id = Utils.mergePaths(url, filePath);
         assert(id === 'http://test.com/collection/manifest/_canvas/thumb.png');
 
-        url = new URL('http://test.com/collection/subcollection/sub_collection/subcollection/manifest');
-        filePath = 'c:/user/documents/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png';
+        url = new URL('http://test.com/collection/sub-collection/sub_collection/sub-collection/manifest');
+        filePath = 'c:/user/documents/collection/sub-collection/sub_collection/sub-collection/manifest/_canvas/thumb.png';
         id = Utils.mergePaths(url, filePath);
-        assert(id === 'http://test.com/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png');
+        assert(id === 'http://test.com/collection/sub-collection/sub_collection/sub-collection/manifest/_canvas/thumb.png');
 
-        url = new URL('http://localhost:8888/collection/subcollection/sub_collection/subcollection/manifest');
-        filePath = 'c:/user/documents/github/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png';
+        url = new URL('http://localhost:8888/collection/sub-collection/sub_collection/sub-collection/manifest');
+        filePath = 'c:/user/documents/github/collection/sub-collection/sub_collection/sub-collection/manifest/_canvas/thumb.png';
         id = Utils.mergePaths(url, filePath);
-        assert(id === 'http://localhost:8888/collection/subcollection/sub_collection/subcollection/manifest/_canvas/thumb.png');
+        assert(id === 'http://localhost:8888/collection/sub-collection/sub_collection/sub-collection/manifest/_canvas/thumb.png');
 
         url = new URL('https://edsilv.github.io/uv-app-starter/gh-collection/human_skull');
         filePath = 'c:/Users/edsilv/github/uv-app-starter/gh-collection/human_skull/thumb.png';
@@ -435,17 +435,17 @@ describe('collection', async () => {
 describe('sub collection', async () => {
 
     it('can find collection index.json', async () => {
-        const file = '/collection/subcollection/index.json';
+        const file = '/collection/sub-collection/index.json';
         assert(fs.existsSync(file));
         collectionJson = jsonfile.readFileSync(file);
     });
 
     it('has correct collection id', async () => {
-        assert(collectionJson.id === collectionUrl + '/subcollection/index.json');
+        assert(collectionJson.id === collectionUrl + '/sub-collection/index.json');
     });
 
     it('has correct collection label', async () => {
-        assert(collectionJson.label['@none'][0] === 'My Test Subcollection');
+        assert(collectionJson.label['@none'][0] === 'My Test Sub-collection');
     });
 
     it('has a collection thumbnail', async () => {
@@ -454,7 +454,7 @@ describe('sub collection', async () => {
     });
 
     it('has the correct collection thumbnail id', async () => {
-        const id = urljoin(collectionUrl, '/subcollection/thumb.png');
+        const id = urljoin(collectionUrl, '/sub-collection/thumb.png');
         assert(thumbnailJson.id === id);
     });
 
@@ -464,7 +464,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct item id', async () => {
-        assert(item.id === 'http://test.com/collection/subcollection/manifest/index.json');
+        assert(item.id === 'http://test.com/collection/sub-collection/manifest/index.json');
     });
 
     it('has correct item label', async () => {
@@ -477,17 +477,17 @@ describe('sub collection', async () => {
     });
 
     it('has correct item thumbnail id', async () => {
-        assert(thumbnailJson[0].id === 'http://test.com/collection/subcollection/manifest/thumb.png');
+        assert(thumbnailJson[0].id === 'http://test.com/collection/sub-collection/manifest/thumb.png');
     });
 
     it('can find manifest index.json', async () => {
-        const file = '/collection/subcollection/manifest/index.json';
+        const file = '/collection/sub-collection/manifest/index.json';
         assert(fs.existsSync(file));
         manifestJson = jsonfile.readFileSync(file);
     });
 
     it('has correct manifest id', async () => {
-        assert(manifestJson.id === collectionUrl + '/subcollection/manifest/index.json');
+        assert(manifestJson.id === collectionUrl + '/sub-collection/manifest/index.json');
     });
 
     it('has correct manifest label', async () => {
@@ -500,7 +500,7 @@ describe('sub collection', async () => {
     });
 
     it('has correct canvas id', async () => {
-        assert(canvasJson.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0');
+        assert(canvasJson.id === collectionUrl + '/sub-collection/manifest/index.json/canvas/0');
     });
 
     it('has correct canvas label', async () => {
@@ -513,7 +513,7 @@ describe('sub collection', async () => {
     });
 
     it('has the correct thumbnail id', async () => {
-        const id = urljoin(collectionUrl, '/subcollection/manifest/_canvas/thumb.png');
+        const id = urljoin(collectionUrl, '/sub-collection/manifest/_canvas/thumb.png');
         assert(thumbnailJson.id === id);
     });
 
@@ -524,7 +524,7 @@ describe('sub collection', async () => {
 
     it('has the correct annotation page id', async () => {
         annotationPage = canvasJson.items[0];
-        assert(annotationPage.id === collectionUrl + '/subcollection/manifest/index.json/canvas/0/annotationpage/0');
+        assert(annotationPage.id === collectionUrl + '/sub-collection/manifest/index.json/canvas/0/annotationpage/0');
     });
 
     it('has an annotation', async () => {
@@ -543,13 +543,13 @@ describe('sub collection', async () => {
     });
 
     it('image annotation has correct id', async () => {
-        assert(imageAnnotation.id === collectionUrl + '/subcollection/manifest/_canvas/page_1.jpg');
+        assert(imageAnnotation.id === collectionUrl + '/sub-collection/manifest/_canvas/page_1.jpg');
     });
 });
 
 describe('Canvas Per Content Annotation', async () => {
 
-    const manifest = '/collection/canvasperfile';
+    const manifest = '/collection/canvas-per-file';
     let canvases;
 
     it('can find ' + manifest + ' index.json', async () => {
@@ -576,7 +576,7 @@ describe('Canvas Per Content Annotation', async () => {
 
 describe('Content Annotation Per Canvas', async () => {
     
-    const manifest = '/collection/filespercanvas';
+    const manifest = '/collection/files-per-canvas';
     let canvases;
 
     it('can find ' + manifest + ' index.json', async () => {
@@ -594,7 +594,7 @@ describe('Content Annotation Per Canvas', async () => {
 
 describe('Erroneous File', async () => {
     
-    const manifest = '/collection/erroneousfile';
+    const manifest = '/collection/erroneous-file';
     let canvases;
 
     it('can find ' + manifest + ' index.json', async () => {
@@ -1178,7 +1178,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct canvas label', async () => {
-            assert(canvasJson.label['@none'][0] === '_painting-threejson-with-type');
+            assert(canvasJson.label['@none'][0] === '_painting-threejs-json-with-type');
         });
 
         it('has an annotation page', async () => {
@@ -1218,7 +1218,7 @@ describe('custom-annotations-manifest', async () => {
         });
     
         it('has correct annotation body id', async () => {
-            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-threejson-with-type/assets/file.json');
+            assert(annotationBody.id === customAnnotationsManifestUrl + '/_painting-threejs-json-with-type/assets/file.json');
         });
     
         it('has correct annotation body type', async () => {
