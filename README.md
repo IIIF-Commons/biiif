@@ -24,6 +24,8 @@ Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/present
 
 If you want to build a website with biiif, try [uv-app-starter](https://github.com/UniversalViewer/uv-app-starter) which comes with the [Universal Viewer](http://universalviewer.io) and biiif already set up.
 
+Building static sites with biiif workshop: https://github.com/edsilv/decentralised-data-workshop
+
 ## Conventions
 
 A collection is a folder with sub-folders whose names _do not_ start with an underscore.
