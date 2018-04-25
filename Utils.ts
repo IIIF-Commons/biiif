@@ -1,5 +1,4 @@
 import { TypeFormat } from "./TypeFormat";
-
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
@@ -131,6 +130,9 @@ export class Utils {
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
             json.thumbnail = thumbnailJson;
+        } else {
+            // generate thumbnail
+            console.log('generate thumbnail');
         }
     }
 
