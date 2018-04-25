@@ -31,3 +31,12 @@ it('can find canvas', async () => {
 it('has correct canvas id', async () => {
     assert(canvasJson.id === generateThumbsManifestUrl + '/index.json/canvas/0');
 });
+
+it('has correct canvas id', async () => {
+    assert(canvasJson.id === generateThumbsManifestUrl + '/index.json/canvas/0');
+});
+
+it('has a canvas thumbnail', async () => {
+    //thumbnailJson = canvasJson.thumbnail[0];
+    //assert(thumbnailJson);
+});

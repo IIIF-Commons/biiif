@@ -1,4 +1,4 @@
-const common = require("./common");
+const common = require('./common');
 const assert = common.assert;
 const basename = common.basename;
 const build = common.build;
@@ -166,12 +166,12 @@ after(async () => {
     mock.restore();
 })
 
-importTest("utils", './tests/utils');
-importTest("gh-pages", './tests/gh-pages');
-importTest("collection-no-manifests", './tests/collection-no-manifests');
-importTest("collection", './tests/collection');
-importTest("canvas-per-content-annotation", './tests/canvas-per-content-annotation');
-importTest("content-annotation-per-canvas", './tests/content-annotation-per-canvas');
-importTest("erroneous-file", './tests/erroneous-file');
-importTest("custom-annotations-manifest", './tests/custom-annotations-manifest');
-importTest("generate-thumbs-manifest", './tests/generate-thumbs-manifest');
+importTest('utils', './tests/utils');
+importTest('gh-pages', './tests/gh-pages');
+importTest('collection-no-manifests', './tests/collection-no-manifests');
+importTest('collection', './tests/collection');
+importTest('canvas-per-content-annotation', './tests/canvas-per-content-annotation');
+importTest('content-annotation-per-canvas', './tests/content-annotation-per-canvas');
+importTest('erroneous-file', './tests/erroneous-file');
+importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
+importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');

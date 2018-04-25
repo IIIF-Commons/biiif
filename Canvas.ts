@@ -26,8 +26,6 @@ export class Canvas {
         this._getMetadata();
         this._applyMetadata();
 
-        Utils.getThumbnail(this.canvasJson, this.url, this.filePath);
-
         // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
         // if there are, loop through them creating the custom annotations.
         // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
@@ -59,7 +57,6 @@ export class Canvas {
             }
 
             annotationJson.motivation = motivation;
-
             annotationJson.target = canvasJson.id;
 
             let id: string;
@@ -150,6 +147,9 @@ export class Canvas {
         if (!canvasJson.items[0].items.length) {
             console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.filePath));
         }
+
+        // if there's no thumb.[jpg, gif, png] generate one from the first painted image
+        Utils.getThumbnail(this.canvasJson, this.url, this.filePath);
     }
 
     private _annotatePaintableFiles(canvasJson: any): void {

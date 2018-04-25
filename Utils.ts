@@ -1,7 +1,10 @@
 import { TypeFormat } from "./TypeFormat";
+import { Motivations } from "./Motivations";
+import { Types } from "./Types";
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
+const chalk = require('chalk');
 const config = require('./config');
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
@@ -132,7 +135,23 @@ export class Utils {
             json.thumbnail = thumbnailJson;
         } else {
             // generate thumbnail
-            console.log('generate thumbnail');
+            console.log(chalk.green('generating thumbnail for: ') + filePath);
+
+            if (json.items && json.items.length && json.items[0].items) {
+                // find an annotation with a painting motivation of type image.
+                const items =  json.items[0].items;
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const body = item.body;
+                    if (body && item.motivation === Motivations.PAINTING) {
+                        if (body.type.toLowerCase() === Types.IMAGE) {
+                            console.log(body.id);
+                        }
+                    }
+                }
+            }
+
         }
     }
 

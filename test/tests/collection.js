@@ -239,12 +239,12 @@ describe('sub-collection', async () => {
         assert(canvasJson.label['@none'][0] === 'My Test Subcanvas');
     });
 
-    it('has a thumbnail', async () => {
+    it('has a canvas thumbnail', async () => {
         thumbnailJson = canvasJson.thumbnail[0];
         assert(thumbnailJson);
     });
 
-    it('has the correct thumbnail id', async () => {
+    it('has the correct canvas thumbnail id', async () => {
         const id = urljoin(collectionUrl, '/sub-collection/manifest/_canvas/thumb.png');
         assert(thumbnailJson.id === id);
     });
