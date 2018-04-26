@@ -8,7 +8,8 @@
     "url": "git+https://github.com/edsilv/biiif.git"
   },
   "scripts": {
-    "test": "tsc && mocha"
+    "test": "tsc && mocha",
+    "testbuild": "node -e \"require('./index').build('collection', 'https://test.com/collection')\""
   },
   "engines": {
     "node": ">=8.9.1",

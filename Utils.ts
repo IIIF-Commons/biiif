@@ -1,14 +1,15 @@
-import { TypeFormat } from "./TypeFormat";
-import { Motivations } from "./Motivations";
-import { Types } from "./Types";
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
+const Jimp = require("jimp");
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
+import { Motivations } from "./Motivations";
+import { TypeFormat } from "./TypeFormat";
+import { Types } from "./Types";
 
 export class Utils {
 
@@ -129,15 +130,15 @@ export class Utils {
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
         if (thumbnails.length) {
+            console.log(chalk.green('found thumbnail for: ') + filePath);
             let thumbnail: string = thumbnails[0];
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
             json.thumbnail = thumbnailJson;
         } else {
             // generate thumbnail
-            console.log(chalk.green('generating thumbnail for: ') + filePath);
-
             if (json.items && json.items.length && json.items[0].items) {
+                console.log(chalk.green('generating thumbnail for: ') + filePath);
                 // find an annotation with a painting motivation of type image.
                 const items =  json.items[0].items;
 
@@ -146,7 +147,22 @@ export class Utils {
                     const body = item.body;
                     if (body && item.motivation === Motivations.PAINTING) {
                         if (body.type.toLowerCase() === Types.IMAGE) {
-                            console.log(body.id);
+                            const pathToImage: string = '.' + body.id.replace(url.origin, '');
+
+                            Jimp.read(pathToImage).then((image) => {
+                                const thumb = image.clone();
+                                thumb.cover(100, 100);
+                                const pathToThumb: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/thumb.' + image.getExtension();
+                                thumb.write(pathToThumb, () => {
+                                    console.log(chalk.green('generated thumbnail for: ') + filePath);
+                                });
+                                const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
+                                thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
+                                json.thumbnail = thumbnailJson;
+                            }).catch(function (err) {
+                                console.log(chalk.red(err));
+                                console.log(chalk.red('unable to generate thumbnail for: ') + filePath);
+                            });
                         }
                     }
                 }
