@@ -3,6 +3,7 @@ const { glob } = require('glob');
 const { join } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
+const fs = require('fs');
 const Jimp = require("jimp");
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
@@ -151,6 +152,12 @@ export class Utils {
 
                             Jimp.read(pathToImage).then((image) => {
                                 const thumb = image.clone();
+                                // write image buffer to disk for testing
+                                // image.getBuffer(Jimp.AUTO, (err, buffer) => {
+                                //     const arrBuffer = [...buffer];
+                                //     const pathToBuffer: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/buffer.txt';
+                                //     fs.writeFile(pathToBuffer, arrBuffer);
+                                // });
                                 thumb.cover(100, 100);
                                 const pathToThumb: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/thumb.' + image.getExtension();
                                 thumb.write(pathToThumb, () => {

@@ -156,7 +156,7 @@ before(async () => {
         },
         '/generate-thumbs-manifest': {
             '_canvas-without-thumb': {
-                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
             }
         }
     });
