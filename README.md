@@ -87,6 +87,8 @@ metadata:
 
 To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image file extension will work) in the directory.
 
+If no thumb image is found in a canvas directory, biiif checks to see if an image is being annotated onto the canvas with a painting motivation. If so, a thumb is generated (100 x 100px) from that.
+
 ## Linked Manifests
 
 Often it's necessary to include IIIF manifests in your collection from elsewhere. To do this, include a `manifests.yml` file in your collection folder e.g.
