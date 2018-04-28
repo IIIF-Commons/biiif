@@ -158,7 +158,7 @@ export class Utils {
                                 //     const pathToBuffer: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/buffer.txt';
                                 //     fs.writeFile(pathToBuffer, arrBuffer);
                                 // });
-                                thumb.cover(100, 100);
+                                thumb.cover(config.thumbnails.width, config.thumbnails.height);
                                 const pathToThumb: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/thumb.' + image.getExtension();
                                 thumb.write(pathToThumb, () => {
                                     console.log(chalk.green('generated thumbnail for: ') + filePath);
@@ -167,8 +167,8 @@ export class Utils {
                                 thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
                                 json.thumbnail = thumbnailJson;
                             }).catch(function (err) {
-                                console.log(chalk.red(err));
-                                console.log(chalk.red('unable to generate thumbnail for: ') + filePath);
+                                //console.log(chalk.red(err));
+                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + filePath);
                             });
                         }
                     }

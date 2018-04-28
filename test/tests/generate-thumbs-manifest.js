@@ -37,6 +37,7 @@ it('has correct canvas id', async () => {
 });
 
 it('has a canvas thumbnail', async () => {
+    // awaiting https://github.com/oliver-moran/jimp/issues/441
     //thumbnailJson = canvasJson.thumbnail[0];
     //assert(thumbnailJson);
 });
