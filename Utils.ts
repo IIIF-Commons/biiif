@@ -167,7 +167,7 @@ export class Utils {
                                 thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
                                 json.thumbnail = thumbnailJson;
                             }).catch(function (err) {
-                                //console.log(chalk.red(err));
+                                console.log(chalk.red(err));
                                 console.warn(chalk.yellow('unable to generate thumbnail for: ') + filePath);
                             });
                         }
