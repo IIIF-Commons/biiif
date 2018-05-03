@@ -1,9 +1,10 @@
+// const fs = require('fs');
+const { dirname } = require('path');
 const { existsSync } = require('fs');
 const { glob } = require('glob');
 const { join } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
-// const fs = require('fs');
 const Jimp = require("jimp");
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
@@ -148,18 +149,18 @@ export class Utils {
                     const body = item.body;
                     if (body && item.motivation === Motivations.PAINTING) {
                         if (body.type.toLowerCase() === Types.IMAGE) {
-                            const pathToImage: string = '.' + body.id.replace(url.origin, '');
-
-                            Jimp.read(pathToImage).then((image) => {
+                            const imageName = body.id.substr(body.id.lastIndexOf('/'));
+                            const imagePath = join(filePath, imageName);
+                            Jimp.read(imagePath).then((image) => {
                                 const thumb = image.clone();
                                 // write image buffer to disk for testing
                                 // image.getBuffer(Jimp.AUTO, (err, buffer) => {
                                 //     const arrBuffer = [...buffer];
-                                //     const pathToBuffer: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/buffer.txt';
+                                //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
                                 //     fs.writeFile(pathToBuffer, arrBuffer);
                                 // });
                                 thumb.cover(config.thumbnails.width, config.thumbnails.height);
-                                const pathToThumb: string = pathToImage.substr(0, pathToImage.lastIndexOf('/')) + '/thumb.' + image.getExtension();
+                                const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
                                 thumb.write(pathToThumb, () => {
                                     console.log(chalk.green('generated thumbnail for: ') + filePath);
                                 });
@@ -167,7 +168,7 @@ export class Utils {
                                 thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
                                 json.thumbnail = thumbnailJson;
                             }).catch(function (err) {
-                                console.log(chalk.red(err));
+                                //console.log(chalk.red(err));
                                 console.warn(chalk.yellow('unable to generate thumbnail for: ') + filePath);
                             });
                         }
