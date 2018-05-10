@@ -16,7 +16,7 @@ build('myfolder', 'http://example.com/myfolder');
 
 
 
-Organise your files according to a simple [naming convention](https://github.com/edsilv/biiif#examples) to generate [IIIF](http://iiif.io) json.
+Organise your files according to a simple [naming convention](https://github.com/edsilv/biiif#examples) to generate [IIIF](http://iiif.io) json using 100% node.js!
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
