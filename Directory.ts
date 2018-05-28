@@ -29,12 +29,14 @@ export class Directory {
         this.filePath = filePath;
         this.url = new URL(url);
         
-        // canvases are directories starting with an undersore
-        const canvasesPattern: string = filePath + '/_*';
+        // canvases are directories starting with an underscore
+        // or any file that isn't *.yml or thumb.*
+        const canvasesPattern: string = filePath + '/*';
 
         const canvases: string[] = glob.sync(canvasesPattern, {
             ignore: [
-                '**/*.*' // ignore files
+                '**/*.yml',
+                '**/thumb.*'
             ]
         });
 
@@ -50,7 +52,7 @@ export class Directory {
         const directories: string[] = glob.sync(directoriesPattern, {
             ignore: [
                 '**/*.*', // ignore files
-                '**/_*'   // ignore canvases
+                '**/_*'   // ignore canvas folders
             ]
         });
 
