@@ -16,18 +16,20 @@ const manifestItemBoilerplate = require('./boilerplate/manifestitem');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
+    directories: Directory[] = [];
     filePath: string;
-    url: URL;
+    indexJson: any;
+    infoYml: any;
     isCollection: boolean;
     items: Canvas[] = [];
-    directories: Directory[] = [];
-    infoYml: any;
-    indexJson: any;
+    parentDirectory: Directory | undefined;
+    url: URL;
 
-    constructor(filePath: string, url: string) {
+    constructor(filePath: string, url: string, parentDirectory?: Directory) {
         
         this.filePath = filePath;
         this.url = new URL(url);
+        this.parentDirectory = parentDirectory;
         
         // canvases are directories starting with an undersore
         const canvasesPattern: string = filePath + '/_*';
