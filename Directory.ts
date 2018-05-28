@@ -22,14 +22,16 @@ export class Directory {
     infoYml: any;
     isCollection: boolean;
     items: Canvas[] = [];
+    name: string | undefined;
     parentDirectory: Directory | undefined;
     url: URL;
 
-    constructor(filePath: string, url: string, parentDirectory?: Directory) {
+    constructor(filePath: string, url: string, name?: string, parentDirectory?: Directory) {
         
         this.filePath = filePath;
         this.url = new URL(url);
         this.parentDirectory = parentDirectory;
+        this.name = name || Utils.getUrlParts(this.url)[0];
         
         // canvases are directories starting with an undersore
         const canvasesPattern: string = filePath + '/_*';
@@ -58,7 +60,7 @@ export class Directory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory))));
+            this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory)), undefined, this));
         });
 
         this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);

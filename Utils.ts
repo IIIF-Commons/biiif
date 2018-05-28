@@ -200,16 +200,14 @@ export class Utils {
         // walk backwards through the filePath array adding to the newPath array until the last item of the url array is found.
         // then while the next url item matches the next filePath item, add it to newPath.
         // the final path is the url origin plus a reversed newPath joined with a '/'
-
-        let origin: string = url.origin;
-        let urlParts: string[];
+        
+        let origin = url.origin;
 
         if (url.protocol === 'dat:') {
             origin = 'dat://';
-            urlParts = url.href.replace(origin, '').split('/');
-        } else {
-            urlParts = url.href.replace(origin + '/', '').split('/');
         }
+        
+        const urlParts = Utils.getUrlParts(url);
 
         filePath = filePath.replace(/\\/g, '/').replace(/\/\//, '/');
         const fileParts: string[] = filePath.split('/');
@@ -237,5 +235,19 @@ export class Utils {
         let id: string = urljoin(origin, ...newPath.reverse());
 
         return id;
+    }
+
+    public static getUrlParts(url: URL): string[] {
+        let origin: string = url.origin;
+        let urlParts: string[];
+
+        if (url.protocol === 'dat:') {
+            origin = 'dat://';
+            urlParts = url.href.replace(origin, '').split('/');
+        } else {
+            urlParts = url.href.replace(origin + '/', '').split('/');
+        }
+
+        return urlParts;
     }
 }
