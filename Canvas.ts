@@ -8,16 +8,19 @@ const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Utils } from './Utils';
 import { Motivations } from './Motivations';
+import { Directory } from './Directory';
 
 export class Canvas {
     canvasJson: any;
+    directory: Directory;
     filePath: string;
     infoYml: any = {};
     url: URL;
 
-    constructor(filePath: string, url: URL) {
+    constructor(filePath: string, directory: Directory) {
         this.filePath = filePath;
-        this.url = url;
+        this.directory = directory;
+        this.url = directory.url;
     }
 
     public create(canvasJson: any): void {
@@ -149,7 +152,7 @@ export class Canvas {
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        Utils.getThumbnail(this.canvasJson, this.url, this.filePath);
+        Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
     }
 
     private _annotatePaintableFiles(canvasJson: any): void {

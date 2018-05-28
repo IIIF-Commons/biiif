@@ -12,6 +12,7 @@ const urljoin = require('url-join');
 import { Motivations } from "./Motivations";
 import { TypeFormat } from "./TypeFormat";
 import { Types } from "./Types";
+import { Directory } from "./Directory";
 
 export class Utils {
 
@@ -127,20 +128,31 @@ export class Utils {
         return existsSync(manifestsPath);
     }
 
-    public static getThumbnail(json: any, url: URL, filePath: string): any {
-        const thumbnailPattern: string = filePath + '/thumb.*';
+    // If filePath is:
+    // C://Users/edsilv/github/edsilv/biiif-workshop/collection/_abyssinian/thumb.jpeg
+    // and 'collection' has been replaced by the top-level virtual name 'virtualname'
+    // it should return:
+    // C://Users/edsilv/github/edsilv/biiif-workshop/virtualname/_abyssinian/thumb.jpeg
+    public static getVirtualFilePath(filePath: string, directory: Directory): string {
+        // 
+        return '';
+    }
+
+    public static getThumbnail(json: any, directory: Directory, filePath?: string): any {
+        const fp: string = filePath || directory.filePath;
+        const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
         if (thumbnails.length) {
-            console.log(chalk.green('found thumbnail for: ') + filePath);
+            console.log(chalk.green('found thumbnail for: ') + fp);
             let thumbnail: string = thumbnails[0];
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-            thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
+            thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(thumbnail, directory));
             json.thumbnail = thumbnailJson;
         } else {
             // generate thumbnail
             if (json.items && json.items.length && json.items[0].items) {
-                console.log(chalk.green('generating thumbnail for: ') + filePath);
+                console.log(chalk.green('generating thumbnail for: ') + fp);
                 // find an annotation with a painting motivation of type image.
                 const items =  json.items[0].items;
 
@@ -150,7 +162,7 @@ export class Utils {
                     if (body && item.motivation === Motivations.PAINTING) {
                         if (body.type.toLowerCase() === Types.IMAGE) {
                             const imageName = body.id.substr(body.id.lastIndexOf('/'));
-                            const imagePath = join(filePath, imageName);
+                            const imagePath = join(fp, imageName);
                             Jimp.read(imagePath).then((image) => {
                                 const thumb = image.clone();
                                 // write image buffer to disk for testing
@@ -162,14 +174,14 @@ export class Utils {
                                 thumb.cover(config.thumbnails.width, config.thumbnails.height);
                                 const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
                                 thumb.write(pathToThumb, () => {
-                                    console.log(chalk.green('generated thumbnail for: ') + filePath);
+                                    console.log(chalk.green('generated thumbnail for: ') + fp);
                                 });
                                 const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-                                thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
+                                thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
                                 json.thumbnail = thumbnailJson;
                             }).catch(function (err) {
                                 //console.log(chalk.red(err));
-                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + filePath);
+                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + fp);
                             });
                         }
                     }
@@ -206,7 +218,7 @@ export class Utils {
         if (url.protocol === 'dat:') {
             origin = 'dat://';
         }
-        
+
         const urlParts = Utils.getUrlParts(url);
 
         filePath = filePath.replace(/\\/g, '/').replace(/\/\//, '/');

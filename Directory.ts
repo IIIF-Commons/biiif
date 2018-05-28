@@ -22,18 +22,18 @@ export class Directory {
     infoYml: any;
     isCollection: boolean;
     items: Canvas[] = [];
-    name: string | undefined;
     parentDirectory: Directory | undefined;
     url: URL;
+    virtualName: string | undefined; // used when root directories are dat/ipfs ids
 
-    constructor(filePath: string, url: string, name?: string, parentDirectory?: Directory) {
-        
+    constructor(filePath: string, url: string, virtualName?: string, parentDirectory?: Directory) {
+    
         this.filePath = filePath;
         this.url = new URL(url);
         this.parentDirectory = parentDirectory;
-        this.name = name || Utils.getUrlParts(this.url)[0];
+        this.virtualName = virtualName;
         
-        // canvases are directories starting with an undersore
+        // canvases are directories starting with an underscore
         const canvasesPattern: string = filePath + '/_*';
 
         const canvases: string[] = glob.sync(canvasesPattern, {
@@ -44,7 +44,7 @@ export class Directory {
 
         canvases.forEach((canvas: string) => {
             console.log(chalk.green('creating canvas for: ') + canvas);
-            this.items.push(new Canvas(canvas, this.url));
+            this.items.push(new Canvas(canvas, this));
         });
 
         // directories not starting with an underscore
@@ -60,7 +60,9 @@ export class Directory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory)), undefined, this));
+            const name: string = basename(directory);
+            const url: string = urljoin(this.url.href, name);
+            this.directories.push(new Directory(directory, url, undefined, this));
         });
 
         this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);
@@ -122,7 +124,7 @@ export class Directory {
                 itemJson.id = urljoin(directory.url.href, 'index.json');
                 itemJson.label = Utils.getLabel(directory.infoYml.label);
 
-                Utils.getThumbnail(itemJson, directory.url, directory.filePath);
+                Utils.getThumbnail(itemJson, directory);
 
                 this.indexJson.items.push(itemJson); 
             });
@@ -196,7 +198,7 @@ export class Directory {
 
         this._applyMetadata();
 
-        Utils.getThumbnail(this.indexJson, this.url, this.filePath);
+        Utils.getThumbnail(this.indexJson, this);
 
         // write index.json
         writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));
