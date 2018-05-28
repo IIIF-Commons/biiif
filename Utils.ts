@@ -211,7 +211,7 @@ export class Utils {
             urlParts = url.href.replace(origin + '/', '').split('/');
         }
 
-        filePath = filePath.replace(/\\/g, '/');
+        filePath = filePath.replace(/\\/g, '/').replace(/\/\//, '/');
         const fileParts: string[] = filePath.split('/');
         const newPath: string[] = [];
 
