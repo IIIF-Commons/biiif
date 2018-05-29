@@ -135,6 +135,7 @@ export class Utils {
     // C://Users/edsilv/github/edsilv/biiif-workshop/virtualname/_abyssinian/thumb.jpeg
     // virtual names are needed when using dat or ipfs ids as the root directory.
     public static getVirtualFilePath(filePath: string, directory: Directory): string {
+
         // walk up directory parents building the realPath and virtualPath array as we go.
         // at the top level directory, use the real name for realPath and the virtual name for virtualPath.
         // reverse the arrays and join with a '/'.
@@ -143,7 +144,7 @@ export class Utils {
         let realPath: string[] = [basename(filePath)];
         let virtualPath: string[] = [basename(filePath)];
 
-        while(directory.parentDirectory) {
+        while(directory) {
             const realName: string = basename(directory.filePath);
             const virtualName: string = directory.virtualName || realName;
             realPath.push(realName);
@@ -155,9 +156,16 @@ export class Utils {
         virtualPath = virtualPath.reverse();
 
         const realPathString: string = realPath.join('/');
+
+        console.log('realPathString', chalk.magenta(realPathString));
+
         const virtualPathString: string = virtualPath.join('/');
 
+        console.log('virtualPathString', chalk.magenta(virtualPathString));
+
         filePath = filePath.replace(realPathString, virtualPathString);
+
+        console.log('filePath', chalk.magenta(filePath));
 
         return filePath;
     }

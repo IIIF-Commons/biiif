@@ -14,7 +14,7 @@ const datGatewayUrl = 'http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc0
 
 it('can build collection', async () => {
     assert(fs.existsSync('/dat-gateway-collection'));
-    build('/dat-gateway-collection', datGatewayUrl);
+    build('/dat-gateway-collection', datGatewayUrl, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
 }).timeout(1000); // should take less than a second
 
 it('can find collection index.json', async () => {
