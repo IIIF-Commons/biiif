@@ -18,6 +18,8 @@ function importTest(name, path) {
 before(async () => {
     mock({
         '/gh-collection': {
+            'info.yml': 'label: My Test Collection',
+            'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
             'vertebra': {
                 'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 'info.yml': 'label: Vertebra',
