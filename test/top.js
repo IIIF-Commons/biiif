@@ -29,6 +29,18 @@ before(async () => {
                 }
             }
         },
+        '/dat-gateway-collection': {
+            'vertebra': {
+                'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                'info.yml': 'label: Vertebra',
+                '_vertebra': {
+                    'diffuse.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'normal.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'vertebra.mtl': '...',
+                    'vertebra.obj': '...'
+                }
+            }
+        },
         '/manifests-collection': {
             'manifests.yml': require('./fixtures/manifests')
         },
@@ -175,3 +187,4 @@ importTest('content-annotation-per-canvas', './tests/content-annotation-per-canv
 importTest('erroneous-file', './tests/erroneous-file');
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
+importTest('dat-gateway', './tests/dat-gateway');

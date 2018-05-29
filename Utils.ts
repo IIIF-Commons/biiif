@@ -2,7 +2,7 @@
 const { dirname } = require('path');
 const { existsSync } = require('fs');
 const { glob } = require('glob');
-const { join } = require('path');
+const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
 const Jimp = require("jimp");
@@ -133,9 +133,33 @@ export class Utils {
     // and 'collection' has been replaced by the top-level virtual name 'virtualname'
     // it should return:
     // C://Users/edsilv/github/edsilv/biiif-workshop/virtualname/_abyssinian/thumb.jpeg
+    // virtual names are needed when using dat or ipfs ids as the root directory.
     public static getVirtualFilePath(filePath: string, directory: Directory): string {
-        // 
-        return '';
+        // walk up directory parents building the realPath and virtualPath array as we go.
+        // at the top level directory, use the real name for realPath and the virtual name for virtualPath.
+        // reverse the arrays and join with a '/'.
+        // replace the realPath section of filePath with virtualPath.
+
+        let realPath: string[] = [basename(filePath)];
+        let virtualPath: string[] = [basename(filePath)];
+
+        while(directory.parentDirectory) {
+            const realName: string = basename(directory.filePath);
+            const virtualName: string = directory.virtualName || realName;
+            realPath.push(realName);
+            virtualPath.push(virtualName);
+            directory = directory.parentDirectory;
+        }
+
+        realPath = realPath.reverse();
+        virtualPath = virtualPath.reverse();
+
+        const realPathString: string = realPath.join('/');
+        const virtualPathString: string = virtualPath.join('/');
+
+        filePath = filePath.replace(realPathString, virtualPathString);
+
+        return filePath;
     }
 
     public static getThumbnail(json: any, directory: Directory, filePath?: string): any {
