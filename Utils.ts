@@ -156,16 +156,10 @@ export class Utils {
         virtualPath = virtualPath.reverse();
 
         const realPathString: string = realPath.join('/');
-
-        console.log('realPathString', chalk.magenta(realPathString));
-
         const virtualPathString: string = virtualPath.join('/');
 
-        console.log('virtualPathString', chalk.magenta(virtualPathString));
-
+        filePath = Utils.normaliseFilePath(filePath);
         filePath = filePath.replace(realPathString, virtualPathString);
-
-        console.log('filePath', chalk.magenta(filePath));
 
         return filePath;
     }
@@ -253,7 +247,7 @@ export class Utils {
 
         const urlParts = Utils.getUrlParts(url);
 
-        filePath = filePath.replace(/\\/g, '/').replace(/\/\//, '/');
+        filePath = Utils.normaliseFilePath(filePath);
         const fileParts: string[] = filePath.split('/');
         const newPath: string[] = [];
 
@@ -279,6 +273,10 @@ export class Utils {
         let id: string = urljoin(origin, ...newPath.reverse());
 
         return id;
+    }
+
+    public static normaliseFilePath(filePath: string): string {
+        return filePath.replace(/\\/g, '/').replace(/\/\//g, '/');
     }
 
     public static getUrlParts(url: URL): string[] {

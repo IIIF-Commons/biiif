@@ -31,18 +31,6 @@ before(async () => {
                 }
             }
         },
-        '/dat-gateway-collection': {
-            'vertebra': {
-                'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                'info.yml': 'label: Vertebra',
-                '_vertebra': {
-                    'diffuse.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'normal.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'vertebra.mtl': '...',
-                    'vertebra.obj': '...'
-                }
-            }
-        },
         '/manifests-collection': {
             'manifests.yml': require('./fixtures/manifests')
         },

@@ -51,7 +51,7 @@ it('has an item manifest', async () => {
 });
 
 it('has correct item id', async () => {
-    assert(item.id === 'http://test.com/collection/a_manifest/index.json');
+    assert(item.id === collectionUrl + '/a_manifest/index.json');
 });
 
 it('has correct item label', async () => {
@@ -196,7 +196,7 @@ describe('sub-collection', async () => {
     });
 
     it('has correct item id', async () => {
-        assert(item.id === 'http://test.com/collection/sub-collection/manifest/index.json');
+        assert(item.id === collectionUrl + '/sub-collection/manifest/index.json');
     });
 
     it('has correct item label', async () => {
@@ -209,7 +209,7 @@ describe('sub-collection', async () => {
     });
 
     it('has correct item thumbnail id', async () => {
-        assert(thumbnailJson[0].id === 'http://test.com/collection/sub-collection/manifest/thumb.png');
+        assert(thumbnailJson[0].id === collectionUrl + '/sub-collection/manifest/thumb.png');
     });
 
     it('can find manifest index.json', async () => {
