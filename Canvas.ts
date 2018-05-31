@@ -13,6 +13,7 @@ import { Directory } from './Directory';
 export class Canvas {
 
     canvasJson: any;
+    directory: Directory;
     parentDirectory: Directory;
     filePath: string;
     infoYml: any = {};
@@ -21,10 +22,13 @@ export class Canvas {
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
         this.parentDirectory = parentDirectory;
+        // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
+        // this.directory.read() is never called.
+        this.directory = new Directory(this.filePath, urljoin(this.parentDirectory.url.href, basename(this.filePath)), undefined, this.parentDirectory);
         this.url = parentDirectory.url;
     }
 
-    public create(canvasJson: any): void {
+    public read(canvasJson: any): void {
 
         this.canvasJson = canvasJson;
         this._getMetadata();
@@ -153,7 +157,7 @@ export class Canvas {
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        Utils.getThumbnail(this.canvasJson, this.parentDirectory, this.filePath);
+        Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
     }
 
     private _annotatePaintableFiles(canvasJson: any): void {

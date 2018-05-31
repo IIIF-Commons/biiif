@@ -36,7 +36,7 @@ export class Directory {
 
     }
 
-    public create(): void {
+    public read(): void {
         // canvases are directories starting with an underscore
         const canvasesPattern: string = this.filePath + '/_*';
 
@@ -67,7 +67,7 @@ export class Directory {
             const name: string = basename(directory);
             const url: string = urljoin(this.url.href, name);
             const newDirectory: Directory = new Directory(directory, url, undefined, this);
-            newDirectory.create();
+            newDirectory.read();
             this.directories.push(newDirectory);
         });
 
@@ -194,7 +194,7 @@ export class Directory {
                 canvasJson.id = urljoin(this.url.href, 'index.json/canvas', index);
                 canvasJson.items[0].id = urljoin(this.url.href, 'index.json/canvas', index, 'annotationpage/0');
 
-                canvas.create(canvasJson);
+                canvas.read(canvasJson);
 
                 // add canvas to items
                 this.indexJson.items.push(canvasJson);
