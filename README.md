@@ -145,8 +145,3 @@ lord-of-the-rings                  // collection
     ├── info.yml                   // manifest metadata
     └── thumb.jpg                  // manifest thumbnail
 ```
-
-
-
-
-

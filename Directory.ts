@@ -16,6 +16,7 @@ const manifestItemBoilerplate = require('./boilerplate/manifestitem');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
+    
     directories: Directory[] = [];
     filePath: string;
     indexJson: any;

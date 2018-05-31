@@ -11,6 +11,7 @@ import { Motivations } from './Motivations';
 import { Directory } from './Directory';
 
 export class Canvas {
+    
     canvasJson: any;
     directory: Directory;
     filePath: string;
