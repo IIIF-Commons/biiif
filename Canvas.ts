@@ -11,17 +11,17 @@ import { Motivations } from './Motivations';
 import { Directory } from './Directory';
 
 export class Canvas {
-    
+
     canvasJson: any;
-    directory: Directory;
+    parentDirectory: Directory;
     filePath: string;
     infoYml: any = {};
     url: URL;
 
-    constructor(filePath: string, directory: Directory) {
+    constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
-        this.directory = directory;
-        this.url = directory.url;
+        this.parentDirectory = parentDirectory;
+        this.url = parentDirectory.url;
     }
 
     public create(canvasJson: any): void {
@@ -153,7 +153,7 @@ export class Canvas {
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
+        Utils.getThumbnail(this.canvasJson, this.parentDirectory, this.filePath);
     }
 
     private _annotatePaintableFiles(canvasJson: any): void {

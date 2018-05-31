@@ -15,7 +15,7 @@ export const build = (dir: string, url: string, virtualname?: string): void => {
         throw new Error('You must pass a url parameter');
     }
 
-    new Directory(dir, url, virtualname);
+    new Directory(dir, url, virtualname).create();
 
     console.log(chalk.white('finished biiifing ' + dir));
 }

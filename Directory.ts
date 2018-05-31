@@ -16,7 +16,7 @@ const manifestItemBoilerplate = require('./boilerplate/manifestitem');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
-    
+
     directories: Directory[] = [];
     filePath: string;
     indexJson: any;
@@ -33,9 +33,12 @@ export class Directory {
         this.url = new URL(url);
         this.parentDirectory = parentDirectory;
         this.virtualName = virtualName;
-        
+
+    }
+
+    public create(): void {
         // canvases are directories starting with an underscore
-        const canvasesPattern: string = filePath + '/_*';
+        const canvasesPattern: string = this.filePath + '/_*';
 
         const canvases: string[] = glob.sync(canvasesPattern, {
             ignore: [
@@ -50,7 +53,7 @@ export class Directory {
 
         // directories not starting with an underscore
         // these can be child manifests or child collections
-        const directoriesPattern: string = filePath + '/*';
+        const directoriesPattern: string = this.filePath + '/*';
 
         const directories: string[] = glob.sync(directoriesPattern, {
             ignore: [
@@ -63,7 +66,9 @@ export class Directory {
             console.log(chalk.green('creating directory for: ') + directory);
             const name: string = basename(directory);
             const url: string = urljoin(this.url.href, name);
-            this.directories.push(new Directory(directory, url, undefined, this));
+            const newDirectory: Directory = new Directory(directory, url, undefined, this);
+            newDirectory.create();
+            this.directories.push(newDirectory);
         });
 
         this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);
@@ -178,6 +183,7 @@ export class Directory {
             });
 
         } else {
+
             this.indexJson = Utils.cloneJson(manifestBoilerplate);
 
             // for each canvas, add canvas json
