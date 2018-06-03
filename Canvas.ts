@@ -19,8 +19,6 @@ export class Canvas {
     public infoYml: any = {};
     public url: URL;
 
-    private _isCanvasDirectory: boolean = false;
-
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
         this.parentDirectory = parentDirectory;
@@ -30,6 +28,10 @@ export class Canvas {
         this.url = parentDirectory.url;
     }
 
+    private _isCanvasDirectory(): boolean {
+        return basename(this.filePath).startsWith('_');
+    }
+
     public read(canvasJson: any): void {
 
         this.canvasJson = canvasJson;
@@ -37,9 +39,7 @@ export class Canvas {
         this._applyMetadata();
 
         // if the filepath starts with an underscore
-        if (basename(this.filePath).startsWith('_')) {
-
-            this._isCanvasDirectory = true;
+        if (this._isCanvasDirectory()) {
 
             // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
             // if there are, loop through them creating the custom annotations.
@@ -193,7 +193,7 @@ export class Canvas {
             let directoryName: string = '';
 
             // if the canvas is being generated from a canvas directory (starts with an _)
-            if (this._isCanvasDirectory) {
+            if (this._isCanvasDirectory()) {
                 directoryName = dirname(file);
                 directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
             }
