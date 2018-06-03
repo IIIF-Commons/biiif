@@ -16,22 +16,30 @@ const manifestItemBoilerplate = require('./boilerplate/manifestitem');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 
 export class Directory {
-    filePath: string;
-    url: URL;
-    isCollection: boolean;
-    items: Canvas[] = [];
-    directories: Directory[] = [];
-    infoYml: any;
-    indexJson: any;
 
-    constructor(filePath: string, url: string) {
-        
+    public directories: Directory[] = [];
+    public filePath: string;
+    public indexJson: any;
+    public infoYml: any;
+    public isCollection: boolean;
+    public items: Canvas[] = [];
+    public parentDirectory: Directory | undefined;
+    public url: URL;
+    public virtualName: string | undefined; // used when root directories are dat/ipfs ids
+
+    constructor(filePath: string, url: string, virtualName?: string, parentDirectory?: Directory) {
+    
         this.filePath = filePath;
         this.url = new URL(url);
-        
+        this.parentDirectory = parentDirectory;
+        this.virtualName = virtualName;
+
+    }
+
+    public read(): void {
+
         // canvases are directories starting with an underscore
-        // or any file that isn't *.yml or thumb.*
-        const canvasesPattern: string = filePath + '/*';
+        const canvasesPattern: string = this.filePath + '/_*';
 
         const canvases: string[] = glob.sync(canvasesPattern, {
             ignore: [
@@ -42,12 +50,12 @@ export class Directory {
 
         canvases.forEach((canvas: string) => {
             console.log(chalk.green('creating canvas for: ') + canvas);
-            this.items.push(new Canvas(canvas, this.url));
+            this.items.push(new Canvas(canvas, this));
         });
 
         // directories not starting with an underscore
         // these can be child manifests or child collections
-        const directoriesPattern: string = filePath + '/*';
+        const directoriesPattern: string = this.filePath + '/*';
 
         const directories: string[] = glob.sync(directoriesPattern, {
             ignore: [
@@ -58,8 +66,31 @@ export class Directory {
 
         directories.forEach((directory: string) => {
             console.log(chalk.green('creating directory for: ') + directory);
-            this.directories.push(new Directory(directory, urljoin(this.url.href, basename(directory))));
+            const name: string = basename(directory);
+            const url: string = urljoin(this.url.href, name);
+            const newDirectory: Directory = new Directory(directory, url, undefined, this);
+            newDirectory.read();
+            this.directories.push(newDirectory);
         });
+
+        // if there are no canvas, manifest, or collection directories to read,
+        // but there are paintable files in the current directory,
+        // create a canvas for each.
+        if (!this.directories.length && !canvases.length) {
+
+            const paintableFiles: string[] = glob.sync(this.filePath + '/*.*', {
+                ignore: [
+                    '**/*.yml',
+                    '**/thumb.*'
+                ]
+            });
+
+            paintableFiles.forEach((file: string) => {
+                console.log(chalk.green('creating canvas for: ') + file);
+                this.items.push(new Canvas(file, this));
+            });
+
+        }
 
         this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);
 
@@ -120,7 +151,7 @@ export class Directory {
                 itemJson.id = urljoin(directory.url.href, 'index.json');
                 itemJson.label = Utils.getLabel(directory.infoYml.label);
 
-                Utils.getThumbnail(itemJson, directory.url, directory.filePath);
+                Utils.getThumbnail(itemJson, directory);
 
                 this.indexJson.items.push(itemJson); 
             });
@@ -173,6 +204,7 @@ export class Directory {
             });
 
         } else {
+
             this.indexJson = Utils.cloneJson(manifestBoilerplate);
 
             // for each canvas, add canvas json
@@ -183,7 +215,7 @@ export class Directory {
                 canvasJson.id = urljoin(this.url.href, 'index.json/canvas', index);
                 canvasJson.items[0].id = urljoin(this.url.href, 'index.json/canvas', index, 'annotationpage/0');
 
-                canvas.create(canvasJson);
+                canvas.read(canvasJson);
 
                 // add canvas to items
                 this.indexJson.items.push(canvasJson);
@@ -194,7 +226,7 @@ export class Directory {
 
         this._applyMetadata();
 
-        Utils.getThumbnail(this.indexJson, this.url, this.filePath);
+        Utils.getThumbnail(this.indexJson, this);
 
         // write index.json
         writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));

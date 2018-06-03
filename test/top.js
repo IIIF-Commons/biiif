@@ -17,7 +17,14 @@ function importTest(name, path) {
 
 before(async () => {
     mock({
+        '/files-only-manifest': {
+            'file.gltf': 'gltf',
+            'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+            'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
+        },
         '/gh-collection': {
+            'info.yml': 'label: My Test Collection',
+            'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
             'vertebra': {
                 'thumb.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 'info.yml': 'label: Vertebra',
@@ -167,6 +174,7 @@ after(async () => {
 })
 
 importTest('utils', './tests/utils');
+importTest('files-only-manifest', './tests/files-only-manifest');
 importTest('gh-pages', './tests/gh-pages');
 importTest('collection-no-manifests', './tests/collection-no-manifests');
 importTest('collection', './tests/collection');
@@ -175,3 +183,4 @@ importTest('content-annotation-per-canvas', './tests/content-annotation-per-canv
 importTest('erroneous-file', './tests/erroneous-file');
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
+importTest('dat-gateway', './tests/dat-gateway');

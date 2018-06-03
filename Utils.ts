@@ -2,7 +2,7 @@
 const { dirname } = require('path');
 const { existsSync } = require('fs');
 const { glob } = require('glob');
-const { join } = require('path');
+const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
 const Jimp = require("jimp");
@@ -12,6 +12,7 @@ const urljoin = require('url-join');
 import { Motivations } from "./Motivations";
 import { TypeFormat } from "./TypeFormat";
 import { Types } from "./Types";
+import { Directory } from "./Directory";
 
 export class Utils {
 
@@ -127,20 +128,57 @@ export class Utils {
         return existsSync(manifestsPath);
     }
 
-    public static getThumbnail(json: any, url: URL, filePath: string): any {
-        const thumbnailPattern: string = filePath + '/thumb.*';
+    // If filePath is:
+    // C://Users/edsilv/github/edsilv/biiif-workshop/collection/_abyssinian/thumb.jpeg
+    // and 'collection' has been replaced by the top-level virtual name 'virtualname'
+    // it should return:
+    // C://Users/edsilv/github/edsilv/biiif-workshop/virtualname/_abyssinian/thumb.jpeg
+    // virtual names are needed when using dat or ipfs ids as the root directory.
+    public static getVirtualFilePath(filePath: string, directory: Directory): string {
+
+        // walk up directory parents building the realPath and virtualPath array as we go.
+        // at the top level directory, use the real name for realPath and the virtual name for virtualPath.
+        // reverse the arrays and join with a '/'.
+        // replace the realPath section of filePath with virtualPath.
+
+        let realPath: string[] = [basename(filePath)];
+        let virtualPath: string[] = [basename(filePath)];
+
+        while(directory) {
+            const realName: string = basename(directory.filePath);
+            const virtualName: string = directory.virtualName || realName;
+            realPath.push(realName);
+            virtualPath.push(virtualName);
+            directory = directory.parentDirectory;
+        }
+
+        realPath = realPath.reverse();
+        virtualPath = virtualPath.reverse();
+
+        const realPathString: string = realPath.join('/');
+        const virtualPathString: string = virtualPath.join('/');
+
+        filePath = Utils.normaliseFilePath(filePath);
+        filePath = filePath.replace(realPathString, virtualPathString);
+
+        return filePath;
+    }
+
+    public static getThumbnail(json: any, directory: Directory, filePath?: string): any {
+        const fp: string = filePath || directory.filePath;
+        const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = glob.sync(thumbnailPattern);
 
         if (thumbnails.length) {
-            console.log(chalk.green('found thumbnail for: ') + filePath);
+            console.log(chalk.green('found thumbnail for: ') + fp);
             let thumbnail: string = thumbnails[0];
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-            thumbnailJson[0].id = Utils.mergePaths(url, thumbnail);
+            thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(thumbnail, directory));
             json.thumbnail = thumbnailJson;
         } else {
             // generate thumbnail
             if (json.items && json.items.length && json.items[0].items) {
-                console.log(chalk.green('generating thumbnail for: ') + filePath);
+                console.log(chalk.green('generating thumbnail for: ') + fp);
                 // find an annotation with a painting motivation of type image.
                 const items =  json.items[0].items;
 
@@ -150,7 +188,7 @@ export class Utils {
                     if (body && item.motivation === Motivations.PAINTING) {
                         if (body.type.toLowerCase() === Types.IMAGE) {
                             const imageName = body.id.substr(body.id.lastIndexOf('/'));
-                            const imagePath = join(filePath, imageName);
+                            const imagePath = join(fp, imageName);
                             Jimp.read(imagePath).then((image) => {
                                 const thumb = image.clone();
                                 // write image buffer to disk for testing
@@ -162,14 +200,14 @@ export class Utils {
                                 thumb.cover(config.thumbnails.width, config.thumbnails.height);
                                 const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
                                 thumb.write(pathToThumb, () => {
-                                    console.log(chalk.green('generated thumbnail for: ') + filePath);
+                                    console.log(chalk.green('generated thumbnail for: ') + fp);
                                 });
                                 const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-                                thumbnailJson[0].id = Utils.mergePaths(url, pathToThumb);
+                                thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
                                 json.thumbnail = thumbnailJson;
                             }).catch(function (err) {
                                 //console.log(chalk.red(err));
-                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + filePath);
+                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + fp);
                             });
                         }
                     }
@@ -200,18 +238,16 @@ export class Utils {
         // walk backwards through the filePath array adding to the newPath array until the last item of the url array is found.
         // then while the next url item matches the next filePath item, add it to newPath.
         // the final path is the url origin plus a reversed newPath joined with a '/'
-
-        let origin: string = url.origin;
-        let urlParts: string[];
+        
+        let origin = url.origin;
 
         if (url.protocol === 'dat:') {
             origin = 'dat://';
-            urlParts = url.href.replace(origin, '').split('/');
-        } else {
-            urlParts = url.href.replace(origin + '/', '').split('/');
         }
 
-        filePath = filePath.replace(/\\/g, '/');
+        const urlParts = Utils.getUrlParts(url);
+
+        filePath = Utils.normaliseFilePath(filePath);
         const fileParts: string[] = filePath.split('/');
         const newPath: string[] = [];
 
@@ -237,5 +273,23 @@ export class Utils {
         let id: string = urljoin(origin, ...newPath.reverse());
 
         return id;
+    }
+
+    public static normaliseFilePath(filePath: string): string {
+        return filePath.replace(/\\/g, '/').replace(/\/\//g, '/');
+    }
+
+    public static getUrlParts(url: URL): string[] {
+        let origin: string = url.origin;
+        let urlParts: string[];
+
+        if (url.protocol === 'dat:') {
+            origin = 'dat://';
+            urlParts = url.href.replace(origin, '').split('/');
+        } else {
+            urlParts = url.href.replace(origin + '/', '').split('/');
+        }
+
+        return urlParts;
     }
 }

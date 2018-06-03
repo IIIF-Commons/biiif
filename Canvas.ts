@@ -8,140 +8,168 @@ const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Utils } from './Utils';
 import { Motivations } from './Motivations';
+import { Directory } from './Directory';
 
 export class Canvas {
-    canvasJson: any;
-    filePath: string;
-    infoYml: any = {};
-    url: URL;
 
-    constructor(filePath: string, url: URL) {
+    public canvasJson: any;
+    public directory: Directory;
+    public parentDirectory: Directory;
+    public filePath: string;
+    public infoYml: any = {};
+    public url: URL;
+
+    private _isCanvasDirectory: boolean = false;
+
+    constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
-        this.url = url;
+        this.parentDirectory = parentDirectory;
+        // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
+        // this.directory.read() is never called.
+        this.directory = new Directory(this.filePath, urljoin(this.parentDirectory.url.href, basename(this.filePath)), undefined, this.parentDirectory);
+        this.url = parentDirectory.url;
     }
 
-    public create(canvasJson: any): void {
+    public read(canvasJson: any): void {
 
         this.canvasJson = canvasJson;
         this._getMetadata();
         this._applyMetadata();
 
-        // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
-        // if there are, loop through them creating the custom annotations.
-        // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
+        // if the filepath starts with an underscore
+        if (basename(this.filePath).startsWith('_')) {
 
-        const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
-            ignore: [
-                '**/info.yml'
-            ]
-        });
+            this._isCanvasDirectory = true;
 
-        let hasPaintingAnnotation: boolean = false;
+            // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
+            // if there are, loop through them creating the custom annotations.
+            // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
 
-        customAnnotationFiles.forEach((file: string) => {
+            const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
+                ignore: [
+                    '**/info.yml'
+                ]
+            });
 
-            let directoryName: string = dirname(file);
-            directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
-            const name: string = basename(file, extname(file));
-            const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
-            const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
+            let hasPaintingAnnotation: boolean = false;
 
-            annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
+            customAnnotationFiles.forEach((file: string) => {
 
-            let motivation: string | undefined = yml.motivation;
+                let directoryName: string = dirname(file);
+                directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
+                const name: string = basename(file, extname(file));
+                const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
+                const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
 
-            if (!motivation) {
-                // assume painting
-                motivation = Motivations.PAINTING;
-                console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
-            }
+                annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
 
-            annotationJson.motivation = motivation;
-            annotationJson.target = canvasJson.id;
+                let motivation: string | undefined = yml.motivation;
 
-            let id: string;
-
-            // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
-            if ((motivation.toLowerCase() === Motivations.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
-                hasPaintingAnnotation = true;
-                id = urljoin(this.url.href, directoryName, yml.value);
-            } else {
-                id = urljoin(this.url.href, 'index.json', 'annotations', name);
-            }
-
-            annotationJson.body.id = id;
-
-            if (yml.type) {
-                annotationJson.body.type = yml.type;
-            } else if (yml.value && extname(yml.value)) {
-                // guess the type from the extension
-                const type: string | undefined = Utils.getTypeByExtension(motivation, extname(yml.value));
-
-                if (type) {
-                    annotationJson.body.type = type;
-                    console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                if (!motivation) {
+                    // assume painting
+                    motivation = Motivations.PAINTING;
+                    console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
                 }
 
-            } else if (yml.format) {
-                // guess the type from the format
-                const type: string | undefined = Utils.getTypeByFormat(motivation, yml.format);
+                annotationJson.motivation = motivation;
+                annotationJson.target = canvasJson.id;
 
-                if (type) {
-                    annotationJson.body.type = type;
-                    console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                let id: string;
+
+                // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
+                if ((motivation.toLowerCase() === Motivations.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
+                    hasPaintingAnnotation = true;
+                    id = urljoin(this.url.href, directoryName, yml.value);
+                } else {
+                    id = urljoin(this.url.href, 'index.json', 'annotations', name);
                 }
-            }
 
-            if (!annotationJson.body.type) {
-                delete annotationJson.body.type;
-                console.warn(chalk.yellow('unable to determine type of ' + file));
-            }
+                annotationJson.body.id = id;
 
-            if (yml.format) {
-                annotationJson.body.format = yml.format;
-            } else if (yml.value && extname(yml.value) && yml.type) {
-                // guess the format from the extension and type
-                const format: string | undefined = Utils.getFormatByExtensionAndType(motivation, extname(yml.value), yml.type);
+                if (yml.type) {
+                    annotationJson.body.type = yml.type;
+                } else if (yml.value && extname(yml.value)) {
+                    // guess the type from the extension
+                    const type: string | undefined = Utils.getTypeByExtension(motivation, extname(yml.value));
 
-                if (format) {
-                    annotationJson.body.format = format;
-                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                    if (type) {
+                        annotationJson.body.type = type;
+                        console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                    }
+
+                } else if (yml.format) {
+                    // guess the type from the format
+                    const type: string | undefined = Utils.getTypeByFormat(motivation, yml.format);
+
+                    if (type) {
+                        annotationJson.body.type = type;
+                        console.warn(chalk.yellow('type property missing in ' + file + ', guessed ' + type));
+                    }
                 }
-            } else if (yml.value && extname(yml.value)) {
-                // guess the format from the extension
-                const format: string | undefined = Utils.getFormatByExtension(motivation, extname(yml.value));
 
-                if (format) {
-                    annotationJson.body.format = format;
-                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                if (!annotationJson.body.type) {
+                    delete annotationJson.body.type;
+                    console.warn(chalk.yellow('unable to determine type of ' + file));
                 }
-            } else if (yml.type) {
-                // can only guess the format from the type if there is one typeformat for this motivation.
-                const format: string | undefined = Utils.getFormatByType(motivation, yml.type);
 
-                if (format) {
-                    annotationJson.body.format = format;
-                    console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
-                } 
+                if (yml.format) {
+                    annotationJson.body.format = yml.format;
+                } else if (yml.value && extname(yml.value) && yml.type) {
+                    // guess the format from the extension and type
+                    const format: string | undefined = Utils.getFormatByExtensionAndType(motivation, extname(yml.value), yml.type);
+
+                    if (format) {
+                        annotationJson.body.format = format;
+                        console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                    }
+                } else if (yml.value && extname(yml.value)) {
+                    // guess the format from the extension
+                    const format: string | undefined = Utils.getFormatByExtension(motivation, extname(yml.value));
+
+                    if (format) {
+                        annotationJson.body.format = format;
+                        console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                    }
+                } else if (yml.type) {
+                    // can only guess the format from the type if there is one typeformat for this motivation.
+                    const format: string | undefined = Utils.getFormatByType(motivation, yml.type);
+
+                    if (format) {
+                        annotationJson.body.format = format;
+                        console.warn(chalk.yellow('format property missing in ' + file + ', guessed ' + format));
+                    } 
+                }
+
+                if (!annotationJson.body.format) {
+                    delete annotationJson.body.format;
+                    console.warn(chalk.yellow('unable to determine format of ' + file));
+                }
+                
+                annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+
+                // if there's a value, and we're using a recognised motivation (except painting)
+                if (yml.value && config.annotation.motivations[motivation] && motivation !== Motivations.PAINTING) {
+                    annotationJson.body.value = yml.value;
+                }
+
+                canvasJson.items[0].items.push(annotationJson);          
+            });
+
+            if (!hasPaintingAnnotation) {
+                // for each jpg/pdf/mp4/obj in the canvas directory
+                // add a painting annotation
+                const paintableFiles: string[] = glob.sync(this.filePath + '/*.*', {
+                    ignore: [
+                        '**/thumb.*' // ignore thumbs
+                    ]
+                });
+                this._annotateFiles(canvasJson, paintableFiles);
             }
 
-            if (!annotationJson.body.format) {
-                delete annotationJson.body.format;
-                console.warn(chalk.yellow('unable to determine format of ' + file));
-            }
-            
-            annotationJson.body.label = Utils.getLabel(this.infoYml.label);
-
-            // if there's a value, and we're using a recognised motivation (except painting)
-            if (yml.value && config.annotation.motivations[motivation] && motivation !== Motivations.PAINTING) {
-                annotationJson.body.value = yml.value;
-            }
-
-            canvasJson.items[0].items.push(annotationJson);          
-        });
-
-        if (!hasPaintingAnnotation) {
-            this._annotatePaintableFiles(canvasJson);
+        } else {
+            // a file was passed (not a directory starting with an underscore)
+            // therefore, just annotate that file onto the canvas.
+            this._annotateFiles(canvasJson, [this.filePath]);
         }
 
         if (!canvasJson.items[0].items.length) {
@@ -149,27 +177,27 @@ export class Canvas {
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        Utils.getThumbnail(this.canvasJson, this.url, this.filePath);
+        Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
     }
 
-    private _annotatePaintableFiles(canvasJson: any): void {
-        // for each jpg/pdf/mp4/obj in the canvas directory
-        // add a painting annotation
-        const paintableFiles: string[] = glob.sync(this.filePath + '/*.*', {
-            ignore: [
-                '**/thumb.*' // ignore thumbs
-            ]
-        });
+    private _annotateFiles(canvasJson: any, files: string[]): void {
+        
+        files.forEach((file: string) => {
 
-        paintableFiles.forEach((file: string) => {
-
+            file = Utils.normaliseFilePath(file);
             const extName: string = extname(file);
 
             // if config.annotation has a matching extension
             let defaultPaintingExtension: any = config.annotation.motivations.painting[extName];
 
-            let directoryName: string = dirname(file);
-            directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
+            let directoryName: string = '';
+
+            // if the canvas is being generated from a canvas directory (starts with an _)
+            if (this._isCanvasDirectory) {
+                directoryName = dirname(file);
+                directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
+            }
+            
             const fileName: string = basename(file);
             const id: string = urljoin(this.url.href, directoryName, fileName);
 

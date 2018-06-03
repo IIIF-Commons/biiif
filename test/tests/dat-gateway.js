@@ -9,12 +9,12 @@ const URL = common.URL;
 const urljoin = common.urljoin;
 const Utils = common.Utils;
 
-let collectionJson, manifestJson, canvasJson, thumbnailJson, item, annotationPage, imageAnnotation;
-const collectionUrl = 'http://test.com/collection';
+let collectionJson, thumbnailJson, item, manifestJson;
+const collectionUrl = 'http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772';
 
 it('can build collection', async () => {
     assert(fs.existsSync('/collection'));
-    build('/collection', collectionUrl);
+    build('/collection', collectionUrl, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
 }).timeout(1000); // should take less than a second
 
 it('can find collection index.json', async () => {
