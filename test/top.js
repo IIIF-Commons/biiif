@@ -22,6 +22,11 @@ before(async () => {
             'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
             'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
         },
+        '/files-only-manifest-dat': {
+            'file.gltf': 'gltf',
+            'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+            'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
+        },
         '/files-only-collection': {
             'files-only-manifest': {
                 'file.gltf': 'gltf',
@@ -182,6 +187,7 @@ after(async () => {
 
 importTest('utils', './tests/utils');
 importTest('files-only-manifest', './tests/files-only-manifest');
+importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
 importTest('files-only-collection', './tests/files-only-collection');
 importTest('gh-pages', './tests/gh-pages');
 importTest('collection-no-manifests', './tests/collection-no-manifests');
