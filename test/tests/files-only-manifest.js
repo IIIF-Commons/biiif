@@ -18,7 +18,6 @@ it('can build manifest', async () => {
     build(manifest, manifestUrl);
 }).timeout(1000); // should take less than a second
 
-
 it('can find ' + manifest + ' index.json', async () => {
     const file = urljoin(manifest, 'index.json');
     assert(fs.existsSync(file));
