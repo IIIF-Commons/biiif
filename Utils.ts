@@ -1,4 +1,3 @@
-// const fs = require('fs');
 const { dirname } = require('path');
 const { existsSync } = require('fs');
 const { glob } = require('glob');
@@ -164,7 +163,7 @@ export class Utils {
         return filePath;
     }
 
-    public static getThumbnail(json: any, directory: Directory, filePath?: string): any {
+    public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
         const fp: string = filePath || directory.filePath;
         const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = glob.sync(thumbnailPattern);
@@ -175,7 +174,8 @@ export class Utils {
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(thumbnail, directory));
             json.thumbnail = thumbnailJson;
-        } else {
+        } else if (directory.generateThumbs) {
+            // if debugging: jimp item.getitem is not a function
             // generate thumbnail
             if (json.items && json.items.length && json.items[0].items) {
                 console.log(chalk.green('generating thumbnail for: ') + fp);
@@ -189,31 +189,27 @@ export class Utils {
                         if (body.type.toLowerCase() === Types.IMAGE) {
                             const imageName = body.id.substr(body.id.lastIndexOf('/'));
                             const imagePath = join(fp, imageName);
-                            Jimp.read(imagePath).then((image) => {
-                                const thumb = image.clone();
-                                // write image buffer to disk for testing
-                                // image.getBuffer(Jimp.AUTO, (err, buffer) => {
-                                //     const arrBuffer = [...buffer];
-                                //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
-                                //     fs.writeFile(pathToBuffer, arrBuffer);
-                                // });
-                                thumb.cover(config.thumbnails.width, config.thumbnails.height);
-                                const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
-                                thumb.write(pathToThumb, () => {
-                                    console.log(chalk.green('generated thumbnail for: ') + fp);
-                                });
-                                const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-                                thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
-                                json.thumbnail = thumbnailJson;
-                            }).catch(function (err) {
-                                //console.log(chalk.red(err));
-                                console.warn(chalk.yellow('unable to generate thumbnail for: ') + fp);
+                            const image = await Jimp.read(imagePath);
+                            const thumb = image.clone();
+                            // write image buffer to disk for testing
+                            // image.getBuffer(Jimp.AUTO, (err, buffer) => {
+                            //     const arrBuffer = [...buffer];
+                            //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
+                            //     fs.writeFile(pathToBuffer, arrBuffer);
+                            // });
+                            thumb.cover(config.thumbnails.width, config.thumbnails.height);
+                            const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
+                            thumb.write(pathToThumb, () => {
+                                console.log(chalk.green('generated thumbnail for: ') + fp);
                             });
+                            const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
+                            thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
+                            json.thumbnail = thumbnailJson;
+
                         }
                     }
                 }
             }
-
         }
     }
 

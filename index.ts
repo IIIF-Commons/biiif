@@ -2,7 +2,7 @@ import { Directory } from './Directory';
 const chalk = require('chalk');
 const { existsSync } = require('fs');
 
-export const build = (dir: string, url: string, virtualname?: string): void => {
+export const build = async (dir: string, url: string, generateThumbs: boolean = true, virtualname?: string): Promise<void> => {
     console.log(chalk.white('started biiifing ' + dir));
     
     // validate inputs
@@ -15,7 +15,7 @@ export const build = (dir: string, url: string, virtualname?: string): void => {
         throw new Error('You must pass a url parameter');
     }
 
-    new Directory(dir, url, virtualname).read();
-
+    await new Directory(dir, url, generateThumbs, virtualname).read();
+    
     console.log(chalk.white('finished biiifing ' + dir));
 }

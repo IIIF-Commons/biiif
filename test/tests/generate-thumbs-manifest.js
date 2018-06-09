@@ -14,7 +14,7 @@ const generateThumbsManifestUrl = 'http://test.com/generate-thumbs-manifest';
 
 it('can build generate-thumbs-manifest', async () => {
     assert(fs.existsSync('/generate-thumbs-manifest'));
-    build('/generate-thumbs-manifest', generateThumbsManifestUrl);
+    build('/generate-thumbs-manifest', generateThumbsManifestUrl, false);
 }).timeout(1000); // should take less than a second
 
 it('can find manifest index.json', async () => {

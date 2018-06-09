@@ -24,7 +24,7 @@ export class Canvas {
         this.parentDirectory = parentDirectory;
         // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
         // this.directory.read() is never called.
-        this.directory = new Directory(this.filePath, urljoin(this.parentDirectory.url.href, basename(this.filePath)), undefined, this.parentDirectory);
+        this.directory = new Directory(this.filePath, urljoin(this.parentDirectory.url.href, basename(this.filePath)), this.parentDirectory.generateThumbs, undefined, this.parentDirectory);
         this.url = parentDirectory.url;
     }
 
@@ -32,7 +32,7 @@ export class Canvas {
         return basename(this.filePath).startsWith('_');
     }
 
-    public read(canvasJson: any): void {
+    public async read(canvasJson: any): Promise<void> {
 
         this.canvasJson = canvasJson;
         this._getMetadata();
@@ -177,7 +177,7 @@ export class Canvas {
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
+        await Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
     }
 
     private _annotateFiles(canvasJson: any, files: string[]): void {
