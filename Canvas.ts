@@ -1,13 +1,8 @@
-const { promisify } = require('util');
-const fs = require('fs');
-const stat = promisify(fs.stat);
-const readFileAsync = promisify(fs.readFile);
 const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
 const config = require('./config');
 const urljoin = require('url-join');
-const yaml = require('js-yaml');
 import { Directory } from './Directory';
 import { Motivations } from './Motivations';
 import { promise as glob } from 'glob-promise';
@@ -62,7 +57,7 @@ export class Canvas {
                 directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
                 const name: string = basename(file, extname(file));
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
-                const yml: any = yaml.safeLoad(await readFileAsync(file, 'utf8'));
+                const yml: any = await Utils.readYml(file);
 
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
 
@@ -226,11 +221,12 @@ export class Canvas {
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
-        try {
-            await stat(ymlPath);
-            this.infoYml = yaml.safeLoad(await readFileAsync(ymlPath, 'utf8'));
+        const fileExists: boolean = await Utils.fileExists(ymlPath);
+
+        if (fileExists) {
+            this.infoYml = await Utils.readYml(ymlPath);
             console.log(chalk.green('got metadata for: ') + this.filePath);
-        } catch {
+        } else {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 

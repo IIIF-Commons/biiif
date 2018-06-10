@@ -1,6 +1,8 @@
 const { promisify } = require('util');
 const fs = require('fs');
 const stat = promisify(fs.stat);
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.readFile);
 const { dirname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
@@ -9,6 +11,7 @@ const Jimp = require("jimp");
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
+const yaml = require('js-yaml');
 import { Directory } from "./Directory";
 import { Motivations } from "./Motivations";
 import { promise as glob } from 'glob-promise';
@@ -124,7 +127,7 @@ export class Utils {
         return formattedMetadata;
     }
 
-    public static async hasManifestsYML(filePath: string): Promise<boolean> {
+    public static async hasManifestsYml(filePath: string): Promise<boolean> {
         const manifestsPath: string = join(filePath, 'manifests.yml');
         try {
             await stat(manifestsPath);
@@ -294,5 +297,22 @@ export class Utils {
         }
 
         return urlParts;
+    }
+
+    public static async writeJson(path: string, json: string): Promise<void> {
+        return await writeFileAsync(path, json, { encoding: 'utf8' });
+    }
+
+    public static async readYml(ymlPath: string): Promise<void> {
+        return yaml.safeLoad(await readFileAsync(ymlPath, {encoding: 'utf8'}));
+    }
+
+    public static async fileExists(filePath: string): Promise<boolean> {
+        try {
+            await stat(filePath);
+            return true;
+        } catch {
+            return false;
+        }
     }
 }

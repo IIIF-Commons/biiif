@@ -1,13 +1,7 @@
-const { promisify } = require('util');
-const fs = require('fs');
-const stat = promisify(fs.stat);
-const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.readFile);
 const { join, basename } = require('path');
 const { URL } = require('url');
 const chalk = require('chalk');
 const urljoin = require('url-join');
-const yaml = require('js-yaml');
 import { Canvas } from './Canvas';
 import { promise as glob } from 'glob-promise';
 import { Utils } from './Utils';
@@ -98,7 +92,7 @@ export class Directory {
 
         }
 
-        this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYML(this.filePath);
+        this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYml(this.filePath);
 
         await this._getMetadata();
         await this._createIndexJson();
@@ -125,11 +119,12 @@ export class Directory {
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
-        try {
-            await stat(ymlPath);
-            this.infoYml = yaml.safeLoad(await readFileAsync(ymlPath, {encoding: 'utf8'}));
+        const fileExists: boolean = await Utils.fileExists(ymlPath);
+
+        if (fileExists) {
+            this.infoYml = await Utils.readYml(ymlPath);
             console.log(chalk.green('got metadata for: ') + this.filePath);
-        } catch {
+        } else {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 
@@ -164,10 +159,12 @@ export class Directory {
             }));
 
             // check for manifests.yml. if it exists, parse and add to items
-            if (Utils.hasManifestsYML(this.filePath)) {
+            const hasManifestsYml: boolean = await Utils.hasManifestsYml(this.filePath);
+
+            if (hasManifestsYml) {
 
                 const manifestsPath: string = join(this.filePath, 'manifests.yml');
-                const manifestsYml: any = yaml.safeLoad(await readFileAsync(manifestsPath, {encoding: 'utf8'}));
+                const manifestsYml: any = await Utils.readYml(manifestsPath);
 
                 manifestsYml.manifests.forEach((manifest: any) => {
                     const itemJson: any = Utils.cloneJson(collectionItemBoilerplate);
@@ -239,7 +236,7 @@ export class Directory {
         const path: string = join(this.filePath, 'index.json');
         const json: string = JSON.stringify(this.indexJson, null, '  ');
 
-        await writeFileAsync(path, json, { encoding: 'utf8' });
+        await Utils.writeJson(path, json);
 
         console.log(chalk.green('created index.json for: ') + this.filePath);
     }
