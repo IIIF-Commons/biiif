@@ -1,14 +1,17 @@
+const { promisify } = require('util');
+const fs = require('fs');
+const stat = promisify(fs.stat);
+const readFileAsync = promisify(fs.readFile);
 const { basename, dirname, extname, join } = require('path');
-const { existsSync, readFileSync } = require('fs');
-const { glob } = require('glob');
 const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
 const config = require('./config');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
-import { Utils } from './Utils';
-import { Motivations } from './Motivations';
 import { Directory } from './Directory';
+import { Motivations } from './Motivations';
+import { promise as glob } from 'glob-promise';
+import { Utils } from './Utils';
 
 export class Canvas {
 
@@ -35,7 +38,7 @@ export class Canvas {
     public async read(canvasJson: any): Promise<void> {
 
         this.canvasJson = canvasJson;
-        this._getMetadata();
+        await this._getMetadata();
         this._applyMetadata();
 
         // if the filepath starts with an underscore
@@ -45,7 +48,7 @@ export class Canvas {
             // if there are, loop through them creating the custom annotations.
             // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
 
-            const customAnnotationFiles: string[] = glob.sync(this.filePath + '/*.yml', {
+            const customAnnotationFiles: string[] = await glob(this.filePath + '/*.yml', {
                 ignore: [
                     '**/info.yml'
                 ]
@@ -53,13 +56,13 @@ export class Canvas {
 
             let hasPaintingAnnotation: boolean = false;
 
-            customAnnotationFiles.forEach((file: string) => {
+            await Promise.all(customAnnotationFiles.map(async (file: string) => {
 
                 let directoryName: string = dirname(file);
                 directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
                 const name: string = basename(file, extname(file));
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
-                const yml: any = yaml.safeLoad(readFileSync(file, 'utf8'));
+                const yml: any = yaml.safeLoad(await readFileAsync(file, 'utf8'));
 
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
 
@@ -153,12 +156,12 @@ export class Canvas {
                 }
 
                 canvasJson.items[0].items.push(annotationJson);          
-            });
+            }));
 
             if (!hasPaintingAnnotation) {
                 // for each jpg/pdf/mp4/obj in the canvas directory
                 // add a painting annotation
-                const paintableFiles: string[] = glob.sync(this.filePath + '/*.*', {
+                const paintableFiles: string[] = await glob(this.filePath + '/*.*', {
                     ignore: [
                         '**/thumb.*' // ignore thumbs
                     ]
@@ -216,17 +219,18 @@ export class Canvas {
         });
     }
 
-    private _getMetadata(): any {
+    private async _getMetadata(): Promise<void> {
         
         this.infoYml = {};
 
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
-        if (existsSync(ymlPath)) {
-            this.infoYml = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
-            console.log(chalk.green('got metadata for: ') + this.filePath);         
-        } else {
+        try {
+            await stat(ymlPath);
+            this.infoYml = yaml.safeLoad(await readFileAsync(ymlPath, 'utf8'));
+            console.log(chalk.green('got metadata for: ') + this.filePath);
+        } catch {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 

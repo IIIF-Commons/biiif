@@ -13,9 +13,10 @@ let manifestJson, canvasJson, annotationPage, annotation, annotationBody;
 const manifest = '/files-only-manifest';
 const manifestUrl = 'http://test.com/files-only-manifest';
 
-it('can build manifest', async () => {
+it('can build manifest', async (done) => {
     assert(fs.existsSync(manifest));
-    build(manifest, manifestUrl, false);
+    await build(manifest, manifestUrl, false);
+    done();
 }).timeout(1000); // should take less than a second
 
 it('can find ' + manifest + ' index.json', async () => {

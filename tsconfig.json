@@ -2,11 +2,11 @@
 	"compilerOptions": {
 		"lib": [
 			"dom",
-			"es2015"
+			"es2017"
 		],
 		"moduleResolution": "node",
 		"module": "commonjs",
-		"target": "es2015",
+		"target": "es2017",
 		"noUnusedLocals": true
 	},
 	"include": [

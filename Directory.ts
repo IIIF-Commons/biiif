@@ -1,11 +1,15 @@
-const { existsSync, readFileSync, writeFileSync } = require('fs');
-const { glob } = require('glob');
+const { promisify } = require('util');
+const fs = require('fs');
+const stat = promisify(fs.stat);
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.readFile);
 const { join, basename } = require('path');
 const { URL } = require('url');
 const chalk = require('chalk');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Canvas } from './Canvas';
+import { promise as glob } from 'glob-promise';
 import { Utils } from './Utils';
 // boilerplate json
 const canvasBoilerplate = require('./boilerplate/canvas');
@@ -43,7 +47,7 @@ export class Directory {
         // canvases are directories starting with an underscore
         const canvasesPattern: string = this.filePath + '/_*';
 
-        const canvases: string[] = glob.sync(canvasesPattern, {
+        const canvases: string[] = await glob(canvasesPattern, {
             ignore: [
                 '**/*.yml',
                 '**/thumb.*'
@@ -59,7 +63,7 @@ export class Directory {
         // these can be child manifests or child collections
         const directoriesPattern: string = this.filePath + '/*';
 
-        const directories: string[] = glob.sync(directoriesPattern, {
+        const directories: string[] = await glob(directoriesPattern, {
             ignore: [
                 '**/*.*', // ignore files
                 '**/_*'   // ignore canvas folders
@@ -80,7 +84,7 @@ export class Directory {
         // create a canvas for each.
         if (!this.directories.length && !canvases.length) {
 
-            const paintableFiles: string[] = glob.sync(this.filePath + '/*.*', {
+            const paintableFiles: string[] = await glob(this.filePath + '/*.*', {
                 ignore: [
                     '**/*.yml',
                     '**/thumb.*'
@@ -94,10 +98,10 @@ export class Directory {
 
         }
 
-        this.isCollection = this.directories.length > 0 || Utils.hasManifestsYML(this.filePath);
+        this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYML(this.filePath);
 
-        this._getMetadata();
-        this._createIndexJson();
+        await this._getMetadata();
+        await this._createIndexJson();
 
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);
@@ -114,17 +118,18 @@ export class Directory {
         }
     }
 
-    private _getMetadata(): any {
+    private async _getMetadata(): Promise<void> {
 
         this.infoYml = {};
 
         // if there's an info.yml
         const ymlPath: string = join(this.filePath, 'info.yml');
 
-        if (existsSync(ymlPath)) {
-            this.infoYml = yaml.safeLoad(readFileSync(ymlPath, 'utf8'));
-            console.log(chalk.green('got metadata for: ') + this.filePath);         
-        } else {
+        try {
+            await stat(ymlPath);
+            this.infoYml = yaml.safeLoad(await readFileAsync(ymlPath, {encoding: 'utf8'}));
+            console.log(chalk.green('got metadata for: ') + this.filePath);
+        } catch {
             console.log(chalk.green('no metadata found for: ') + this.filePath);
         }
 
@@ -162,7 +167,7 @@ export class Directory {
             if (Utils.hasManifestsYML(this.filePath)) {
 
                 const manifestsPath: string = join(this.filePath, 'manifests.yml');
-                const manifestsYml: any = yaml.safeLoad(readFileSync(manifestsPath, 'utf8'));
+                const manifestsYml: any = yaml.safeLoad(await readFileAsync(manifestsPath, {encoding: 'utf8'}));
 
                 manifestsYml.manifests.forEach((manifest: any) => {
                     const itemJson: any = Utils.cloneJson(collectionItemBoilerplate);
@@ -228,10 +233,13 @@ export class Directory {
 
         this._applyMetadata();
 
-        Utils.getThumbnail(this.indexJson, this);
+        await Utils.getThumbnail(this.indexJson, this);
 
         // write index.json
-        writeFileSync(join(this.filePath, 'index.json'), JSON.stringify(this.indexJson, null, '  '));
+        const path: string = join(this.filePath, 'index.json');
+        const json: string = JSON.stringify(this.indexJson, null, '  ');
+
+        await writeFileAsync(path, json, { encoding: 'utf8' });
 
         console.log(chalk.green('created index.json for: ') + this.filePath);
     }

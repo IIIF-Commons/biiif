@@ -1,6 +1,7 @@
+const { promisify } = require('util');
+const fs = require('fs');
+const stat = promisify(fs.stat);
 const { dirname } = require('path');
-const { existsSync } = require('fs');
-const { glob } = require('glob');
 const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
@@ -8,10 +9,11 @@ const Jimp = require("jimp");
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
+import { Directory } from "./Directory";
 import { Motivations } from "./Motivations";
+import { promise as glob } from 'glob-promise';
 import { TypeFormat } from "./TypeFormat";
 import { Types } from "./Types";
-import { Directory } from "./Directory";
 
 export class Utils {
 
@@ -122,9 +124,14 @@ export class Utils {
         return formattedMetadata;
     }
 
-    public static hasManifestsYML(filePath: string): boolean {
+    public static async hasManifestsYML(filePath: string): Promise<boolean> {
         const manifestsPath: string = join(filePath, 'manifests.yml');
-        return existsSync(manifestsPath);
+        try {
+            await stat(manifestsPath);
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     // If filePath is:
@@ -166,7 +173,7 @@ export class Utils {
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
         const fp: string = filePath || directory.filePath;
         const thumbnailPattern: string = fp + '/thumb.*';
-        const thumbnails: string[] = glob.sync(thumbnailPattern);
+        const thumbnails: string[] = await glob(thumbnailPattern);
 
         if (thumbnails.length) {
             console.log(chalk.green('found thumbnail for: ') + fp);
