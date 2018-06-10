@@ -15,7 +15,7 @@ const manifestUrl = 'http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054
 
 it('can build manifest', async () => {
     assert(fs.existsSync(manifest));
-    build(manifest, manifestUrl, false, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
+    return build(manifest, manifestUrl, false, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
 }).timeout(1000); // should take less than a second
 
 it('can find ' + manifest + ' index.json', async () => {

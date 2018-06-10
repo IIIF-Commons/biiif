@@ -110,6 +110,8 @@ export class Directory {
                 console.warn(chalk.yellow(this.filePath + ' is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.'));
             }
         }
+
+        return;
     }
 
     private async _getMetadata(): Promise<void> {

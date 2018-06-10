@@ -15,8 +15,9 @@ const manifestUrl = 'http://test.com/files-only-manifest';
 
 it('can build manifest', async (done) => {
     assert(fs.existsSync(manifest));
-    await build(manifest, manifestUrl, false);
-    done();
+    build(manifest, manifestUrl, false).then(() => {
+        done();
+    });
 }).timeout(1000); // should take less than a second
 
 it('can find ' + manifest + ' index.json', async () => {

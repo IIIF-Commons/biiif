@@ -1,5 +1,4 @@
 const fs = require('fs');
-const fsPromises = fs.promises;
 const { dirname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
@@ -288,60 +287,47 @@ export class Utils {
 
     public static async writeJson(path: string, json: string): Promise<void> {
 
-        let filehandle: any = null;
+        return new Promise<void>((resolve, reject) => {
+            fs.writeFileSync(path, json, 'utf8', (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
 
-        try {
-            filehandle = await fsPromises.open(path, 'w+');
-            await filehandle.writeFile(json);
-        } catch {
-            console.log(chalk.red('unable to write to ' + path));
-        } finally {
-            if (filehandle) {
-                await filehandle.close();
-            }
-        }
     }
 
-    public static async readYml(path: string): Promise<void> {
+    public static async readYml(path: string): Promise<string> {
 
-        let filehandle: any = await fsPromises.open(path, 'r+');
-
-        try {
-            const yml: any = await filehandle.readFile(path);
-            const loaded: any = yaml.safeLoad(yml);
-            return loaded;
-        } catch {
-            console.log(chalk.red('unable to read from ' + path));
-        } finally {
-            if (filehandle) {
-                await filehandle.close();
-            }
-        }
+        return new Promise<string>((resolve, reject) => {
+            fs.readFileSync(path, 'utf8', (err, fileBuffer) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const yml: string = yaml.safeLoad(fileBuffer)
+                    resolve(yml);
+                }
+            });
+        });
         
     }
 
     public static async fileExists(path: string): Promise<boolean> {
 
-        let filehandle: any;
-
-        try {
-            await await fsPromises.open(path, 'r+');
-            return true;
-        } catch {
-            return false;
-        } finally {
-            if (filehandle) {
-                await filehandle.close();
-            }
-        }
+        return new Promise<boolean>((resolve, reject) => {
+            const exists: boolean = fs.existsSync(path);
+            resolve(exists)
+        });
     }
 
     public static async hasManifestsYml(path: string): Promise<boolean> {
 
-        const manifestsPath: string = join(path, 'manifests.yml');
+        return new Promise<boolean>((resolve, reject) => {
+            const manifestsPath: string = join(path, 'manifests.yml');
 
-        const exists: boolean = await Utils.fileExists(manifestsPath); 
+            Utils.fileExists(manifestsPath).then((exists) => {
+                resolve(exists);
+            }); 
 
-        return exists;
+        });
     }
 }

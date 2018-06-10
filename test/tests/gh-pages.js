@@ -14,7 +14,7 @@ const githubpagesUrl = 'https://username.github.io/uv-app-starter-fork/gh-collec
 
 it('can build collection', async () => {
     assert(fs.existsSync('/gh-collection'));
-    build('/gh-collection', githubpagesUrl, false);
+    return build('/gh-collection', githubpagesUrl, false);
 }).timeout(1000); // should take less than a second
 
 it('can find collection index.json', async () => {

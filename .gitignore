@@ -3,3 +3,4 @@ node_modules
 !test/**/*.js
 testroot/**/index.json
 collection
+npm-debug.log.*
