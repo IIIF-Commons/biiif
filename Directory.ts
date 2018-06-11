@@ -81,7 +81,8 @@ export class Directory {
             const paintableFiles: string[] = await glob(this.filePath + '/*.*', {
                 ignore: [
                     '**/*.yml',
-                    '**/thumb.*'
+                    '**/thumb.*',
+                    '**/index.json'
                 ]
             });
 
@@ -95,16 +96,13 @@ export class Directory {
         this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYml(this.filePath);
 
         await this._getMetadata();
-        await this._createIndexJson(); // <- think thumbnail creation needs to be wrapped in a promise
+        await this._createIndexJson();
 
-        await Utils.timeout(500).then(() => {
-            console.log('timeout complete');
-        });
+        // await Utils.timeout(500).then(() => {
+        //     console.log('timeout complete');
+        // });
 
-        return;
-
-        
-        
+        // return;        
 
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);

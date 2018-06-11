@@ -291,7 +291,7 @@ export class Utils {
 
         return new Promise<string>((resolve, reject) => {
 
-            jsonfile.readFileSync(path, (err, json) => {
+            jsonfile.readFile(path, (err, json) => {
                 if (err) reject(err);
                 else resolve(json);
             });
