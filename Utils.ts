@@ -314,7 +314,7 @@ export class Utils {
     public static async readYml(path: string): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
-            fs.readFileSync(path, 'utf8', (err, fileBuffer) => {
+            fs.readFile(path, (err, fileBuffer) => {
                 if (err) {
                     reject(err);
                 } else {
