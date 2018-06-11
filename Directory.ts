@@ -96,13 +96,7 @@ export class Directory {
         this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYml(this.filePath);
 
         await this._getMetadata();
-        await this._createIndexJson();
-
-        // await Utils.timeout(500).then(() => {
-        //     console.log('timeout complete');
-        // });
-
-        // return;        
+        await this._createIndexJson();       
 
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);
