@@ -252,12 +252,7 @@ export class Directory {
 
         console.log(chalk.green('creating index.json for: ') + this.filePath);
 
-        Utils.writeJson(path, json).then(() => {
-            console.log(chalk.green('successfully created index.json for: ') + this.filePath);
-        }).catch((err) => {
-            console.log(chalk.red(err));
-        });
-
+        await Utils.writeJson(path, json);
     }
 
     private _applyMetadata(): void {
