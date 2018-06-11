@@ -10,17 +10,18 @@ const urljoin = common.urljoin;
 const Utils = common.Utils;
 
 let manifestJson, canvasJson, annotation, annotationPage, annotationBody;
+const manifest = '/custom-annotations-manifest';
 const customAnnotationsManifestUrl = 'http://test.com/custom-annotations-manifest';
 
 it('can build custom annotations collection', async () => {
-    assert(fs.existsSync('/custom-annotations-manifest'));
-    return build('/custom-annotations-manifest', customAnnotationsManifestUrl, false);
+    assert(await Utils.fileExists(manifest));
+    return build(manifest, customAnnotationsManifestUrl, false);
 }).timeout(1000); // should take less than a second
 
 it('can find manifest index.json', async () => {
     const file = '/custom-annotations-manifest/index.json';
-    assert(fs.existsSync(file));
-    manifestJson = jsonfile.readFileSync(file);
+    assert(await Utils.fileExists(file));
+    manifestJson = await Utils.readJson(file);
 });
 
 describe('commenting text with format', async () => {

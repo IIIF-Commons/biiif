@@ -232,6 +232,12 @@ export class Directory {
                 // add canvas to items
                 this.indexJson.items.push(canvasJson);
             }));
+
+            this.indexJson.items.sort((a, b) => {
+                if (a.id < b.id) return -1;
+                if (a.id > b.id) return 1;
+                return 0;
+            });
         }
 
         this.indexJson.id = urljoin(this.url.href, 'index.json');

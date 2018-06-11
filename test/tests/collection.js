@@ -10,17 +10,18 @@ const urljoin = common.urljoin;
 const Utils = common.Utils;
 
 let collectionJson, manifestJson, canvasJson, thumbnailJson, item, annotationPage, imageAnnotation;
+const collection = '/collection';
 const collectionUrl = 'http://test.com/collection';
 
 it('can build collection', async () => {
-    assert(fs.existsSync('/collection'));
-    return build('/collection', collectionUrl, false);
+    assert(await Utils.fileExists(collection));
+    return build(collection, collectionUrl, false);
 }).timeout(1000); // should take less than a second
 
 it('can find collection index.json', async () => {
     const file = '/collection/index.json';
-    assert(fs.existsSync(file));
-    collectionJson = jsonfile.readFileSync(file);
+    assert(await Utils.fileExists(file));
+    collectionJson = await Utils.readJson(file);
 });
 
 it('has correct collection id', async () => {
@@ -100,8 +101,8 @@ it('has correct linked item label', async () => {
 
 it('can find manifest index.json', async () => {
     const file = '/collection/a_manifest/index.json';
-    assert(fs.existsSync(file));
-    manifestJson = jsonfile.readFileSync(file);
+    assert(await Utils.fileExists(file));
+    manifestJson = await Utils.readJson(file);
 });
 
 it('has correct manifest id', async () => {
@@ -168,8 +169,8 @@ describe('sub-collection', async () => {
 
     it('can find collection index.json', async () => {
         const file = '/collection/sub-collection/index.json';
-        assert(fs.existsSync(file));
-        collectionJson = jsonfile.readFileSync(file);
+        assert(await Utils.fileExists(file));
+        collectionJson = await Utils.readJson(file);
     });
 
     it('has correct collection id', async () => {
@@ -214,8 +215,8 @@ describe('sub-collection', async () => {
 
     it('can find manifest index.json', async () => {
         const file = '/collection/sub-collection/manifest/index.json';
-        assert(fs.existsSync(file));
-        manifestJson = jsonfile.readFileSync(file);
+        assert(await Utils.fileExists(file));
+        manifestJson = await Utils.readJson(file);
     });
 
     it('has correct manifest id', async () => {

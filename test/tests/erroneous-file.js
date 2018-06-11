@@ -2,8 +2,6 @@ const common = require("../common");
 const assert = common.assert;
 const basename = common.basename;
 const build = common.build;
-const fs = common.fs;
-const jsonfile = common.jsonfile;
 const mock = common.mock;
 const URL = common.URL;
 const urljoin = common.urljoin;
@@ -14,8 +12,8 @@ const manifest = '/collection/erroneous-file';
 
 it('can find ' + manifest + ' index.json', async () => {
     const file = urljoin(manifest, 'index.json');
-    assert(fs.existsSync(file));
-    manifestJson = jsonfile.readFileSync(file);
+    assert(await Utils.fileExists(file));
+    manifestJson = await Utils.readJson(file);
     canvasJson = manifestJson.items[0];
 });
 
