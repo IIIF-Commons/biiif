@@ -189,7 +189,7 @@ importTest('utils', './tests/utils');
 importTest('do-promises-work', './tests/do-promises-work');
 importTest('files-only-manifest', './tests/files-only-manifest');
 importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
-// importTest('files-only-collection', './tests/files-only-collection');
+importTest('files-only-collection', './tests/files-only-collection');
 // importTest('gh-pages', './tests/gh-pages');
 // importTest('collection-no-manifests', './tests/collection-no-manifests');
 // importTest('collection', './tests/collection');
