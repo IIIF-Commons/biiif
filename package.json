@@ -28,6 +28,7 @@
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
     "chalk": "^2.3.0",
+    "glob": "^7.1.2",
     "glob-promise": "^3.4.0",
     "jimp": "^0.2.28",
     "js-yaml": "^3.10.0",
