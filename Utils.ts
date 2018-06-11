@@ -1,9 +1,10 @@
-const fs = require('fs');
 const { dirname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
+const fs = require('fs');
 const Jimp = require("jimp");
+const jsonfile = require('jsonfile');
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
@@ -285,10 +286,24 @@ export class Utils {
         return urlParts;
     }
 
+
+    public static async readJson(path: string): Promise<string> {
+
+        return new Promise<string>((resolve, reject) => {
+
+            jsonfile.readFileSync(path, (err, json) => {
+                if (err) reject(err);
+                else resolve(json);
+            });
+
+        });
+
+    }
+
     public static async writeJson(path: string, json: string): Promise<void> {
 
         return new Promise<void>((resolve, reject) => {
-            fs.writeFileSync(path, json, 'utf8', (err) => {
+            fs.writeFile(path, json, (err) => {
                 if (err) reject(err);
                 else resolve();
             });

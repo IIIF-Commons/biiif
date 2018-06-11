@@ -1,6 +1,5 @@
-//import { Directory } from './Directory';
+import { Directory } from './Directory';
 const chalk = require('chalk');
-//const { existsSync } = require('fs');
 import { Utils } from './Utils';
 
 export const build = async (dir: string, url: string, generateThumbs: boolean = true, virtualName?: string): Promise<void> => {
@@ -19,14 +18,9 @@ export const build = async (dir: string, url: string, generateThumbs: boolean = 
         throw new Error('You must pass a url parameter');
     }
 
-    await Utils.timeout(500).then(() => {
-        console.log('timeout complete');
-    });
+    const directory: Directory = new Directory(dir, url, generateThumbs, virtualName);
 
-    // new Directory(dir, url, generateThumbs, virtualName).read().then(() => {
-    //     console.log(chalk.white('finished biiifing ' + dir));
-    //     resolve();
-    // });
+    await directory.read();
 
     console.log(chalk.white('finished biiifing ' + dir));
 }

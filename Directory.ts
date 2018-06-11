@@ -95,7 +95,16 @@ export class Directory {
         this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYml(this.filePath);
 
         await this._getMetadata();
-        await this._createIndexJson();
+        await this._createIndexJson(); // <- think thumbnail creation needs to be wrapped in a promise
+
+        await Utils.timeout(500).then(() => {
+            console.log('timeout complete');
+        });
+
+        return;
+
+        
+        
 
         if (this.isCollection) {
             console.log(chalk.green('created collection: ') + this.filePath);
@@ -111,7 +120,6 @@ export class Directory {
             }
         }
 
-        return;
     }
 
     private async _getMetadata(): Promise<void> {
@@ -227,7 +235,7 @@ export class Directory {
                 this.indexJson.items.push(canvasJson);
             }));
         }
-    
+
         this.indexJson.id = urljoin(this.url.href, 'index.json');
 
         this._applyMetadata();
@@ -238,9 +246,14 @@ export class Directory {
         const path: string = join(this.filePath, 'index.json');
         const json: string = JSON.stringify(this.indexJson, null, '  ');
 
-        await Utils.writeJson(path, json);
+        console.log(chalk.green('creating index.json for: ') + this.filePath);
 
-        console.log(chalk.green('created index.json for: ') + this.filePath);
+        Utils.writeJson(path, json).then(() => {
+            console.log(chalk.green('successfully created index.json for: ') + this.filePath);
+        }).catch((err) => {
+            console.log(chalk.red(err));
+        });
+
     }
 
     private _applyMetadata(): void {
