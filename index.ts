@@ -2,7 +2,7 @@ import { Directory } from './Directory';
 const chalk = require('chalk');
 import { Utils } from './Utils';
 
-export const build = async (dir: string, url: string, generateThumbs: boolean = true, virtualName?: string): Promise<void> => {
+export const build = async (dir: string, url: string, generateThumbs: boolean = false, virtualName?: string): Promise<void> => {
     
     console.log(chalk.white('started biiifing ' + dir));
     

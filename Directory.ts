@@ -26,7 +26,7 @@ export class Directory {
     public url: URL;
     public virtualName: string | undefined; // used when root directories are dat/ipfs ids
 
-    constructor(filePath: string, url: string, generateThumbs: boolean = true, virtualName?: string, parentDirectory?: Directory) {
+    constructor(filePath: string, url: string, generateThumbs: boolean = false, virtualName?: string, parentDirectory?: Directory) {
     
         this.filePath = filePath;
         this.generateThumbs = generateThumbs;
