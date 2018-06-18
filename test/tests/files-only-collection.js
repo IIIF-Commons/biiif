@@ -13,7 +13,7 @@ const collectionUrl = 'http://test.com/files-only-collection';
 
 it('can build collection', async () => {
     assert(await Utils.fileExists(collection));
-    return build(collection, collectionUrl, false);
+    return build(collection, collectionUrl);
 }).timeout(1000); // should take less than a second
 
 it('can find collection index.json', async () => {

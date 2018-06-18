@@ -13,7 +13,7 @@ const customAnnotationsManifestUrl = 'http://test.com/custom-annotations-manifes
 
 it('can build custom annotations collection', async () => {
     assert(await Utils.fileExists(manifest));
-    return build(manifest, customAnnotationsManifestUrl, false);
+    return build(manifest, customAnnotationsManifestUrl);
 }).timeout(1000); // should take less than a second
 
 it('can find manifest index.json', async () => {

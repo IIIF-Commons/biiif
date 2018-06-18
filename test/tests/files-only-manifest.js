@@ -13,7 +13,7 @@ const manifestUrl = 'http://test.com/files-only-manifest';
 
 it('can build manifest', async () => {
     assert(await Utils.fileExists(manifest));
-    return build(manifest, manifestUrl, false);
+    return build(manifest, manifestUrl);
 }).timeout(1000); // should take less than a second
 
 it('can find ' + manifest + ' index.json', async () => {
