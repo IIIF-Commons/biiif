@@ -1,5 +1,5 @@
 const { dirname } = require('path');
-const { join, basename } = require('path');
+const { join, basename, extname } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
 const fs = require('fs');
@@ -161,7 +161,13 @@ export class Utils {
     }
 
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
-        const fp: string = filePath || directory.filePath;
+        let fp: string = filePath || directory.filePath;
+
+        // if file path ends with a file name
+        if (extname(fp)) {
+            fp = dirname(fp);
+        }
+
         const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = await glob(thumbnailPattern);
 

@@ -17,6 +17,9 @@ function importTest(name, path) {
 
 before(async () => {
     mock({
+        '/thumbs-single-manifest': {
+            'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+        },
         '/files-only-manifest': {
             'file.gltf': 'gltf',
             'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -187,6 +190,7 @@ after(async () => {
 
 importTest('utils', './tests/utils');
 importTest('do-promises-work', './tests/do-promises-work');
+//importTest('thumbs-single-manifest', './tests/thumbs-single-manifest');
 importTest('files-only-manifest', './tests/files-only-manifest');
 importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
 importTest('files-only-collection', './tests/files-only-collection');
