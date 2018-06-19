@@ -20,7 +20,13 @@ export class Canvas {
 
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
-        this.directoryPath = dirname(this.filePath);
+
+        if (extname(this.filePath)) {
+            this.directoryPath = dirname(this.filePath);
+        } else {
+            this.directoryPath = this.filePath;
+        }
+                
         this.parentDirectory = parentDirectory;
         // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
         // this.directory.read() is never called.
