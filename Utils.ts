@@ -141,12 +141,10 @@ export class Utils {
         let virtualPath: string[] = [basename(filePath)];
 
         while(directory) {
-            const realName: string = basename(directory.filePath);
+            const realName: string = basename(directory.directoryPath);
             const virtualName: string = directory.virtualName || realName;
-            // if (!extname(realName)) {
-                realPath.push(realName);
-                virtualPath.push(virtualName);
-            // }
+            realPath.push(realName);
+            virtualPath.push(virtualName);
             directory = directory.parentDirectory;
         }
 
@@ -163,12 +161,7 @@ export class Utils {
     }
 
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
-        let fp: string = filePath || directory.filePath;
-
-        // if file path ends with a file name
-        // if (extname(fp)) {
-        //     fp = dirname(fp);
-        // }
+        let fp: string = filePath || directory.directoryPath;
 
         const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = await glob(thumbnailPattern);

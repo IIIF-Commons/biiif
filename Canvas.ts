@@ -14,20 +14,22 @@ export class Canvas {
     public directory: Directory;
     public parentDirectory: Directory;
     public filePath: string;
+    public directoryPath: string;
     public infoYml: any = {};
     public url: URL;
 
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
+        this.directoryPath = dirname(this.filePath);
         this.parentDirectory = parentDirectory;
         // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
         // this.directory.read() is never called.
-        this.directory = new Directory(this.filePath, urljoin(this.parentDirectory.url.href, basename(this.filePath)), this.parentDirectory.generateThumbs, undefined, this.parentDirectory);
+        this.directory = new Directory(this.directoryPath, this.parentDirectory.url.href, this.parentDirectory.generateThumbs, undefined, this.parentDirectory);
         this.url = parentDirectory.url;
     }
 
     private _isCanvasDirectory(): boolean {
-        return basename(this.filePath).startsWith('_');
+        return basename(this.directoryPath).startsWith('_');
     }
 
     public async read(canvasJson: any): Promise<void> {
@@ -36,14 +38,14 @@ export class Canvas {
         await this._getMetadata();
         this._applyMetadata();
 
-        // if the filepath starts with an underscore
+        // if the directoryPath starts with an underscore
         if (this._isCanvasDirectory()) {
 
             // first, determine if there are any custom annotations (files ending in .yml that aren't info.yml)
             // if there are, loop through them creating the custom annotations.
             // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
 
-            const customAnnotationFiles: string[] = await glob(this.filePath + '/*.yml', {
+            const customAnnotationFiles: string[] = await glob(this.directoryPath + '/*.yml', {
                 ignore: [
                     '**/info.yml'
                 ]
@@ -156,7 +158,7 @@ export class Canvas {
             if (!hasPaintingAnnotation) {
                 // for each jpg/pdf/mp4/obj in the canvas directory
                 // add a painting annotation
-                const paintableFiles: string[] = await glob(this.filePath + '/*.*', {
+                const paintableFiles: string[] = await glob(this.directoryPath + '/*.*', {
                     ignore: [
                         '**/thumb.*' // ignore thumbs
                     ]
@@ -171,11 +173,11 @@ export class Canvas {
         }
 
         if (!canvasJson.items[0].items.length) {
-            console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.filePath));
+            console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.directoryPath));
         }
 
         // if there's no thumb.[jpg, gif, png] generate one from the first painted image
-        await Utils.getThumbnail(this.canvasJson, this.directory, this.filePath);
+        await Utils.getThumbnail(this.canvasJson, this.directory, this.directoryPath);
     }
 
     private _annotateFiles(canvasJson: any, files: string[]): void {
@@ -219,20 +221,20 @@ export class Canvas {
         this.infoYml = {};
 
         // if there's an info.yml
-        const ymlPath: string = join(this.filePath, 'info.yml');
+        const ymlPath: string = join(this.directoryPath, 'info.yml');
 
         const fileExists: boolean = await Utils.fileExists(ymlPath);
 
         if (fileExists) {
             this.infoYml = await Utils.readYml(ymlPath);
-            console.log(chalk.green('got metadata for: ') + this.filePath);
+            console.log(chalk.green('got metadata for: ') + this.directoryPath);
         } else {
-            console.log(chalk.green('no metadata found for: ') + this.filePath);
+            console.log(chalk.green('no metadata found for: ') + this.directoryPath);
         }
 
         if (!this.infoYml.label) {
             // default to the directory name
-            this.infoYml.label = basename(this.filePath);
+            this.infoYml.label = basename(this.directoryPath);
         }
     }
 
