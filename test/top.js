@@ -188,18 +188,18 @@ after(async () => {
     mock.restore();
 })
 
-importTest('utils', './tests/utils');
-importTest('do-promises-work', './tests/do-promises-work');
-//importTest('thumbs-single-manifest', './tests/thumbs-single-manifest');
-importTest('files-only-manifest', './tests/files-only-manifest');
-importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
-importTest('files-only-collection', './tests/files-only-collection');
-importTest('gh-pages', './tests/gh-pages');
-importTest('collection-no-manifests', './tests/collection-no-manifests');
-importTest('collection', './tests/collection');
-importTest('canvas-per-content-annotation', './tests/canvas-per-content-annotation');
-importTest('content-annotation-per-canvas', './tests/content-annotation-per-canvas');
-importTest('erroneous-file', './tests/erroneous-file');
-importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
-importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
-importTest('dat-gateway', './tests/dat-gateway');
+// importTest('utils', './tests/utils');
+// importTest('do-promises-work', './tests/do-promises-work');
+importTest('thumbs-single-manifest', './tests/thumbs-single-manifest');
+// importTest('files-only-manifest', './tests/files-only-manifest');
+// importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
+// importTest('files-only-collection', './tests/files-only-collection');
+// importTest('gh-pages', './tests/gh-pages');
+// importTest('collection-no-manifests', './tests/collection-no-manifests');
+// importTest('collection', './tests/collection');
+// importTest('canvas-per-content-annotation', './tests/canvas-per-content-annotation');
+// importTest('content-annotation-per-canvas', './tests/content-annotation-per-canvas');
+// importTest('erroneous-file', './tests/erroneous-file');
+// importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
+// importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
+// importTest('dat-gateway', './tests/dat-gateway');

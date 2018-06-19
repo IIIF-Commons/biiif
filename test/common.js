@@ -1,22 +1,24 @@
 const { basename } = require('path');
-const { build } = require('../index');
+const { build, JIMP_ENABLED } = require('../index');
 const { URL } = require('url');
 const { Utils } = require('../Utils');
 const assert = require('assert');
+const config = require('../config');
 const fs = require('fs');
 const jsonfile = require('jsonfile');
 const mock = require('mock-fs');
 const urljoin = require('url-join');
 
+exports.assert = assert;
 exports.basename = basename;
 exports.build = build;
-exports.URL = URL;
-exports.Utils = Utils;
-exports.assert = assert;
+exports.config = config;
 exports.fs = fs;
 exports.jsonfile = jsonfile;
 exports.mock = mock;
+exports.URL = URL;
 exports.urljoin = urljoin;
+exports.Utils = Utils;
 
 exports.canvasHasContentAnnotations = (canvasJson, files) => {
 

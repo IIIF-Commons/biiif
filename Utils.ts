@@ -1,5 +1,5 @@
 const { dirname } = require('path');
-const { join, basename, extname } = require('path');
+const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
 const fs = require('fs');
@@ -143,8 +143,10 @@ export class Utils {
         while(directory) {
             const realName: string = basename(directory.filePath);
             const virtualName: string = directory.virtualName || realName;
-            realPath.push(realName);
-            virtualPath.push(virtualName);
+            // if (!extname(realName)) {
+                realPath.push(realName);
+                virtualPath.push(virtualName);
+            // }
             directory = directory.parentDirectory;
         }
 
@@ -164,9 +166,9 @@ export class Utils {
         let fp: string = filePath || directory.filePath;
 
         // if file path ends with a file name
-        if (extname(fp)) {
-            fp = dirname(fp);
-        }
+        // if (extname(fp)) {
+        //     fp = dirname(fp);
+        // }
 
         const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = await glob(thumbnailPattern);
@@ -190,21 +192,31 @@ export class Utils {
                     const body = item.body;
                     if (body && item.motivation === Motivations.PAINTING) {
                         if (body.type.toLowerCase() === Types.IMAGE) {
+
                             const imageName = body.id.substr(body.id.lastIndexOf('/'));
                             const imagePath = join(fp, imageName);
-                            const image = await Jimp.read(imagePath);
-                            const thumb = image.clone();
-                            // write image buffer to disk for testing
-                            // image.getBuffer(Jimp.AUTO, (err, buffer) => {
-                            //     const arrBuffer = [...buffer];
-                            //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
-                            //     fs.writeFile(pathToBuffer, arrBuffer);
-                            // });
-                            thumb.cover(config.thumbnails.width, config.thumbnails.height);
-                            const pathToThumb = join(dirname(imagePath), 'thumb.' + image.getExtension());
-                            thumb.write(pathToThumb, () => {
-                                console.log(chalk.green('generated thumbnail for: ') + fp);
-                            });
+                            let pathToThumb = join(dirname(imagePath), 'thumb.');
+
+                            if (config.jimpEnabled) {
+                                const image = await Jimp.read(imagePath);
+                                const thumb = image.clone();
+                                // write image buffer to disk for testing
+                                // image.getBuffer(Jimp.AUTO, (err, buffer) => {
+                                //     const arrBuffer = [...buffer];
+                                //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
+                                //     fs.writeFile(pathToBuffer, arrBuffer);
+                                // });
+                                thumb.cover(config.thumbnails.width, config.thumbnails.height);
+                                pathToThumb += image.getExtension();
+
+                                thumb.write(pathToThumb, () => {
+                                    console.log(chalk.green('generated thumbnail for: ') + fp);
+                                });
+                            } else {
+                                // placeholder img path
+                                pathToThumb += "jpeg";
+                            }
+                            
                             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
                             thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
                             json.thumbnail = thumbnailJson;
@@ -245,6 +257,10 @@ export class Utils {
         }
 
         const urlParts = Utils.getUrlParts(url);
+
+        // if (extname(url.href)) {
+        //     urlParts.pop();
+        // }
 
         filePath = Utils.normaliseFilePath(filePath);
         const fileParts: string[] = filePath.split('/');
