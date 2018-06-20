@@ -191,6 +191,7 @@ after(async () => {
 importTest('utils', './tests/utils');
 importTest('do-promises-work', './tests/do-promises-work');
 importTest('thumbs-single-manifest', './tests/thumbs-single-manifest');
+importTest('thumbs-single-manifest-dat', './tests/thumbs-single-manifest-dat');
 importTest('files-only-manifest', './tests/files-only-manifest');
 importTest('files-only-manifest-dat', './tests/files-only-manifest-dat');
 importTest('files-only-collection', './tests/files-only-collection');

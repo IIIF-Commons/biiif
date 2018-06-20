@@ -211,7 +211,9 @@ export class Utils {
                             }
                             
                             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
-                            thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(pathToThumb, directory));
+                            const virtualPath: string = Utils.getVirtualFilePath(pathToThumb, directory);
+                            const mergedPath: string = Utils.mergePaths(directory.url, virtualPath);
+                            thumbnailJson[0].id = mergedPath;
                             json.thumbnail = thumbnailJson;
 
                         }
@@ -250,31 +252,32 @@ export class Utils {
         }
 
         const urlParts = Utils.getUrlParts(url);
-
-        // if (extname(url.href)) {
-        //     urlParts.pop();
-        // }
-
         filePath = Utils.normaliseFilePath(filePath);
         const fileParts: string[] = filePath.split('/');
-        const newPath: string[] = [];
+        let newPath: string[] = [];
 
-        for (let f = fileParts.length - 1; f >= 0; f--) {
-            const filePart: string = fileParts[f];
-            newPath.push(filePart);
-            
-            if (filePart === urlParts[urlParts.length - 1]) {
-                if (urlParts.length > 1) {
-                    for (let u = urlParts.length - 2; u >= 0; u--) {
-                        f--;
-                        if (fileParts[f] === urlParts[u]) {
-                            newPath.push(fileParts[f]);
-                        } else {
-                            newPath.push(urlParts[u]);
+        // if there's a single virtualised root folder
+        if (urlParts.length === 1 && !fileParts.includes(urlParts[0])) {
+            newPath.push(fileParts[fileParts.length - 1]);
+            newPath.push(urlParts[0]);
+        } else {
+            for (let f = fileParts.length - 1; f >= 0; f--) {
+                const filePart: string = fileParts[f];
+                newPath.push(filePart);
+                
+                if (filePart === urlParts[urlParts.length - 1]) {
+                    if (urlParts.length > 1) {
+                        for (let u = urlParts.length - 2; u >= 0; u--) {
+                            f--;
+                            if (fileParts[f] === urlParts[u]) {
+                                newPath.push(fileParts[f]);
+                            } else {
+                                newPath.push(urlParts[u]);
+                            }
                         }
                     }
+                    break;
                 }
-                break;
             }
         }
 
