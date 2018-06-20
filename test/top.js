@@ -1,13 +1,6 @@
 const common = require('./common');
-const assert = common.assert;
-const basename = common.basename;
-const build = common.build;
-const fs = common.fs;
-const jsonfile = common.jsonfile;
+const config = common.config;
 const mock = common.mock;
-const URL = common.URL;
-const urljoin = common.urljoin;
-const Utils = common.Utils;
 
 function importTest(name, path) {
     describe(name, function () {
@@ -186,7 +179,9 @@ before(async () => {
 
 after(async () => {
     mock.restore();
-})
+});
+
+config.settings.jimpEnabled = false; // jimp doesn't work with a mocked file system
 
 importTest('utils', './tests/utils');
 importTest('do-promises-work', './tests/do-promises-work');

@@ -1,14 +1,10 @@
 const common = require("../common");
 const assert = common.assert;
-const basename = common.basename;
-const build = common.build;
-const mock = common.mock;
-const URL = common.URL;
 const urljoin = common.urljoin;
 const Utils = common.Utils;
 const canvasHasContentAnnotations = common.canvasHasContentAnnotations;
 
-let manifestJson, canvasJson;
+let manifestJson;
 
 const manifest = '/collection/canvas-per-file';
 let canvases;

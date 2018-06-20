@@ -1,11 +1,6 @@
 const common = require("../common");
 const assert = common.assert;
-const basename = common.basename;
 const build = common.build;
-const config = common.config;
-const mock = common.mock;
-const URL = common.URL;
-const urljoin = common.urljoin;
 const Utils = common.Utils;
 
 let manifestJson, canvasJson, thumbnailJson;
@@ -13,7 +8,6 @@ const manifest = '/thumbs-single-manifest';
 const manifestUrl = 'http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772';
 
 it('can build manifest', async () => {
-    config.jimpEnabled = false; // jimp doesn't work with a mocked file system
     assert(await Utils.fileExists(manifest));
     return build(manifest, manifestUrl, true, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
 }).timeout(1000); // should take less than a second

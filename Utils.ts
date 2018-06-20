@@ -190,7 +190,7 @@ export class Utils {
                             const imagePath = join(fp, imageName);
                             let pathToThumb = join(dirname(imagePath), 'thumb.');
 
-                            if (config.jimpEnabled) {
+                            if (config.settings.jimpEnabled) {
                                 const image = await Jimp.read(imagePath);
                                 const thumb = image.clone();
                                 // write image buffer to disk for testing
