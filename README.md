@@ -120,15 +120,12 @@ lord-of-the-rings                  // collection
 ├── 0-the-fellowship-of-the-ring   // manifest
 |   ├── _page-1                    // canvas
 |   |   ├── page-1.jpg             // content annotation
-|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-2                    // canvas
 |   |   ├── page-2.jpg             // content annotation
-|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── _page-n                    // canvas
 |   |   ├── page-n.jpg             // content annotation
-|   |   ├── thumb.jpg              // canvas thumbnail
 |   |   └── info.yml               // canvas metadata
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
