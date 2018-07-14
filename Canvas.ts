@@ -261,6 +261,10 @@ export class Canvas {
             this.canvasJson.height = this.infoYml.height;
         }
 
+        if (this.infoYml.duration) {
+            this.canvasJson.duration = this.infoYml.duration;
+        }
+
         if (this.infoYml.metadata) {
             this.canvasJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
         }
