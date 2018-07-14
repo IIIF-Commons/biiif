@@ -173,6 +173,12 @@ before(async () => {
             '_canvas-without-thumb': {
                 'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
             }
+        },
+        '/canvas-with-dimensions-manifest': {
+            '_canvas-with-dimensions': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
+                'painting-jpg-with-dimensions.yml': require('./fixtures/painting-jpg-with-dimensions')
+            }
         }
     });
 })
@@ -199,3 +205,4 @@ importTest('erroneous-file', './tests/erroneous-file');
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');
+importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-manifest');
