@@ -177,7 +177,8 @@ before(async () => {
         '/canvas-with-dimensions-manifest': {
             '_canvas-with-dimensions': {
                 'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
-                'painting-jpg-with-dimensions.yml': require('./fixtures/painting-jpg-with-dimensions')
+                'painting-jpg-with-xywh.yml': require('./fixtures/painting-jpg-with-xywh'),
+                'info.yml': require('./fixtures/dimensions-info')
             }
         }
     });

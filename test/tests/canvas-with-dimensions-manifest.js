@@ -3,7 +3,7 @@ const assert = common.assert;
 const build = common.build;
 const Utils = common.Utils;
 
-let manifestJson, canvasJson, thumbnailJson;
+let manifestJson, canvasJson, annotationPage, annotation, annotationBody;
 const manifest = '/canvas-with-dimensions-manifest';
 const manifestUrl = 'http://test.com/canvas-with-dimensions-manifest';
 
@@ -30,4 +30,31 @@ it('has correct canvas id', async () => {
 it('has correct dimensions', async () => {
     assert(canvasJson.width === 600);
     assert(canvasJson.height === 400);
+});
+
+it('has an annotation page', async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+});
+
+it('has annotation', async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+});
+
+it('has correct annotation motivation', async () => {
+    assert(annotation.motivation === 'painting');
+});
+
+it('has correct annotation target', async () => {
+    assert(annotation.target === manifestUrl + '/index.json/canvas/0');
+});
+
+it('has an annotation body', async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+});
+
+it('has correct annotation body id', async () => {
+    assert(annotationBody.id === manifestUrl + '/_canvas-with-dimensions/assets/file.jpg#xywh=0,0,600,400');
 });

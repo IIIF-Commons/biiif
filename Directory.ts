@@ -95,7 +95,7 @@ export class Directory {
 
         this.isCollection = this.directories.length > 0 || await Utils.hasManifestsYml(this.directoryPath);
 
-        await this._getMetadata();
+        await this._getInfo();
         await this._createIndexJson();       
 
         if (this.isCollection) {
@@ -114,7 +114,7 @@ export class Directory {
 
     }
 
-    private async _getMetadata(): Promise<void> {
+    private async _getInfo(): Promise<void> {
 
         this.infoYml = {};
 
@@ -236,7 +236,7 @@ export class Directory {
 
         this.indexJson.id = urljoin(this.url.href, 'index.json');
 
-        this._applyMetadata();
+        this._applyInfo();
 
         await Utils.getThumbnail(this.indexJson, this);
 
@@ -249,7 +249,7 @@ export class Directory {
         await Utils.writeJson(path, json);
     }
 
-    private _applyMetadata(): void {
+    private _applyInfo(): void {
 
         this.indexJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
 

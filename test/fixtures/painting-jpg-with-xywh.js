@@ -1,4 +1,3 @@
 module.exports = 
 'value: assets/file.jpg \n\
-width: 600 \n\
-height: 400'
+xywh: 0,0,600,400'

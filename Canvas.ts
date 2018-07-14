@@ -41,8 +41,8 @@ export class Canvas {
     public async read(canvasJson: any): Promise<void> {
 
         this.canvasJson = canvasJson;
-        await this._getMetadata();
-        this._applyMetadata();
+        await this._getInfo();
+        this._applyInfo();
 
         // if the directoryPath starts with an underscore
         if (this._isCanvasDirectory()) {
@@ -86,6 +86,12 @@ export class Canvas {
                 if ((motivation.toLowerCase() === Motivations.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                     hasPaintingAnnotation = true;
                     id = urljoin(this.url.href, directoryName, yml.value);
+
+                    // if the painting annotation has a target.
+                    if (yml.xywh) {
+                        id += '#xywh=' + yml.xywh;
+                    }
+
                 } else {
                     id = urljoin(this.url.href, 'index.json', 'annotations', name);
                 }
@@ -222,7 +228,7 @@ export class Canvas {
         });
     }
 
-    private async _getMetadata(): Promise<void> {
+    private async _getInfo(): Promise<void> {
         
         this.infoYml = {};
 
@@ -244,8 +250,16 @@ export class Canvas {
         }
     }
 
-    private _applyMetadata(): void {
+    private _applyInfo(): void {
         this.canvasJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
+
+        if (this.infoYml.width) {
+            this.canvasJson.width = this.infoYml.width;
+        }
+
+        if (this.infoYml.height) {
+            this.canvasJson.height = this.infoYml.height;
+        }
 
         if (this.infoYml.metadata) {
             this.canvasJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
