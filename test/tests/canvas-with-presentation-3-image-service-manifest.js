@@ -4,9 +4,9 @@ const build = common.build;
 const Utils = common.Utils;
 
 let manifestJson, canvasJson, annotationPage, annotation, annotationBody, service;
-const manifest = '/canvas-with-presentation-3-manifest';
+const manifest = '/canvas-with-presentation-3-image-service-manifest';
 const manifestUrl = 'http://test.com/canvas-with-presentation-3-image-service-manifest';
-/*
+
 it('can build manifest', async () => {
     assert(await Utils.fileExists(manifest));
     return build(manifest, manifestUrl, true);
@@ -64,10 +64,9 @@ it('has correct annotation body format', async () => {
 
 it('has an image service', async () => {
     service = annotationBody.service;
-    assert(service);
+    assert(service && service.length);
 });
 
 it('has correct image service id', async () => {
-    assert(service.id === manifestUrl + '/_canvas-with-presentation-3-image-service/assets/tiles');
+    assert(service[0].id === manifestUrl + '/_canvas-with-presentation-3-image-service/assets/tiles');
 });
-*/

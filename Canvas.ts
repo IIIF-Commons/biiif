@@ -163,7 +163,7 @@ export class Canvas {
 
                 // if the annotation is an image and the id points to an info.json
                 // add an image service pointing to the info.json
-                if (annotationJson.body.type.toLowerCase() === Types.IMAGE && extname(annotationJson.body.id) === '.json') {
+                if (annotationJson.body.type && annotationJson.body.type.toLowerCase() === Types.IMAGE && extname(annotationJson.body.id) === '.json') {
                     const service: any = Utils.cloneJson(imageServiceBoilerplate);
                     service[0].id = annotationJson.body.id.substr(0, annotationJson.body.id.lastIndexOf('/'));
                     annotationJson.body.service = service;

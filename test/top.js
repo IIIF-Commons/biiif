@@ -134,7 +134,7 @@ before(async () => {
             },
             '_commenting-text-without-type-format': {
                 'commenting-text-without-type-format.yml': require('./fixtures/commenting-text-without-type-format')
-            },
+            }            ,
             '_json-value-with-format': {
                 'json-value-with-format.yml': require('./fixtures/json-value-with-format')
             },
@@ -212,4 +212,4 @@ importTest('custom-annotations-manifest', './tests/custom-annotations-manifest')
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');
 importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-manifest');
-//importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');
+importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');

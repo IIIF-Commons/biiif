@@ -162,6 +162,7 @@ export class Utils {
 
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
         let fp: string = filePath || directory.directoryPath;
+        fp = Utils.normaliseFilePath(fp);
 
         const thumbnailPattern: string = fp + '/thumb.*';
         const thumbnails: string[] = await glob(thumbnailPattern);
@@ -184,7 +185,7 @@ export class Utils {
                     const item: any = items[i];
                     const body: any = item.body;
                     if (body && item.motivation === Motivations.PAINTING) {
-                        // is it an image? (without )
+                        // is it an image? (without an info.json)
                         if (body.type.toLowerCase() === Types.IMAGE && extname(body.id) !== '.json') {
 
                             const imageName: string = body.id.substr(body.id.lastIndexOf('/'));

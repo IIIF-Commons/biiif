@@ -212,7 +212,7 @@ describe('commenting text without type and format', async () => {
     });
 
 });
-
+/*
 describe('json value with format', async () => {
 
     it('can find canvas', async () => {
@@ -622,3 +622,4 @@ describe('painting three.js json with type', async () => {
     });
 
 });
+*/
