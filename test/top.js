@@ -180,6 +180,11 @@ before(async () => {
                 'painting-jpg-with-xywh.yml': require('./fixtures/painting-jpg-with-xywh'),
                 'info.yml': require('./fixtures/dimensions-info')
             }
+        },
+        '/canvas-with-presentation-3-image-service-manifest': {
+            '_canvas-with-presentation-3-image-service': {
+                'presentation-3-image-service.yml': require('./fixtures/presentation-3-image-service')
+            }
         }
     });
 })
@@ -207,3 +212,4 @@ importTest('custom-annotations-manifest', './tests/custom-annotations-manifest')
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');
 importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-manifest');
+//importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');

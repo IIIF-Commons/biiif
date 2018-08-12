@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772', true, '0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772')\""
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/tetons')\""
   },
   "engines": {
     "node": ">=8.9.1",

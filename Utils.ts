@@ -1,4 +1,4 @@
-const { dirname } = require('path');
+const { dirname, extname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
 const config = require('./config');
@@ -178,21 +178,22 @@ export class Utils {
             if (json.items && json.items.length && json.items[0].items) {
                 console.log(chalk.green('generating thumbnail for: ') + fp);
                 // find an annotation with a painting motivation of type image.
-                const items =  json.items[0].items;
+                const items: any[] =  json.items[0].items;
 
                 for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const body = item.body;
+                    const item: any = items[i];
+                    const body: any = item.body;
                     if (body && item.motivation === Motivations.PAINTING) {
-                        if (body.type.toLowerCase() === Types.IMAGE) {
+                        // is it an image? (without )
+                        if (body.type.toLowerCase() === Types.IMAGE && extname(body.id) !== '.json') {
 
-                            const imageName = body.id.substr(body.id.lastIndexOf('/'));
-                            const imagePath = join(fp, imageName);
-                            let pathToThumb = join(dirname(imagePath), 'thumb.');
+                            const imageName: string = body.id.substr(body.id.lastIndexOf('/'));
+                            const imagePath: string = join(fp, imageName);
+                            let pathToThumb: string = join(dirname(imagePath), 'thumb.');
 
                             if (config.settings.jimpEnabled) {
-                                const image = await Jimp.read(imagePath);
-                                const thumb = image.clone();
+                                const image: any = await Jimp.read(imagePath);
+                                const thumb: any = image.clone();
                                 // write image buffer to disk for testing
                                 // image.getBuffer(Jimp.AUTO, (err, buffer) => {
                                 //     const arrBuffer = [...buffer];
@@ -303,7 +304,6 @@ export class Utils {
 
         return urlParts;
     }
-
 
     public static async readJson(path: string): Promise<string> {
 

@@ -41,6 +41,10 @@
                     {
                         "type": "PhysicalObject",
                         "format": "application/vnd.threejs+json"
+                    },
+                    {
+                        "type": "Image",
+                        "format": "image/jpeg"
                     }
                 ],
                 ".mp4": [

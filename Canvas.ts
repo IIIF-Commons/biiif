@@ -1,11 +1,13 @@
 const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
+const imageServiceBoilerplate = require('./boilerplate/imageservice');
 const chalk = require('chalk');
 const config = require('./config');
 const urljoin = require('url-join');
 import { Directory } from './Directory';
 import { Motivations } from './Motivations';
 import { promise as glob } from 'glob-promise';
+import { Types } from "./Types";
 import { Utils } from './Utils';
 
 export class Canvas {
@@ -159,6 +161,14 @@ export class Canvas {
                 
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
 
+                // if the annotation is an image and the id points to an info.json
+                // add an image service pointing to the info.json
+                if (annotationJson.body.type.toLowerCase() === Types.IMAGE && extname(annotationJson.body.id) === '.json') {
+                    const service: any = Utils.cloneJson(imageServiceBoilerplate);
+                    service[0].id = annotationJson.body.id.substr(0, annotationJson.body.id.lastIndexOf('/'));
+                    annotationJson.body.service = service;
+                }
+
                 // if there's a value, and we're using a recognised motivation (except painting)
                 if (yml.value && config.annotation.motivations[motivation] && motivation !== Motivations.PAINTING) {
                     annotationJson.body.value = yml.value;
@@ -175,6 +185,7 @@ export class Canvas {
                         '**/thumb.*' // ignore thumbs
                     ]
                 });
+
                 this._annotateFiles(canvasJson, paintableFiles);
             }
 
