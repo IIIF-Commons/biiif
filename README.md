@@ -78,17 +78,15 @@ biiif knows that because it's a gltf file, it's likely to have all of the above 
 
 ## Image Services
 
-Here is an example of how to use an image service to describe your (IIIF Level 0) static tileset as a custom annotation:
+Here is an example of how to use an image service to describe your [IIIF Level 0](https://iiif.io/api/image/3.0/compliance/#5-level-0-compliance) static tileset as a custom annotation:
 
 https://github.com/edsilv/biiif-test-manifests/tree/gh-pages/tetons
 
-In `_tetons/tiles.yml`, `value` is set to the path to the `info.json` and a `type` of `Image` is used is so that biiif knows to treat the `info.json` file as an image service.
+In `_tetons/tiles.yml`, `value` is set to the relative path to the `info.json` and a `type` of `Image` is used is so that biiif knows to treat the `info.json` file as an image service.
 
-The tiles and `info.json`are located in `_tetons/assets/tiles`. These were generated using this python script:
+The tiles and `info.json` are located in `_tetons/assets/tiles`. These were generated using [this python script](https://github.com/zimeon/iiif/tree/master/demo-static#regerating-tiles).
 
-https://github.com/zimeon/iiif/tree/master/demo-static#regerating-tiles
-
-Ensure that the `@id` property in your `info.json` points to the absolute URL where you will be hosting the tiles, e.g.
+Ensure that the `@id` property in your `info.json` matches the absolute URL where you will be hosting the tiles, e.g.
 
 https://github.com/edsilv/biiif-test-manifests/blob/gh-pages/tetons/_tetons/assets/tiles/info.json#L3
 
