@@ -17,7 +17,7 @@ build('myfolder', 'http://example.com/myfolder');
 ## Parameters
 
 | Parameter | Type | Description |
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | `folder` | string | The source folder of your IIIF collection/manifest on disk |
 | `url` | string | The Url to use as the root for all generated manifest, asset identifiers |
 | `generateThumbs` | boolean | Generate thumbnails for images (100 x 100px) |
