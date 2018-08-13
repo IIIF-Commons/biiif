@@ -76,6 +76,22 @@ Here we've excluded the `motivation` (`painting` is assumed), `type` (`PhysicalO
 
 biiif knows that because it's a gltf file, it's likely to have all of the above values. You just need to include a `value` property pointing to where you've put the gltf file itself. In this case, an `assets` folder within the canvas directory. The associated image textures can live in the `assets` folder too, they won't get annotated unless you specifically ask for them to be.
 
+## Image Services
+
+Here is an example of how to use an image service to describe your (IIIF Level 0) static tileset as a custom annotation:
+
+https://github.com/edsilv/biiif-test-manifests/tree/gh-pages/tetons
+
+In `_tetons/tiles.yml`, `value` is set to the path to the `info.json` and a `type` of `Image` is used is so that biiif knows to treat the `info.json` file as an image service.
+
+The tiles and `info.json`are located in `_tetons/assets/tiles`. These were generated using this python script:
+
+https://github.com/zimeon/iiif/tree/master/demo-static#regerating-tiles
+
+Ensure that the `@id` property in your `info.json` points to the absolute URL where you will be hosting the tiles, e.g.
+
+https://github.com/edsilv/biiif-test-manifests/blob/gh-pages/tetons/_tetons/assets/tiles/info.json#L3
+
 ## Metadata
 
 To add metadata to your collections/manifests/canvases, include an `info.yml` file in the folder e.g.
