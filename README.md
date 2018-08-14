@@ -82,9 +82,9 @@ Here is an example of how to use an image service to describe your [IIIF Level 0
 
 https://github.com/edsilv/biiif-test-manifests/tree/gh-pages/tetons
 
-In `_tetons/tiles.yml`, `value` is set to the relative path to the `info.json` and a `type` of `Image` is used is so that biiif knows to treat the `info.json` file as an image service.
+In `_tetons/tiles.yml`, `value` is set to the relative path to the `info.json` and a `type` of `Image` is used so that biiif knows to treat the `info.json` file as an image service.
 
-The tiles and `info.json` are located in `_tetons/assets/tiles`. These were generated using [this python script](https://github.com/zimeon/iiif/tree/master/demo-static#regerating-tiles).
+The tiles and `info.json` are located in `_tetons/assets/tiles`. These can be generated using [this python script](https://github.com/zimeon/iiif/tree/master/demo-static#regerating-tiles).
 
 Ensure that the `@id` property in your `info.json` matches the absolute URL where you will be hosting the tiles, e.g.
 
