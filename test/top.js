@@ -59,6 +59,7 @@ before(async () => {
                     'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 }
             },
+            'manifests.yml': require('./fixtures/manifests'),
             'sub-collection': {
                 'info.yml': 'label: My Test Sub-collection',
                 'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -71,8 +72,9 @@ before(async () => {
                         'thumb.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                     }
                 }
-            },
-            'manifests.yml': require('./fixtures/manifests'),
+            }
+        },
+        '/file-annotation-collection': {
             'canvas-per-file': {
                 '_crt': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
@@ -88,6 +90,9 @@ before(async () => {
                 },
                 '_json': {
                     'file.json': 'json'
+                },
+                '_mp3': {
+                    'file.mp3': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 },
                 '_mp4': {
                     'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9])
@@ -105,6 +110,11 @@ before(async () => {
                     'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9])
                 }              
             },
+            'erroneous-file': {
+                '_files': {
+                    'file.abc': 'abc'
+                } 
+            },
             'files-per-canvas': {
                 '_files': {
                     'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9]),
@@ -112,17 +122,48 @@ before(async () => {
                     'file.gltf': 'gltf',
                     'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.json': 'json',
+                    'file.mp3': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.obj': 'obj',
                     'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                     'file.ply': 'ply',
                     'file.png': new Buffer([8, 6, 7, 5, 3, 0, 9]),
                 }        
+            }
+        },
+        '/sort-canvases-manifest': {
+            '_a-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
             },
-            'erroneous-file': {
-                '_files': {
-                    'file.abc': 'abc'
-                } 
+            '_b-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_c-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_d-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_e-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_f-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_g-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_h-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_i-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_j-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
+            },
+            '_k-canvas': {
+                'file.jpg': new Buffer([8, 6, 7, 5, 3, 0, 9])
             }
         },
         '/custom-annotations-manifest': {
@@ -134,7 +175,7 @@ before(async () => {
             },
             '_commenting-text-without-type-format': {
                 'commenting-text-without-type-format.yml': require('./fixtures/commenting-text-without-type-format')
-            }            ,
+            },
             '_json-value-with-format': {
                 'json-value-with-format.yml': require('./fixtures/json-value-with-format')
             },
@@ -205,9 +246,8 @@ importTest('files-only-collection', './tests/files-only-collection');
 importTest('gh-pages', './tests/gh-pages');
 importTest('collection-no-manifests', './tests/collection-no-manifests');
 importTest('collection', './tests/collection');
-importTest('canvas-per-content-annotation', './tests/canvas-per-content-annotation');
-importTest('content-annotation-per-canvas', './tests/content-annotation-per-canvas');
-importTest('erroneous-file', './tests/erroneous-file');
+importTest('file-annotation-collection', './tests/file-annotation-collection');
+importTest('sort-canvases-manifest', './tests/sort-canvases-manifest');
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');

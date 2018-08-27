@@ -202,11 +202,11 @@ export class Directory {
                 console.log(chalk.green('no manifests.yml found for: ') + this.directoryPath);
             }
 
-            // sort items              
+            // sort items 
+            const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+
             this.indexJson.items.sort((a, b) => {
-                if (a.label['@none'][0].toLowerCase() < b.label['@none'][0].toLowerCase()) return -1;
-                if (a.label['@none'][0].toLowerCase() > b.label['@none'][0].toLowerCase()) return 1;
-                return 0;
+                return collator.compare(a.label['@none'][0].toLowerCase(), b.label['@none'][0].toLowerCase());
             });
 
         } else {
@@ -227,10 +227,10 @@ export class Directory {
                 this.indexJson.items.push(canvasJson);
             }));
 
+            const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+
             this.indexJson.items.sort((a, b) => {
-                if (a.id < b.id) return -1;
-                if (a.id > b.id) return 1;
-                return 0;
+                return collator.compare(a.id, b.id);
             });
         }
 

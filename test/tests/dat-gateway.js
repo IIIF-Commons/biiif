@@ -38,7 +38,7 @@ it('has the correct collection thumbnail id', async () => {
 });
 
 it('has correct number of items', async () => {
-    assert(collectionJson.items.length === 8);
+    assert(collectionJson.items.length === 5);
 });
 
 it('has an item manifest', async () => {
@@ -60,7 +60,7 @@ it('has item thumbnail', async () => {
 });
 
 it('has a linked item manifest', async () => {
-    item = collectionJson.items[4];
+    item = collectionJson.items[1];
     assert(item);
 });
 
@@ -82,7 +82,7 @@ it('has correct linked item thumbnail id', async () => {
 });
 
 it('has a linked item manifest', async () => {
-    item = collectionJson.items[6];
+    item = collectionJson.items[3];
     assert(item);
 });
 

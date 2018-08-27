@@ -47,6 +47,12 @@
                         "format": "image/jpeg"
                     }
                 ],
+                ".mp3": [
+                    {
+                        "type": "Sound",
+                        "format": "audio/mp3"
+                    }
+                ],
                 ".mp4": [
                     {
                         "type": "Video",

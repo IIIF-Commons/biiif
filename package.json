@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/tetons')\""
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/sound-manifest')\""
   },
   "engines": {
     "node": ">=8.9.1",
@@ -28,8 +28,8 @@
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
     "chalk": "^2.3.0",
-    "glob-promise": "^3.4.0",
     "glob": "^7.1.2",
+    "glob-promise": "^3.4.0",
     "jimp": "^0.2.28",
     "js-yaml": "^3.10.0",
     "jsonfile": "^4.0.0",
