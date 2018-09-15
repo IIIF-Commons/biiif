@@ -188,11 +188,15 @@ export class Utils {
                         // is it an image? (without an info.json)
                         if (body.type.toLowerCase() === Types.IMAGE && extname(body.id) !== '.json') {
 
-                            const imageName: string = body.id.substr(body.id.lastIndexOf('/'));
-                            const imagePath: string = join(fp, imageName);
-                            let pathToThumb: string = join(dirname(imagePath), 'thumb.');
+                            let imageName: string = body.id.substr(body.id.lastIndexOf('/'));
+                            if (imageName.includes('#')) {
+                                imageName = imageName.substr(0, imageName.lastIndexOf('#'));
+                            }                            
+                            const imagePath: string = Utils.normaliseFilePath(join(fp, imageName));
+                            let pathToThumb: string = Utils.normaliseFilePath(join(dirname(imagePath), 'thumb.'));
 
                             if (config.settings.jimpEnabled) {
+
                                 const image: any = await Jimp.read(imagePath);
                                 const thumb: any = image.clone();
                                 // write image buffer to disk for testing
@@ -207,6 +211,7 @@ export class Utils {
                                 thumb.write(pathToThumb, () => {
                                     console.log(chalk.green('generated thumbnail for: ') + fp);
                                 });
+                                
                             } else {
                                 // placeholder img path
                                 pathToThumb += "jpeg";
