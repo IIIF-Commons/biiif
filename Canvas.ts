@@ -28,7 +28,7 @@ export class Canvas {
         } else {
             this.directoryPath = this.filePath;
         }
-                
+        
         this.parentDirectory = parentDirectory;
         // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
         // this.directory.read() is never called.
@@ -57,6 +57,11 @@ export class Canvas {
                 ignore: [
                     '**/info.yml'
                 ]
+            });
+
+            // sort files 
+            customAnnotationFiles.sort((a, b) => {
+                return Utils.compare(a, b);
             });
 
             let hasPaintingAnnotation: boolean = false;
@@ -184,6 +189,11 @@ export class Canvas {
                     ignore: [
                         '**/thumb.*' // ignore thumbs
                     ]
+                });
+
+                // sort files 
+                paintableFiles.sort((a, b) => {
+                    return Utils.compare(a, b);
                 });
 
                 this._annotateFiles(canvasJson, paintableFiles);

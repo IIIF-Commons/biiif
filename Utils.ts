@@ -17,6 +17,11 @@ import { Types } from "./Types";
 
 export class Utils {
 
+    public static compare(a: string, b: string): number {
+        const collator: Intl.Collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+        return collator.compare(a, b);
+    }
+
     public static getTypeByExtension(motivation: string, extension: string): string | undefined {
         const m: any = config.annotation.motivations[motivation];
 

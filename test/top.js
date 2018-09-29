@@ -167,6 +167,94 @@ before(async () => {
                 'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
             }
         },
+        '/sort-canvases-numeric-manifest': {
+            '_page-1': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-2': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-3': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-4': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-5': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-6': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-7': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-8': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-9': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-10': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-11': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-12': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-13': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-14': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-15': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-16': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-17': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-18': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-19': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-20': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-21': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            }
+        },
+        '/sort-files-numeric-manifest': {
+            'page1.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page2.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page3.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page4.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page5.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page6.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page7.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page8.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page9.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page10.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page11.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page12.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page13.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page14.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page15.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page16.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page17.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page18.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page19.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page20.jpg': new Buffer(require('./fixtures/cat-jpg')),
+            'page21.jpg': new Buffer(require('./fixtures/cat-jpg'))
+        },
         '/custom-annotations-manifest': {
             '_commenting-text-with-format': {
                 'commenting-text-with-format.yml': require('./fixtures/commenting-text-with-format')
@@ -235,8 +323,6 @@ after(async () => {
     mock.restore();
 });
 
-//config.settings.jimpEnabled = false; // jimp doesn't work with a mocked file system
-
 importTest('utils', './tests/utils');
 importTest('do-promises-work', './tests/do-promises-work');
 importTest('thumbs-single-manifest', './tests/thumbs-single-manifest');
@@ -249,6 +335,8 @@ importTest('collection-no-manifests', './tests/collection-no-manifests');
 importTest('collection', './tests/collection');
 importTest('file-annotation-collection', './tests/file-annotation-collection');
 importTest('sort-canvases-manifest', './tests/sort-canvases-manifest');
+importTest('sort-canvases-numeric-manifest', './tests/sort-canvases-numeric-manifest');
+importTest('sort-files-numeric-manifest', './tests/sort-files-numeric-manifest');
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');

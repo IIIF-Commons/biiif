@@ -24,7 +24,7 @@ export class Directory {
     public items: Canvas[] = [];
     public parentDirectory: Directory | undefined;
     public url: URL;
-    public virtualName: string | undefined; // used when root directories are dat/ipfs ids
+    public virtualName: string | undefined; // used when root directories are dat/ipfs keys
 
     constructor(directoryPath: string, url: string, generateThumbs: boolean = false, virtualName?: string, parentDirectory?: Directory) {
     
@@ -48,6 +48,11 @@ export class Directory {
             ]
         });
 
+        // sort canvases 
+        canvases.sort((a, b) => {
+            return Utils.compare(a, b);
+        });
+
         await Promise.all(canvases.map(async (canvas: string) => {
             console.log(chalk.green('creating canvas for: ') + canvas);
             this.items.push(new Canvas(canvas, this));
@@ -62,6 +67,11 @@ export class Directory {
                 '**/*.*', // ignore files
                 '**/_*'   // ignore canvas folders
             ]
+        });
+
+        // sort canvases 
+        directories.sort((a, b) => {
+            return Utils.compare(a, b);
         });
 
         await Promise.all(directories.map(async (directory: string) => {
@@ -84,6 +94,11 @@ export class Directory {
                     '**/thumb.*',
                     '**/index.json'
                 ]
+            });
+
+            // sort files 
+            paintableFiles.sort((a, b) => {
+                return Utils.compare(a, b);
             });
 
             paintableFiles.forEach((file: string) => {
@@ -203,10 +218,8 @@ export class Directory {
             }
 
             // sort items 
-            const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
-
             this.indexJson.items.sort((a, b) => {
-                return collator.compare(a.label['@none'][0].toLowerCase(), b.label['@none'][0].toLowerCase());
+                return Utils.compare(a.label['@none'][0].toLowerCase(), b.label['@none'][0].toLowerCase());
             });
 
         } else {
@@ -227,10 +240,8 @@ export class Directory {
                 this.indexJson.items.push(canvasJson);
             }));
 
-            const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
-
             this.indexJson.items.sort((a, b) => {
-                return collator.compare(a.id, b.id);
+                return Utils.compare(a.id, b.id);
             });
         }
 
