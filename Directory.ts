@@ -278,6 +278,18 @@ export class Directory {
             if (this.infoYml.description) {
                 this.indexJson.description = this.infoYml.description;
             }
+
+            if (this.infoYml.behavior) {
+                this.indexJson.behavior = [];
+                
+                if (Array.isArray(this.infoYml.behavior)) {
+                    this.infoYml.behavior.forEach(behavior => {
+                        this.indexJson.behavior.push(behavior);
+                    });
+                } else {
+                    this.indexJson.behavior.push(this.infoYml.behavior);
+                }
+            }
         }
     }
 }

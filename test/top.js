@@ -315,6 +315,24 @@ before(async () => {
             '_canvas-with-presentation-3-image-service': {
                 'presentation-3-image-service.yml': require('./fixtures/presentation-3-image-service')
             }
+        },
+        '/behavior-paged-manifest': {
+            'info.yml': require('./fixtures/behavior-paged'),
+            '_page-1': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-2': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            }
+        },
+        '/multiple-behavior-manifest': {
+            'info.yml': require('./fixtures/multiple-behavior'),
+            '_page-1': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            },
+            '_page-2': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            }
         }
     });
 })
@@ -342,3 +360,5 @@ importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('dat-gateway', './tests/dat-gateway');
 importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-manifest');
 importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');
+importTest('behavior-paged-manifest', './tests/behavior-paged-manifest');
+importTest('multiple-behavior-manifest', './tests/multiple-behavior-manifest');
