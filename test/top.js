@@ -15,6 +15,7 @@ before(async () => {
         },
         '/files-only-manifest': {
             'file.gltf': 'gltf',
+            'file.jpeg': new Buffer(require('./fixtures/cat-jpg')),
             'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
             'file.png': new Buffer(require('./fixtures/cat-jpg'))
         },

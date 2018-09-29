@@ -33,6 +33,12 @@
                         "format": "image/jpeg"
                     }
                 ],
+                ".jpeg": [
+                    {
+                        "type": "Image",
+                        "format": "image/jpeg"
+                    }
+                ],
                 ".json": [
                     {
                         "type": "Text",
