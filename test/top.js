@@ -333,6 +333,11 @@ before(async () => {
             '_page-2': {
                 'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
             }
+        },
+        '/image-dimensions-manifest': {
+            '_page-1': {
+                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            }
         }
     });
 })
@@ -362,3 +367,4 @@ importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-ma
 importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');
 importTest('behavior-paged-manifest', './tests/behavior-paged-manifest');
 importTest('multiple-behavior-manifest', './tests/multiple-behavior-manifest');
+importTest('image-dimensions-manifest', './tests/image-dimensions-manifest');

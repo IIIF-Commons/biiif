@@ -1,8 +1,9 @@
 const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
-const imageServiceBoilerplate = require('./boilerplate/imageservice');
 const chalk = require('chalk');
 const config = require('./config');
+const imageServiceBoilerplate = require('./boilerplate/imageservice');
+const Jimp = require("jimp");
 const urljoin = require('url-join');
 import { Directory } from './Directory';
 import { Motivations } from './Motivations';
@@ -196,13 +197,13 @@ export class Canvas {
                     return Utils.compare(a, b);
                 });
 
-                this._annotateFiles(canvasJson, paintableFiles);
+                await this._annotateFiles(canvasJson, paintableFiles);
             }
 
         } else {
             // a file was passed (not a directory starting with an underscore)
             // therefore, just annotate that file onto the canvas.
-            this._annotateFiles(canvasJson, [this.filePath]);
+            await this._annotateFiles(canvasJson, [this.filePath]);
         }
 
         if (!canvasJson.items[0].items.length) {
@@ -213,10 +214,10 @@ export class Canvas {
         await Utils.getThumbnail(this.canvasJson, this.directory, this.directoryPath);
     }
 
-    private _annotateFiles(canvasJson: any, files: string[]): void {
+    private async _annotateFiles(canvasJson: any, files: string[]): Promise<void> {
         
-        files.forEach((file: string) => {
-
+        await Promise.all(files.map(async (file: string) => {
+            
             file = Utils.normaliseFilePath(file);
             const extName: string = extname(file);
 
@@ -245,8 +246,20 @@ export class Canvas {
                 annotationJson.body.format = defaultPaintingExtension.format;
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
                 canvasJson.items[0].items.push(annotationJson);
+
+                // if it's an image, get the width and height and add to the annotation body and canvas
+                if (defaultPaintingExtension.type.toLowerCase() === Types.IMAGE) {
+                    const image: any = await Jimp.read(file);
+                    const width: number = image.bitmap.width;
+                    const height: number = image.bitmap.height;
+                    canvasJson.width = Math.max(canvasJson.width || 0, width);
+                    canvasJson.height = Math.max(canvasJson.height || 0, height);
+                    annotationJson.body.width = width;
+                    annotationJson.body.height = height;
+                }
             }
-        });
+
+        }));
     }
 
     private async _getInfo(): Promise<void> {

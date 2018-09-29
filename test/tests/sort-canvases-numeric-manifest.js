@@ -10,7 +10,7 @@ const manifestUrl = 'http://test.com/sort-canvases-numeric-manifest';
 it('can build sort canvases numeric manifest', async () => {
     assert(await Utils.fileExists(manifest));
     return build(manifest, manifestUrl);
-}).timeout(1000); // should take less than a second
+}).timeout(2000); // should take less than two seconds
 
 it('can find manifest index.json', async () => {
     const file = '/sort-canvases-numeric-manifest/index.json';
