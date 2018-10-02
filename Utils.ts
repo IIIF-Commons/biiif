@@ -210,7 +210,8 @@ export class Utils {
                                 //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
                                 //     fs.writeFile(pathToBuffer, arrBuffer);
                                 // });
-                                thumb.cover(config.thumbnails.width, config.thumbnails.height);
+                                //thumb.cover(config.thumbnails.width, config.thumbnails.height);
+                                thumb.resize(config.thumbnails.width, Jimp.AUTO);
                                 pathToThumb += image.getExtension();
 
                                 thumb.write(pathToThumb, () => {
