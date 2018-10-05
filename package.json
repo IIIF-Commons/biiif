@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/sound-manifest')\""
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/sort-files-numeric-manifest', true)\""
   },
   "engines": {
     "node": ">=8.9.1",

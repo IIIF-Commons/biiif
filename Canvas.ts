@@ -67,8 +67,8 @@ export class Canvas {
 
             let hasPaintingAnnotation: boolean = false;
 
-            await Promise.all(customAnnotationFiles.map(async (file: string) => {
-
+            for (const file of customAnnotationFiles) {
+                
                 let directoryName: string = dirname(file);
                 directoryName = directoryName.substr(directoryName.lastIndexOf('/'));
                 const name: string = basename(file, extname(file));
@@ -180,8 +180,8 @@ export class Canvas {
                     annotationJson.body.value = yml.value;
                 }
 
-                canvasJson.items[0].items.push(annotationJson);          
-            }));
+                canvasJson.items[0].items.push(annotationJson); 
+            }
 
             if (!hasPaintingAnnotation) {
                 // for each jpg/pdf/mp4/obj in the canvas directory
@@ -216,8 +216,8 @@ export class Canvas {
 
     private async _annotateFiles(canvasJson: any, files: string[]): Promise<void> {
         
-        await Promise.all(files.map(async (file: string) => {
-            
+        for (let file of files) {
+        
             file = Utils.normaliseFilePath(file);
             const extName: string = extname(file);
 
@@ -258,8 +258,7 @@ export class Canvas {
                     annotationJson.body.height = height;
                 }
             }
-
-        }));
+        }
     }
 
     private async _getInfo(): Promise<void> {

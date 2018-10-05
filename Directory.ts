@@ -53,10 +53,16 @@ export class Directory {
             return Utils.compare(a, b);
         });
 
-        await Promise.all(canvases.map(async (canvas: string) => {
+        // example of parallel processing
+        //await Promise.all(canvases.map(async (canvas: string) => { ... });
+
+        // dropped parallel processing in favour of "deterministic" results
+        // also, a lot of tasks in parallel can use too much memory: 
+        // https://blog.lavrton.com/javascript-loops-how-to-handle-async-await-6252dd3c795
+        for (const canvas of canvases) {
             console.log(chalk.green('creating canvas for: ') + canvas);
             this.items.push(new Canvas(canvas, this));
-        }));
+        }
 
         // directories not starting with an underscore
         // these can be child manifests or child collections
@@ -74,14 +80,14 @@ export class Directory {
             return Utils.compare(a, b);
         });
 
-        await Promise.all(directories.map(async (directory: string) => {
+        for (const directory of directories) {
             console.log(chalk.green('creating directory for: ') + directory);
             const name: string = basename(directory);
             const url: string = urljoin(this.url.href, name);
             const newDirectory: Directory = new Directory(directory, url, this.generateThumbs, undefined, this);
             await newDirectory.read();
             this.directories.push(newDirectory);
-        }));
+        }
 
         // if there are no canvas, manifest, or collection directories to read,
         // but there are paintable files in the current directory,
@@ -158,7 +164,7 @@ export class Directory {
 
             // for each child directory, add a collectionitem or manifestitem json boilerplate to items.
 
-            await Promise.all(this.directories.map(async (directory: Directory) => {
+            for (const directory of this.directories) {
                 let itemJson: any;
 
                 if (directory.isCollection) {
@@ -172,8 +178,8 @@ export class Directory {
 
                 await Utils.getThumbnail(itemJson, directory);
 
-                this.indexJson.items.push(itemJson); 
-            }));
+                this.indexJson.items.push(itemJson);
+            }
 
             // check for manifests.yml. if it exists, parse and add to items
             const hasManifestsYml: boolean = await Utils.hasManifestsYml(this.directoryPath);
@@ -228,7 +234,9 @@ export class Directory {
 
             // for each canvas, add canvas json
 
-            await Promise.all(this.items.map(async (canvas: Canvas, index: number) => {
+            let index: number = 0;
+
+            for (const canvas of this.items) {
                 const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
 
                 canvasJson.id = urljoin(this.url.href, 'index.json/canvas', index);
@@ -238,7 +246,9 @@ export class Directory {
 
                 // add canvas to items
                 this.indexJson.items.push(canvasJson);
-            }));
+
+                index++;
+            }
 
             this.indexJson.items.sort((a, b) => {
                 return Utils.compare(a.id, b.id);

@@ -182,7 +182,6 @@ export class Utils {
             // if debugging: jimp item.getitem is not a function
             // generate thumbnail
             if (json.items && json.items.length && json.items[0].items) {
-                console.log(chalk.green('generating thumbnail for: ') + fp);
                 // find an annotation with a painting motivation of type image.
                 const items: any[] =  json.items[0].items;
 
@@ -214,9 +213,16 @@ export class Utils {
                                 thumb.resize(config.thumbnails.width, Jimp.AUTO);
                                 pathToThumb += image.getExtension();
 
-                                thumb.write(pathToThumb, () => {
-                                    console.log(chalk.green('generated thumbnail for: ') + fp);
-                                });
+                                // a thumbnail may already exist at this path (when generating from a flat collection of images)
+                                const thumbExists: boolean = await Utils.fileExists(pathToThumb);
+
+                                if (!thumbExists) {
+                                    thumb.write(pathToThumb, () => {
+                                        console.log(chalk.green('generated thumbnail for: ') + fp);
+                                    });
+                                } else {
+                                    console.log(chalk.green('found thumbnail for: ') + fp);
+                                }
                                 
                             } else {
                                 // placeholder img path
