@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'https://edsilv.github.io/biiif-test-manifests/sort-files-numeric-manifest', true)\""
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'http://174.138.105.19:3000/collection', true, '5fe9b8d2ce257bccf05211597350d2459d7cf76701264cca70f3ffbec7bf605f')\""
   },
   "engines": {
     "node": ">=8.9.1",

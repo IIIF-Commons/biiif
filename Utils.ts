@@ -275,7 +275,7 @@ export class Utils {
         const fileParts: string[] = filePath.split('/');
         let newPath: string[] = [];
 
-        // if there's a single virtualised root folder
+        // if there's a single root folder and none of the file path matches
         if (urlParts.length === 1 && !fileParts.includes(urlParts[0])) {
             newPath.push(fileParts[fileParts.length - 1]);
             newPath.push(urlParts[0]);

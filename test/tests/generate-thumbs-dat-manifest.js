@@ -4,16 +4,17 @@ const build = common.build;
 const Utils = common.Utils;
 
 let manifestJson, canvasJson, thumbnailJson;
-const manifest = '/generate-thumbs-manifest';
-const generateThumbsManifestUrl = 'http://test.com/generate-thumbs-manifest';
+const manifest = '/generate-thumbs-dat-manifest';
+const datId = '5fe9b8d2ce257bccf05211597350d2459d7cf76701264cca70f3ffbec7bf605f';
+const generateThumbsManifestUrl = 'http://174.138.105.19:3000/' + datId;
 
-it('can build generate-thumbs-manifest', async () => {
+it('can build generate-thumbs-dat-manifest', async () => {
     assert(await Utils.fileExists(manifest));
-    return build(manifest, generateThumbsManifestUrl, true);
+    return build(manifest, generateThumbsManifestUrl, true, datId);
 }).timeout(1000); // should take less than a second
 
 it('can find manifest index.json', async () => {
-    const file = '/generate-thumbs-manifest/index.json';
+    const file = '/generate-thumbs-dat-manifest/index.json';
     assert(await Utils.fileExists(file));
     manifestJson = await Utils.readJson(file);
 });
