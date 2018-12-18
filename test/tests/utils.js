@@ -47,6 +47,11 @@ it('correctly creates thumbnail ids', async () => {
     id = Utils.mergePaths(url, filePath);
     assert(id === 'dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection/human_skull/thumb.png');
 
+    url = new URL('dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection');
+    filePath = 'c:/Users/edsilv/github/uv-app-starter/collection/human_skull/thumb.png';
+    id = Utils.mergePaths(url, filePath);
+    assert(id === 'dat://5d317729a67e4a1e5c28be9cf08493ec025a749a00ba4d9d4bf7ea6c439027ba/collection/human_skull/thumb.png');
+
     // url = new URL('http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772');
     // filePath = 'C://Users/edsilv/github/edsilv/biiif-workshop/collection/_abyssinian/thumb.jpeg';
     // id = Utils.mergePaths(url, filePath, 'collection');

@@ -313,11 +313,17 @@ export class Utils {
         let origin: string = url.origin;
         let urlParts: string[];
 
+        let href: string = url.href;
+
+        if (href.endsWith('/')) {
+            href = href.slice(0, -1);
+        }
+
         if (url.protocol === 'dat:') {
             origin = 'dat://';
-            urlParts = url.href.replace(origin, '').split('/');
+            urlParts = href.replace(origin, '').split('/');
         } else {
-            urlParts = url.href.replace(origin + '/', '').split('/');
+            urlParts = href.replace(origin + '/', '').split('/');
         }
 
         return urlParts;

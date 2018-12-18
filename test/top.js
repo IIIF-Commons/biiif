@@ -374,6 +374,7 @@ importTest('sort-files-numeric-manifest', './tests/sort-files-numeric-manifest')
 importTest('custom-annotations-manifest', './tests/custom-annotations-manifest');
 importTest('generate-thumbs-manifest', './tests/generate-thumbs-manifest');
 importTest('generate-thumbs-dat-manifest', './tests/generate-thumbs-dat-manifest');
+importTest('generate-thumbs-http-gateway-dat-manifest', './tests/generate-thumbs-http-gateway-dat-manifest');
 importTest('dat-gateway', './tests/dat-gateway');
 importTest('canvas-with-dimensions-manifest', './tests/canvas-with-dimensions-manifest');
 importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-with-presentation-3-image-service-manifest');

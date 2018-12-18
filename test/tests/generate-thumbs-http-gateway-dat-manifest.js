@@ -6,7 +6,7 @@ const Utils = common.Utils;
 let manifestJson, canvasJson, thumbnailJson;
 const manifest = '/generate-thumbs-dat-manifest';
 const datId = '5fe9b8d2ce257bccf05211597350d2459d7cf76701264cca70f3ffbec7bf605f';
-const generateThumbsManifestUrl = 'dat://' + datId;
+const generateThumbsManifestUrl = 'http://174.138.105.19:3000/' + datId;
 
 it('can build generate-thumbs-dat-manifest', async () => {
     assert(await Utils.fileExists(manifest));
