@@ -24,7 +24,7 @@ it('has correct manifest id', async () => {
 });
 
 it('has correct number of canvases', async () => {
-    assert(manifestJson.items.length === 4);
+    assert(manifestJson.items.length === 5);
 });
 
 // first canvas
@@ -59,7 +59,7 @@ it('first canvas has an annotation body', async () => {
 });
 
 it('first canvas has correct annotation id', async () => {
-    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.gltf');
+    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.glb');
 });
 
 // second canvas
@@ -94,7 +94,7 @@ it('second canvas has an annotation body', async () => {
 });
 
 it('second canvas has correct annotation id', async () => {
-    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.jpeg');
+    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.gltf');
 });
 
 // third canvas
@@ -129,7 +129,7 @@ it('third canvas has an annotation body', async () => {
 });
 
 it('third canvas has correct annotation id', async () => {
-    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.jpg');
+    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.jpeg');
 });
 
 // fourth canvas
@@ -164,5 +164,40 @@ it('fourth canvas has an annotation body', async () => {
 });
 
 it('fourth canvas has correct annotation id', async () => {
+    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.jpg');
+});
+
+// fifth canvas
+
+it('can find fifth canvas', async () => {
+    canvasJson = manifestJson.items[4];
+    assert(canvasJson);
+});
+
+it('fifth canvas has correct id', async () => {
+    assert(canvasJson.id === 'http://test.com/files-only-manifest/index.json/canvas/4');
+});
+
+it('fifth canvas has an annotation page', async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+});
+
+it('fifth canvas has the correct annotation page id', async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage.id === 'http://test.com/files-only-manifest/index.json/canvas/4/annotationpage/0');
+});
+
+it('fifth canvas has an annotation', async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+});
+
+it('fifth canvas has an annotation body', async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+});
+
+it('fifth canvas has correct annotation id', async () => {
     assert(annotationBody.id === 'http://test.com/files-only-manifest/file.png');
 });

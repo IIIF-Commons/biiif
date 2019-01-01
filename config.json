@@ -21,6 +21,12 @@
                         "format": "application/draco"
                     }
                 ],
+                ".glb": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "model/gltf-binary"
+                    }
+                ],
                 ".gltf": [
                     {
                         "type": "PhysicalObject",
