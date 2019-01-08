@@ -1,5 +1,4 @@
 const common = require('./common');
-const config = common.config;
 const mock = common.mock;
 
 function importTest(name, path) {

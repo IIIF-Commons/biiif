@@ -1,7 +1,7 @@
 const { dirname, extname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
-const config = require('./config');
+const config: IConfigJSON = require('./config');
 const fs = require('fs');
 const Jimp = require("jimp");
 const jsonfile = require('jsonfile');
@@ -10,10 +10,10 @@ const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
 import { Directory } from "./Directory";
-import { Motivations } from "./Motivations";
 import { promise as glob } from 'glob-promise';
 import { TypeFormat } from "./TypeFormat";
-import { Types } from "./Types";
+import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
+import { IConfigJSON } from './IConfigJSON';
 
 export class Utils {
 
@@ -22,7 +22,21 @@ export class Utils {
         return collator.compare(a, b);
     }
 
+    public static normaliseType(type: string): string {
+        type = type.toLowerCase();
+        
+        if (type.indexOf(':') !== -1) {
+            const split: string[] = type.split(':');
+            return split[1];
+        }
+
+        return type;
+    }
+
     public static getTypeByExtension(motivation: string, extension: string): string | undefined {
+
+        motivation = Utils.normaliseType(motivation);
+
         const m: any = config.annotation.motivations[motivation];
 
         if (m) {
@@ -35,6 +49,9 @@ export class Utils {
     }
 
     public static getFormatByExtension(motivation: string, extension: string): string | undefined {
+
+        motivation = Utils.normaliseType(motivation);
+
         const m: any = config.annotation.motivations[motivation];
 
         if (m) {
@@ -47,6 +64,9 @@ export class Utils {
     }
 
     public static getFormatByExtensionAndType(motivation: string, extension: string, type: string): string | undefined {
+
+        motivation = Utils.normaliseType(motivation);
+
         const m: any = config.annotation.motivations[motivation];
 
         if (m) {
@@ -65,6 +85,9 @@ export class Utils {
     }
 
     public static getTypeByFormat(motivation: string, format: string): string | undefined {
+
+        motivation = Utils.normaliseType(motivation);
+
         const m: any = config.annotation.motivations[motivation];
 
         if (m) {
@@ -83,6 +106,9 @@ export class Utils {
     }
 
     public static getFormatByType(motivation: string, type: string): string | undefined {
+
+        motivation = Utils.normaliseType(motivation);
+
         const m: any = config.annotation.motivations[motivation];
 
         // only able to categorically say there's a matching format 
@@ -188,9 +214,9 @@ export class Utils {
                 for (let i = 0; i < items.length; i++) {
                     const item: any = items[i];
                     const body: any = item.body;
-                    if (body && item.motivation === Motivations.PAINTING) {
+                    if (body && item.motivation === AnnotationMotivation.PAINTING) {
                         // is it an image? (without an info.json)
-                        if (body.type.toLowerCase() === Types.IMAGE && extname(body.id) !== '.json') {
+                        if (body.type.toLowerCase() === ExternalResourceType.IMAGE && extname(body.id) !== '.json') {
 
                             let imageName: string = body.id.substr(body.id.lastIndexOf('/'));
                             if (imageName.includes('#')) {

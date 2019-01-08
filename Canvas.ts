@@ -1,15 +1,15 @@
 const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
-const config = require('./config');
+const config: IConfigJSON = require('./config');
 const imageServiceBoilerplate = require('./boilerplate/imageservice');
 const Jimp = require("jimp");
 const urljoin = require('url-join');
 import { Directory } from './Directory';
-import { Motivations } from './Motivations';
 import { promise as glob } from 'glob-promise';
-import { Types } from "./Types";
 import { Utils } from './Utils';
+import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
+import { IConfigJSON } from './IConfigJSON';
 
 export class Canvas {
 
@@ -81,7 +81,7 @@ export class Canvas {
 
                 if (!motivation) {
                     // assume painting
-                    motivation = Motivations.PAINTING;
+                    motivation = AnnotationMotivation.PAINTING;
                     console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
                 }
 
@@ -91,7 +91,7 @@ export class Canvas {
                 let id: string;
 
                 // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
-                if ((motivation.toLowerCase() === Motivations.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
+                if ((motivation.toLowerCase() === AnnotationMotivation.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                     hasPaintingAnnotation = true;
                     id = urljoin(this.url.href, directoryName, yml.value);
 
@@ -169,14 +169,14 @@ export class Canvas {
 
                 // if the annotation is an image and the id points to an info.json
                 // add an image service pointing to the info.json
-                if (annotationJson.body.type && annotationJson.body.type.toLowerCase() === Types.IMAGE && extname(annotationJson.body.id) === '.json') {
+                if (annotationJson.body.type && annotationJson.body.type.toLowerCase() === ExternalResourceType.IMAGE && extname(annotationJson.body.id) === '.json') {
                     const service: any = Utils.cloneJson(imageServiceBoilerplate);
                     service[0].id = annotationJson.body.id.substr(0, annotationJson.body.id.lastIndexOf('/'));
                     annotationJson.body.service = service;
                 }
 
                 // if there's a value, and we're using a recognised motivation (except painting)
-                if (yml.value && config.annotation.motivations[motivation] && motivation !== Motivations.PAINTING) {
+                if (yml.value && config.annotation.motivations[motivation] && motivation !== AnnotationMotivation.PAINTING) {
                     annotationJson.body.value = yml.value;
                 }
 
@@ -239,7 +239,7 @@ export class Canvas {
                 defaultPaintingExtension = defaultPaintingExtension[0];
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-                annotationJson.motivation = Motivations.PAINTING;
+                annotationJson.motivation = AnnotationMotivation.PAINTING;
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
                 annotationJson.body.type = defaultPaintingExtension.type;
@@ -248,7 +248,7 @@ export class Canvas {
                 canvasJson.items[0].items.push(annotationJson);
 
                 // if it's an image, get the width and height and add to the annotation body and canvas
-                if (defaultPaintingExtension.type.toLowerCase() === Types.IMAGE) {
+                if (defaultPaintingExtension.type.toLowerCase() === ExternalResourceType.IMAGE) {
                     const image: any = await Jimp.read(file);
                     const width: number = image.bitmap.width;
                     const height: number = image.bitmap.height;

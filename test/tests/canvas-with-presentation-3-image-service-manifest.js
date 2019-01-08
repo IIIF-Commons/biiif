@@ -38,7 +38,7 @@ it('has annotation', async () => {
 });
 
 it('has correct annotation motivation', async () => {
-    assert(annotation.motivation === 'painting');
+    assert(annotation.motivation === 'sc:painting');
 });
 
 it('has correct annotation target', async () => {

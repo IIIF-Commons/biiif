@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
+    "@iiif/vocabulary": "^1.0.6",
     "chalk": "^2.3.0",
     "glob": "^7.1.2",
     "glob-promise": "^3.4.0",
