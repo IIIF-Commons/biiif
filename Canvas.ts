@@ -112,7 +112,7 @@ export class Canvas {
                     annotationJson.body.type = yml.type;
                 } else if (yml.value && extname(yml.value)) {
                     // guess the type from the extension
-                    const type: string | undefined = Utils.getTypeByExtension(motivation, extname(yml.value));
+                    const type: string | null = Utils.getTypeByExtension(motivation, extname(yml.value));
 
                     if (type) {
                         annotationJson.body.type = type;
@@ -121,7 +121,7 @@ export class Canvas {
 
                 } else if (yml.format) {
                     // guess the type from the format
-                    const type: string | undefined = Utils.getTypeByFormat(motivation, yml.format);
+                    const type: string | null = Utils.getTypeByFormat(motivation, yml.format);
 
                     if (type) {
                         annotationJson.body.type = type;
@@ -138,7 +138,7 @@ export class Canvas {
                     annotationJson.body.format = yml.format;
                 } else if (yml.value && extname(yml.value) && yml.type) {
                     // guess the format from the extension and type
-                    const format: string | undefined = Utils.getFormatByExtensionAndType(motivation, extname(yml.value), yml.type);
+                    const format: string | null = Utils.getFormatByExtensionAndType(motivation, extname(yml.value), yml.type);
 
                     if (format) {
                         annotationJson.body.format = format;
@@ -146,7 +146,7 @@ export class Canvas {
                     }
                 } else if (yml.value && extname(yml.value)) {
                     // guess the format from the extension
-                    const format: string | undefined = Utils.getFormatByExtension(motivation, extname(yml.value));
+                    const format: string | null = Utils.getFormatByExtension(motivation, extname(yml.value));
 
                     if (format) {
                         annotationJson.body.format = format;
@@ -154,7 +154,7 @@ export class Canvas {
                     }
                 } else if (yml.type) {
                     // can only guess the format from the type if there is one typeformat for this motivation.
-                    const format: string | undefined = Utils.getFormatByType(motivation, yml.type);
+                    const format: string | null = Utils.getFormatByType(motivation, yml.type);
 
                     if (format) {
                         annotationJson.body.format = format;
