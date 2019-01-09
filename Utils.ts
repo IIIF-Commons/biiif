@@ -33,7 +33,7 @@ export class Utils {
         return type;
     }
 
-    public static getTypeByExtension(motivation: string, extension: string): string | undefined {
+    public static getTypeByExtension(motivation: string, extension: string): string | null {
 
         motivation = Utils.normaliseType(motivation);
 
@@ -45,10 +45,10 @@ export class Utils {
             }
         }
 
-        return undefined;
+        return null;
     }
 
-    public static getFormatByExtension(motivation: string, extension: string): string | undefined {
+    public static getFormatByExtension(motivation: string, extension: string): string | null {
 
         motivation = Utils.normaliseType(motivation);
 
@@ -60,10 +60,10 @@ export class Utils {
             }
         }
 
-        return undefined;
+        return null;
     }
 
-    public static getFormatByExtensionAndType(motivation: string, extension: string, type: string): string | undefined {
+    public static getFormatByExtensionAndType(motivation: string, extension: string, type: string): string | null {
 
         motivation = Utils.normaliseType(motivation);
 
@@ -81,10 +81,10 @@ export class Utils {
             }
         }
 
-        return undefined;
+        return null;
     }
 
-    public static getTypeByFormat(motivation: string, format: string): string | undefined {
+    public static getTypeByFormat(motivation: string, format: string): string | null {
 
         motivation = Utils.normaliseType(motivation);
 
@@ -102,10 +102,10 @@ export class Utils {
             }
         }
 
-        return undefined;
+        return null;
     }
 
-    public static getFormatByType(motivation: string, type: string): string | undefined {
+    public static getFormatByType(motivation: string, type: string): string | null {
 
         motivation = Utils.normaliseType(motivation);
 
@@ -124,7 +124,7 @@ export class Utils {
             }
         }
 
-        return undefined;
+        return null;
     }
 
     public static timeout(ms: number): Promise<void> {
@@ -214,7 +214,7 @@ export class Utils {
                 for (let i = 0; i < items.length; i++) {
                     const item: any = items[i];
                     const body: any = item.body;
-                    if (body && item.motivation === AnnotationMotivation.PAINTING) {
+                    if (body && item.motivation === Utils.normaliseType(AnnotationMotivation.PAINTING)) {
                         // is it an image? (without an info.json)
                         if (body.type.toLowerCase() === ExternalResourceType.IMAGE && extname(body.id) !== '.json') {
 

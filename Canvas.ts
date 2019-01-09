@@ -81,9 +81,11 @@ export class Canvas {
 
                 if (!motivation) {
                     // assume painting
-                    motivation = AnnotationMotivation.PAINTING;
+                    motivation = Utils.normaliseType(AnnotationMotivation.PAINTING);
                     console.warn(chalk.yellow('motivation property missing in ' + file + ', guessed ' + motivation));
                 }
+
+                motivation = Utils.normaliseType(motivation);
 
                 annotationJson.motivation = motivation;
                 annotationJson.target = canvasJson.id;
@@ -91,7 +93,7 @@ export class Canvas {
                 let id: string;
 
                 // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
-                if ((motivation.toLowerCase() === AnnotationMotivation.PAINTING || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
+                if ((motivation.toLowerCase() === Utils.normaliseType(AnnotationMotivation.PAINTING) || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                     hasPaintingAnnotation = true;
                     id = urljoin(this.url.href, directoryName, yml.value);
 
@@ -176,7 +178,7 @@ export class Canvas {
                 }
 
                 // if there's a value, and we're using a recognised motivation (except painting)
-                if (yml.value && config.annotation.motivations[motivation] && motivation !== AnnotationMotivation.PAINTING) {
+                if (yml.value && config.annotation.motivations[motivation] && motivation !== Utils.normaliseType(AnnotationMotivation.PAINTING)) {
                     annotationJson.body.value = yml.value;
                 }
 
@@ -239,7 +241,7 @@ export class Canvas {
                 defaultPaintingExtension = defaultPaintingExtension[0];
                 const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
                 annotationJson.id = urljoin(canvasJson.id, 'annotation', canvasJson.items[0].items.length);
-                annotationJson.motivation = AnnotationMotivation.PAINTING;
+                annotationJson.motivation = Utils.normaliseType(AnnotationMotivation.PAINTING);
                 annotationJson.target = canvasJson.id;
                 annotationJson.body.id = id;
                 annotationJson.body.type = defaultPaintingExtension.type;
