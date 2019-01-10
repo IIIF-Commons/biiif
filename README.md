@@ -24,10 +24,6 @@ If you want to build a website with biiif, try [uv-app-starter](https://github.c
 
 Building static sites with biiif workshop: https://github.com/edsilv/biiif-workshop
 
-## Examples
-
-https://github.com/edsilv/biiif-test-manifests
-
 ## Parameters
 
 | Parameter | Type | Description |
@@ -133,6 +129,10 @@ If you leave the `label` property blank, it will default to the name of the last
 Including a `manifests.yml` file in a folder without any sub-folders forces it to behave like a collection.
 
 ## Examples
+
+A repo of test manifests: https://github.com/edsilv/biiif-test-manifests
+
+---
 
 Here is an example of how to organise your files/folders for biiif.
 
