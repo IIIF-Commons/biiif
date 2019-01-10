@@ -349,6 +349,11 @@ before(async () => {
             '_page-1': {
                 'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
             }
+        },
+        '/external-resource-annotation-manifest': {
+            '_platypus': {
+                'platypus.yml': require('./fixtures/external-resource-annotation')
+            },
         }
     });
 })
@@ -381,3 +386,4 @@ importTest('canvas-with-presentation-3-image-service-manifest', './tests/canvas-
 importTest('behavior-paged-manifest', './tests/behavior-paged-manifest');
 importTest('multiple-behavior-manifest', './tests/multiple-behavior-manifest');
 importTest('image-dimensions-manifest', './tests/image-dimensions-manifest');
+importTest('external-resource-annotation-manifest', './tests/external-resource-annotation-manifest');

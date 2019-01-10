@@ -9,6 +9,7 @@ const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
+const isURL = require('is-url');
 import { Directory } from "./Directory";
 import { promise as glob } from 'glob-promise';
 import { TypeFormat } from "./TypeFormat";
@@ -412,5 +413,9 @@ export class Utils {
             }); 
 
         });
+    }
+
+    public static isURL(path: string): boolean {
+        return isURL(path);
     }
 }

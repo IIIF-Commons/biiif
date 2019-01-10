@@ -95,7 +95,12 @@ export class Canvas {
                 // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
                 if ((motivation.toLowerCase() === Utils.normaliseType(AnnotationMotivation.PAINTING) || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                     hasPaintingAnnotation = true;
-                    id = urljoin(this.url.href, directoryName, yml.value);
+
+                    if (Utils.isURL(yml.value)) {
+                        id = yml.value;
+                    } else {
+                        id = urljoin(this.url.href, directoryName, yml.value);
+                    }
 
                     // if the painting annotation has a target.
                     if (yml.xywh) {
