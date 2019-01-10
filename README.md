@@ -132,7 +132,7 @@ Including a `manifests.yml` file in a folder without any sub-folders forces it t
 
 A repo of test manifests: https://github.com/edsilv/biiif-test-manifests
 
----
+...
 
 Here is an example of how to organise your files/folders for biiif.
 
