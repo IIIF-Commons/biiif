@@ -33,6 +33,18 @@
                         "format": "model/gltf+json"
                     }
                 ],
+                ".gz": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/gzip"
+                    }
+                ],
+                ".stl": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "model/stl"
+                    }
+                ],
                 ".jpg": [
                     {
                         "type": "Image",
@@ -69,6 +81,12 @@
                     {
                         "type": "Video",
                         "format": "video/mp4"
+                    }
+                ],
+                ".nii": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/octet-stream"
                     }
                 ],
                 ".obj": [
