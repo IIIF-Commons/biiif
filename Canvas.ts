@@ -2,6 +2,8 @@ const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
 const config: IConfigJSON = require('./config');
+const ffprobe = require('ffprobe');
+const ffprobeStatic = require('ffprobe-static');
 const imageServiceBoilerplate = require('./boilerplate/imageservice');
 const Jimp = require("jimp");
 const urljoin = require('url-join');
@@ -254,15 +256,27 @@ export class Canvas {
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
                 canvasJson.items[0].items.push(annotationJson);
 
-                // if it's an image, get the width and height and add to the annotation body and canvas
-                if (defaultPaintingExtension.type.toLowerCase() === ExternalResourceType.IMAGE) {
-                    const image: any = await Jimp.read(file);
-                    const width: number = image.bitmap.width;
-                    const height: number = image.bitmap.height;
-                    canvasJson.width = Math.max(canvasJson.width || 0, width);
-                    canvasJson.height = Math.max(canvasJson.height || 0, height);
-                    annotationJson.body.width = width;
-                    annotationJson.body.height = height;
+                
+                switch (defaultPaintingExtension.type.toLowerCase()) {
+                    // if it's an image, get the width and height and add to the annotation body and canvas
+                    case ExternalResourceType.IMAGE :
+                        const image: any = await Jimp.read(file);
+                        const width: number = image.bitmap.width;
+                        const height: number = image.bitmap.height;
+                        canvasJson.width = Math.max(canvasJson.width || 0, width);
+                        canvasJson.height = Math.max(canvasJson.height || 0, height);
+                        annotationJson.body.width = width;
+                        annotationJson.body.height = height;
+                        break;
+                    // if it's a sound, get the duration and add to the canvas
+                    case ExternalResourceType.SOUND :
+                    case ExternalResourceType.VIDEO :
+                        const info: any = await ffprobe(file, { path: ffprobeStatic.path });
+                        if (info && info.streams && info.streams.length) {
+                            const duration: number = Number(info.streams[0].duration);
+                            canvasJson.duration = duration;
+                        }
+                        break;
                 }
             }
         }));

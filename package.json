@@ -29,6 +29,8 @@
   "dependencies": {
     "@iiif/vocabulary": "^1.0.6",
     "chalk": "^2.3.0",
+    "ffprobe": "^1.1.0",
+    "ffprobe-static": "^3.0.0",
     "glob": "^7.1.2",
     "glob-promise": "^3.4.0",
     "is-url": "^1.2.4",
