@@ -271,11 +271,16 @@ export class Canvas {
                     // if it's a sound, get the duration and add to the canvas
                     case ExternalResourceType.SOUND :
                     case ExternalResourceType.VIDEO :
-                        const info: any = await ffprobe(file, { path: ffprobeStatic.path });
-                        if (info && info.streams && info.streams.length) {
-                            const duration: number = Number(info.streams[0].duration);
-                            canvasJson.duration = duration;
+                        try {
+                            const info: any = await ffprobe(file, { path: ffprobeStatic.path });
+                            if (info && info.streams && info.streams.length) {
+                                const duration: number = Number(info.streams[0].duration);
+                                canvasJson.duration = duration;
+                            }
+                        } catch {
+                            console.warn(`ffprobe couldn't load ${file}`);
                         }
+                        
                         break;
                 }
             }
