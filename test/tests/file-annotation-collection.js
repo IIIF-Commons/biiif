@@ -11,7 +11,7 @@ const collectionUrl = 'http://test.com/file-annotation-collection';
 it('can build collection', async () => {
     assert(await Utils.fileExists(collection));
     return build(collection, collectionUrl);
-}).timeout(1000); // should take less than a second
+}).timeout(2000);
 
 it('can find collection index.json', async () => {
     const file = urljoin(collection, '/index.json');

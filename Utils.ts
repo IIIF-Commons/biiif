@@ -2,19 +2,21 @@ const { dirname, extname } = require('path');
 const { join, basename } = require('path');
 const chalk = require('chalk');
 const config: IConfigJSON = require('./config');
+const ffprobe = require('ffprobe');
+const ffprobeStatic = require('ffprobe-static');
 const fs = require('fs');
+const isURL = require('is-url');
 const Jimp = require("jimp");
 const jsonfile = require('jsonfile');
 const labelBoilerplate = require('./boilerplate/label');
 const thumbnailBoilerplate = require('./boilerplate/thumbnail');
 const urljoin = require('url-join');
 const yaml = require('js-yaml');
-const isURL = require('is-url');
+import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
 import { Directory } from "./Directory";
+import { IConfigJSON } from './IConfigJSON';
 import { promise as glob } from 'glob-promise';
 import { TypeFormat } from "./TypeFormat";
-import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
-import { IConfigJSON } from './IConfigJSON';
 
 export class Utils {
 
@@ -192,6 +194,10 @@ export class Utils {
         return filePath;
     }
 
+    public static isJsonFile(path: string): boolean {
+        return extname(path) === '.json';
+    }
+
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
         let fp: string = filePath || directory.directoryPath;
         fp = Utils.normaliseFilePath(fp);
@@ -200,12 +206,15 @@ export class Utils {
         const thumbnails: string[] = await glob(thumbnailPattern);
 
         if (thumbnails.length) {
+            // there's alrady a thumbnail in the directory, add it to the canvas
             console.log(chalk.green('found thumbnail for: ') + fp);
             let thumbnail: string = thumbnails[0];
             const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
             thumbnailJson[0].id = Utils.mergePaths(directory.url, Utils.getVirtualFilePath(thumbnail, directory));
             json.thumbnail = thumbnailJson;
         } else if (directory.generateThumbs) {
+            // there isn't a thumbnail in the directory, so we'll need to generate it.
+            
             // if debugging: jimp item.getitem is not a function
             // generate thumbnail
             if (json.items && json.items.length && json.items[0].items) {
@@ -217,7 +226,7 @@ export class Utils {
                     const body: any = item.body;
                     if (body && item.motivation === Utils.normaliseType(AnnotationMotivation.PAINTING)) {
                         // is it an image? (without an info.json)
-                        if (body.type.toLowerCase() === ExternalResourceType.IMAGE && extname(body.id) !== '.json') {
+                        if (body.type.toLowerCase() === ExternalResourceType.IMAGE && !Utils.isJsonFile(body.id)) {
 
                             let imageName: string = body.id.substr(body.id.lastIndexOf('/'));
                             if (imageName.includes('#')) {
@@ -226,8 +235,10 @@ export class Utils {
                             const imagePath: string = Utils.normaliseFilePath(join(fp, imageName));
                             let pathToThumb: string = Utils.normaliseFilePath(join(dirname(imagePath), 'thumb.'));
 
-                            if (config.settings.jimpEnabled) {
-
+                            // todo: this currently assumes that the image to generate a thumb from is within the directory, 
+                            // but it may be in an assets folder and painted by a custom annotation.
+                            // see canvas-with-dimensions-manifest.js
+                            if (config.settings.jimpEnabled && await Utils.fileExists(imagePath)) {
                                 const image: any = await Jimp.read(imagePath);
                                 const thumb: any = image.clone();
                                 // write image buffer to disk for testing
@@ -273,6 +284,40 @@ export class Utils {
         const labelJson: any = Utils.cloneJson(labelBoilerplate);
         labelJson['@none'].push(value);
         return labelJson;
+    }
+
+    public static async getFileDimensions(type: string, file: string, canvasJson: any, annotationJson: any): Promise<void> {
+
+        console.log(chalk.green('getting file dimensions for: ') + file);
+
+        if (!Utils.isJsonFile(file)) {
+            switch (type.toLowerCase()) {
+                // if it's an image, get the width and height and add to the annotation body and canvas
+                case ExternalResourceType.IMAGE :
+                    const image: any = await Jimp.read(file);
+                    const width: number = image.bitmap.width;
+                    const height: number = image.bitmap.height;
+                    canvasJson.width = Math.max(canvasJson.width || 0, width);
+                    canvasJson.height = Math.max(canvasJson.height || 0, height);
+                    annotationJson.body.width = width;
+                    annotationJson.body.height = height;
+                    break;
+                // if it's a sound, get the duration and add to the canvas
+                case ExternalResourceType.SOUND :
+                case ExternalResourceType.VIDEO :
+                    try {
+                        const info: any = await ffprobe(file, { path: ffprobeStatic.path });
+                        if (info && info.streams && info.streams.length) {
+                            const duration: number = Number(info.streams[0].duration);
+                            canvasJson.duration = duration;
+                        }
+                    } catch {
+                        console.warn(`ffprobe couldn't load ${file}`);
+                    }
+                    
+                    break;
+            }
+        }
     }
 
     /*

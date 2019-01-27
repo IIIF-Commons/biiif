@@ -10,7 +10,7 @@ const manifestUrl = 'http://test.com/sort-files-numeric-manifest';
 it('can build sort files numeric manifest', async () => {
     assert(await Utils.fileExists(manifest));
     return build(manifest, manifestUrl);
-}).timeout(2000); // should take less than two seconds
+}).timeout(3000);
 
 it('can find manifest index.json', async () => {
     const file = '/sort-files-numeric-manifest/index.json';

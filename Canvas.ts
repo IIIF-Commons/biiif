@@ -2,10 +2,7 @@ const { basename, dirname, extname, join } = require('path');
 const annotationBoilerplate = require('./boilerplate/annotation');
 const chalk = require('chalk');
 const config: IConfigJSON = require('./config');
-const ffprobe = require('ffprobe');
-const ffprobeStatic = require('ffprobe-static');
 const imageServiceBoilerplate = require('./boilerplate/imageservice');
-const Jimp = require("jimp");
 const urljoin = require('url-join');
 import { Directory } from './Directory';
 import { promise as glob } from 'glob-promise';
@@ -174,7 +171,12 @@ export class Canvas {
                     console.warn(chalk.yellow('unable to determine format of ' + file));
                 }
                 
-                annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+                if (yml.label) {
+                    annotationJson.body.label = Utils.getLabel(yml.label);
+                    canvasJson.label = Utils.getLabel(yml.label);
+                } else {
+                    annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+                }
 
                 // if the annotation is an image and the id points to an info.json
                 // add an image service pointing to the info.json
@@ -189,6 +191,14 @@ export class Canvas {
                     annotationJson.body.value = yml.value;
                 }
 
+                if (yml.value && !Utils.isURL(yml.value) && annotationJson.body.type) {
+                    // get the path to the annotated file
+                    const dirName: string = dirname(file);
+                    let path: string = join(dirName, yml.value);
+                    path = Utils.normaliseFilePath(path);
+                    await Utils.getFileDimensions(annotationJson.body.type, path, canvasJson, annotationJson)
+                }
+               
                 canvasJson.items[0].items.push(annotationJson); 
             }));
 
@@ -219,7 +229,8 @@ export class Canvas {
             console.warn(chalk.yellow('Could not find any files to annotate onto ' + this.directoryPath));
         }
 
-        // if there's no thumb.[jpg, gif, png] generate one from the first painted image
+        // if there's no thumb.[jpg, gif, png]
+        // generate one from the first painted image
         await Utils.getThumbnail(this.canvasJson, this.directory, this.directoryPath);
     }
 
@@ -255,40 +266,13 @@ export class Canvas {
                 annotationJson.body.format = defaultPaintingExtension.format;
                 annotationJson.body.label = Utils.getLabel(this.infoYml.label);
                 canvasJson.items[0].items.push(annotationJson);
-
-                
-                switch (defaultPaintingExtension.type.toLowerCase()) {
-                    // if it's an image, get the width and height and add to the annotation body and canvas
-                    case ExternalResourceType.IMAGE :
-                        const image: any = await Jimp.read(file);
-                        const width: number = image.bitmap.width;
-                        const height: number = image.bitmap.height;
-                        canvasJson.width = Math.max(canvasJson.width || 0, width);
-                        canvasJson.height = Math.max(canvasJson.height || 0, height);
-                        annotationJson.body.width = width;
-                        annotationJson.body.height = height;
-                        break;
-                    // if it's a sound, get the duration and add to the canvas
-                    case ExternalResourceType.SOUND :
-                    case ExternalResourceType.VIDEO :
-                        try {
-                            const info: any = await ffprobe(file, { path: ffprobeStatic.path });
-                            if (info && info.streams && info.streams.length) {
-                                const duration: number = Number(info.streams[0].duration);
-                                canvasJson.duration = duration;
-                            }
-                        } catch {
-                            console.warn(`ffprobe couldn't load ${file}`);
-                        }
-                        
-                        break;
-                }
+                await Utils.getFileDimensions(defaultPaintingExtension.type, file, canvasJson, annotationJson);                
             }
         }));
     }
 
     private async _getInfo(): Promise<void> {
-        
+
         this.infoYml = {};
 
         // if there's an info.yml

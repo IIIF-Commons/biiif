@@ -317,7 +317,9 @@ before(async () => {
         },
         '/canvas-with-dimensions-manifest': {
             '_canvas-with-dimensions': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
+                'assets': {
+                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                },
                 'painting-jpg-with-xywh.yml': require('./fixtures/painting-jpg-with-xywh'),
                 'info.yml': require('./fixtures/dimensions-info')
             }
@@ -353,7 +355,15 @@ before(async () => {
         '/external-resource-annotation-manifest': {
             '_platypus': {
                 'platypus.yml': require('./fixtures/external-resource-annotation')
-            },
+            }
+        },
+        '/canvas-label-annotation-manifest': {
+            '_canvas-label-annotation': {
+                'assets': {
+                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                },
+                'label.yml': require('./fixtures/canvas-label-annotation')
+            }
         }
     });
 })
@@ -387,3 +397,4 @@ importTest('behavior-paged-manifest', './tests/behavior-paged-manifest');
 importTest('multiple-behavior-manifest', './tests/multiple-behavior-manifest');
 importTest('image-dimensions-manifest', './tests/image-dimensions-manifest');
 importTest('external-resource-annotation-manifest', './tests/external-resource-annotation-manifest');
+importTest('canvas-label-annotation-manifest', './tests/canvas-label-annotation-manifest');
