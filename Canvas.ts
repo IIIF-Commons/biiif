@@ -23,7 +23,7 @@ export class Canvas {
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
 
-        if (extname(this.filePath)) {
+        if (!Utils.isDirectory(this.filePath)) {
             this.directoryPath = dirname(this.filePath);
         } else {
             this.directoryPath = this.filePath;

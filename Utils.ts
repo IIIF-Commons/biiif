@@ -198,6 +198,10 @@ export class Utils {
         return extname(path) === '.json';
     }
 
+    public static isDirectory(path: string): boolean {
+        return fs.lstatSync(path).isDirectory();
+    }
+
     public static async getThumbnail(json: any, directory: Directory, filePath?: string): Promise<void> {
         let fp: string = filePath || directory.directoryPath;
         fp = Utils.normaliseFilePath(fp);
