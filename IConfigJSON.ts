@@ -1,3 +1,5 @@
+import { TypeFormat } from "./TypeFormat";
+
 export interface IConfigJSON {
     settings: settings;
     thumbnails: thumbnails;
@@ -14,11 +16,11 @@ export interface thumbnails {
 }
 
 export interface painting {
-    [key: string]: string[];
+    [key: string]: TypeFormat[];
 }
 
 export interface commenting {
-    [key: string]: string[];
+    [key: string]: TypeFormat[];
 }
 
 export interface motivations {

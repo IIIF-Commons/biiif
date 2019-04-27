@@ -1,14 +1,14 @@
-const { basename, dirname, extname, join } = require('path');
-const annotationBoilerplate = require('./boilerplate/annotation');
-const chalk = require('chalk');
-const config: IConfigJSON = require('./config');
-const imageServiceBoilerplate = require('./boilerplate/imageservice');
-const urljoin = require('url-join');
-import { Directory } from './Directory';
-import { promise as glob } from 'glob-promise';
-import { Utils } from './Utils';
-import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
-import { IConfigJSON } from './IConfigJSON';
+import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary/dist-commonjs/";
+import { basename, dirname, extname, join } from "path";
+import { Directory } from "./Directory";
+import { IConfigJSON } from "./IConfigJSON";
+import { promise as glob } from "glob-promise";
+import { Utils } from "./Utils";
+import annotationBoilerplate from "./boilerplate/annotation.json";
+import chalk from "chalk";
+import config from "./config.json";
+import imageServiceBoilerplate from "./boilerplate/imageservice.json";
+import urljoin from "url-join";
 
 export class Canvas {
 
@@ -19,6 +19,8 @@ export class Canvas {
     public directoryPath: string;
     public infoYml: any = {};
     public url: URL;
+
+    private _config: IConfigJSON = config;
 
     constructor(filePath: string, parentDirectory: Directory) {
         this.filePath = filePath;
@@ -92,7 +94,7 @@ export class Canvas {
                 let id: string;
 
                 // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
-                if ((motivation.toLowerCase() === Utils.normaliseType(AnnotationMotivation.PAINTING) || !config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
+                if ((motivation.toLowerCase() === Utils.normaliseType(AnnotationMotivation.PAINTING) || !this._config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
                     hasPaintingAnnotation = true;
 
                     if (Utils.isURL(yml.value)) {
@@ -187,7 +189,7 @@ export class Canvas {
                 }
 
                 // if there's a value, and we're using a recognised motivation (except painting)
-                if (yml.value && config.annotation.motivations[motivation] && motivation !== Utils.normaliseType(AnnotationMotivation.PAINTING)) {
+                if (yml.value && this._config.annotation.motivations[motivation] && motivation !== Utils.normaliseType(AnnotationMotivation.PAINTING)) {
                     annotationJson.body.value = yml.value;
                 }
 
@@ -241,8 +243,8 @@ export class Canvas {
             file = Utils.normaliseFilePath(file);
             const extName: string = extname(file);
 
-            // if config.annotation has a matching extension
-            let defaultPaintingExtension: any = config.annotation.motivations.painting[extName];
+            // if this._config.annotation has a matching extension
+            let defaultPaintingExtension: any = this._config.annotation.motivations.painting[extName];
 
             let directoryName: string = '';
 

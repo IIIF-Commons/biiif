@@ -8,8 +8,11 @@
 		"module": "commonjs",
 		"target": "es2017",
 		"noUnusedLocals": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
 		"types": [
-            "@iiif/vocabulary"
+			"@iiif/vocabulary",
+			"@types/node"
         ]
 	},
 	"include": [

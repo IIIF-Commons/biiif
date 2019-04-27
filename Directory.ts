@@ -1,17 +1,17 @@
-const { join, basename } = require('path');
-const { URL } = require('url');
-const chalk = require('chalk');
-const urljoin = require('url-join');
-import { Canvas } from './Canvas';
-import { promise as glob } from 'glob-promise';
-import { Utils } from './Utils';
+import { Canvas } from "./Canvas";
+import { join, basename } from "path";
+import { promise as glob } from "glob-promise";
+import { URL } from "url";
+import { Utils } from "./Utils";
+import chalk from "chalk";
+import urljoin from "url-join";
 // boilerplate json
-const canvasBoilerplate = require('./boilerplate/canvas');
-const collectionBoilerplate = require('./boilerplate/collection');
-const collectionItemBoilerplate = require('./boilerplate/collectionitem');
-const manifestBoilerplate = require('./boilerplate/manifest');
-const manifestItemBoilerplate = require('./boilerplate/manifestitem');
-const thumbnailBoilerplate = require('./boilerplate/thumbnail');
+import canvasBoilerplate = require("./boilerplate/canvas.json");
+import collectionBoilerplate from "./boilerplate/collection.json";
+import collectionItemBoilerplate from "./boilerplate/collectionitem.json";
+import manifestBoilerplate from "./boilerplate/manifest.json";
+import manifestItemBoilerplate from "./boilerplate/manifestitem.json";
+import thumbnailBoilerplate from "./boilerplate/thumbnail.json";
 
 export class Directory {
 

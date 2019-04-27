@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "0.3.22",
+  "version": "0.3.23",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
@@ -40,9 +40,9 @@
     "url-join": "^2.0.2"
   },
   "devDependencies": {
-    "@types/node": "10.3.2",
-    "mocha": "^4.0.1",
-    "mock-fs": "^4.4.2",
-    "typescript": "^2.9.1"
+    "@types/node": "^11.13.8",
+    "mocha": "4.0.1",
+    "mock-fs": "4.9.0",
+    "typescript": "3.4.5"
   }
 }

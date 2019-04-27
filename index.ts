@@ -1,6 +1,6 @@
 import { Directory } from './Directory';
-const chalk = require('chalk');
 import { Utils } from './Utils';
+import chalk from 'chalk';
 
 export const build = async (dir: string, url: string, generateThumbs: boolean = false, virtualName?: string): Promise<void> => {
     

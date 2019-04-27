@@ -1,24 +1,26 @@
-const { dirname, extname } = require('path');
-const { join, basename } = require('path');
-const chalk = require('chalk');
-const config: IConfigJSON = require('./config');
-const ffprobe = require('ffprobe');
-const ffprobeStatic = require('ffprobe-static');
-const fs = require('fs');
-const isURL = require('is-url');
-const Jimp = require("jimp");
-const jsonfile = require('jsonfile');
-const labelBoilerplate = require('./boilerplate/label');
-const thumbnailBoilerplate = require('./boilerplate/thumbnail');
-const urljoin = require('url-join');
-const yaml = require('js-yaml');
-import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary";
+import { AnnotationMotivation, ExternalResourceType } from "@iiif/vocabulary/dist-commonjs/";
 import { Directory } from "./Directory";
-import { IConfigJSON } from './IConfigJSON';
-import { promise as glob } from 'glob-promise';
+import { dirname, extname } from "path";
+import { IConfigJSON } from "./IConfigJSON";
+import { join, basename } from "path";
+import { promise as glob } from "glob-promise";
 import { TypeFormat } from "./TypeFormat";
+import chalk from "chalk";
+import config from "./config.json";
+import ffprobe from "ffprobe";
+import ffprobeStatic from "ffprobe-static";
+import fs from "fs";
+import isURL from "is-url";
+import Jimp from "jimp";
+import jsonfile from "jsonfile";
+import labelBoilerplate from "./boilerplate/label.json";
+import thumbnailBoilerplate from "./boilerplate/thumbnail.json";
+import urljoin from "url-join";
+import yaml from "js-yaml";
 
 export class Utils {
+
+    private static _config: IConfigJSON = config;
 
     public static compare(a: string, b: string): number {
         const collator: Intl.Collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
@@ -40,7 +42,7 @@ export class Utils {
 
         motivation = Utils.normaliseType(motivation);
 
-        const m: any = config.annotation.motivations[motivation];
+        const m: any = this._config.annotation.motivations[motivation];
 
         if (m) {
             if (m[extension] && m[extension].length) {
@@ -55,7 +57,7 @@ export class Utils {
 
         motivation = Utils.normaliseType(motivation);
 
-        const m: any = config.annotation.motivations[motivation];
+        const m: any = this._config.annotation.motivations[motivation];
 
         if (m) {
             if (m[extension] && m[extension].length) {
@@ -70,7 +72,7 @@ export class Utils {
 
         motivation = Utils.normaliseType(motivation);
 
-        const m: any = config.annotation.motivations[motivation];
+        const m: any = this._config.annotation.motivations[motivation];
 
         if (m) {
             if (m[extension] && m[extension].length) {
@@ -91,7 +93,7 @@ export class Utils {
 
         motivation = Utils.normaliseType(motivation);
 
-        const m: any = config.annotation.motivations[motivation];
+        const m: any = this._config.annotation.motivations[motivation];
 
         if (m) {
             for (const extension in m) {
@@ -112,7 +114,7 @@ export class Utils {
 
         motivation = Utils.normaliseType(motivation);
 
-        const m: any = config.annotation.motivations[motivation];
+        const m: any = this._config.annotation.motivations[motivation];
 
         // only able to categorically say there's a matching format 
         // if there's a single extension with a single type
@@ -242,7 +244,7 @@ export class Utils {
                             // todo: this currently assumes that the image to generate a thumb from is within the directory, 
                             // but it may be in an assets folder and painted by a custom annotation.
                             // see canvas-with-dimensions-manifest.js
-                            if (config.settings.jimpEnabled && await Utils.fileExists(imagePath)) {
+                            if (this._config.settings.jimpEnabled && await Utils.fileExists(imagePath)) {
                                 const image: any = await Jimp.read(imagePath);
                                 const thumb: any = image.clone();
                                 // write image buffer to disk for testing
@@ -251,8 +253,8 @@ export class Utils {
                                 //     const pathToBuffer: string = imagePath.substr(0, imagePath.lastIndexOf('/')) + '/buffer.txt';
                                 //     fs.writeFile(pathToBuffer, arrBuffer);
                                 // });
-                                //thumb.cover(config.thumbnails.width, config.thumbnails.height);
-                                thumb.resize(config.thumbnails.width, Jimp.AUTO);
+                                //thumb.cover(this._config.thumbnails.width, this._config.thumbnails.height);
+                                thumb.resize(this._config.thumbnails.width, Jimp.AUTO);
                                 pathToThumb += image.getExtension();
 
                                 // a thumbnail may already exist at this path (when generating from a flat collection of images)
