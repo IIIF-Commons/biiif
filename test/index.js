@@ -364,7 +364,10 @@ before(async () => {
                 },
                 'label.yml': require('./fixtures/canvas-label-annotation')
             }
-        }
+        },
+        '/readme-manifest': {
+            'README.md': "readme contents"
+        },
     });
 })
 
@@ -398,3 +401,4 @@ importTest('multiple-behavior-manifest', './tests/multiple-behavior-manifest');
 importTest('image-dimensions-manifest', './tests/image-dimensions-manifest');
 importTest('external-resource-annotation-manifest', './tests/external-resource-annotation-manifest');
 importTest('canvas-label-annotation-manifest', './tests/canvas-label-annotation-manifest');
+importTest('readme-manifest', './tests/readme-manifest');
