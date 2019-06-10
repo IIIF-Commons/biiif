@@ -6,7 +6,7 @@ import { Utils } from "./Utils";
 import chalk from "chalk";
 import urljoin from "url-join";
 // boilerplate json
-import canvasBoilerplate = require("./boilerplate/canvas.json");
+import canvasBoilerplate from "./boilerplate/canvas.json";
 import collectionBoilerplate from "./boilerplate/collection.json";
 import collectionItemBoilerplate from "./boilerplate/collectionitem.json";
 import manifestBoilerplate from "./boilerplate/manifest.json";
