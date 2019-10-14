@@ -89,6 +89,12 @@
                         "format": "application/octet-stream"
                     }
                 ],
+                ".nrrd": [
+                    {
+                        "type": "PhysicalObject",
+                        "format": "application/octet-stream"
+                    }
+                ],
                 ".obj": [
                     {
                         "type": "PhysicalObject",

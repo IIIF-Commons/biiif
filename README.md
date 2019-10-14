@@ -92,7 +92,7 @@ https://github.com/edsilv/biiif-test-manifests/blob/gh-pages/tetons/_tetons/asse
 
 ## Metadata
 
-To add metadata to your collections/manifests/canvases, include an `info.yml` file in the folder e.g.
+Metadata is not mandatory, but can be included as an `info.yml` file within a collection, manifest, or canvas folder. e.g.
 
 ```yml
 label: The Lord of the Rings
@@ -103,6 +103,16 @@ metadata:
     Author: J. R. R. Tolkien
     Published Date: 29 July 1954
 ```
+
+Here's an example of an `info.yml` supplying descriptive + rights properties and metadata for a gold-broach image manifest:
+
+https://github.com/nomadproject/objects/blob/gh-pages/collection/gold-broach/info.yml
+
+This manifest contains a single canvas folder `_gold-broach` with an image to be painted onto the canvas. If there were many canvases in this manifest it might make sense to add an `info.yml` to each subfolder with extra image-specific metadata.
+
+Within the `info.yml` you can set the label, description, and attribution descriptive and rights properties at the top-level. IIIF Presentation 3 (in beta) has renamed description to summary, and attribution to requiredStatement but these will still work in IIIF viewers: https://iiif.io/api/presentation/3.0/#appendices
+
+Under these you can add a `metadata` section that is essentially a list of key value pairs containing any info you like (there is deliberately no specification for this as the IIIF spec writers feel it falls outside of their remit).
 
 ## Thumbnails
 
