@@ -8,38 +8,42 @@ function importTest(name, path) {
 }
 
 before(async () => {
+
+    const blob = new Buffer([8, 6, 7, 5, 3, 0, 9]);
+    const jpg = new Buffer(require('./fixtures/cat-jpg'));
+
     mock({
         '/thumbs-single-manifest': {
-            'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            'file.jpg': jpg
         },
         '/files-only-manifest': {
-            'file.glb': new Buffer(require('./fixtures/cat-jpg')),
+            'file.glb': jpg,
             'file.gltf': 'gltf',
-            'file.jpeg': new Buffer(require('./fixtures/cat-jpg')),
-            'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'file.png': new Buffer(require('./fixtures/cat-jpg'))
+            'file.jpeg': jpg,
+            'file.jpg': jpg,
+            'file.png': jpg
         },
         '/files-only-manifest-dat': {
             'file.gltf': 'gltf',
-            'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'file.png': new Buffer(require('./fixtures/cat-jpg'))
+            'file.jpg': jpg,
+            'file.png': jpg
         },
         '/files-only-collection': {
             'files-only-manifest': {
                 'file.gltf': 'gltf',
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
-                'file.png': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg,
+                'file.png': jpg
             }
         },
         '/gh-collection': {
             'info.yml': 'label: My Test Collection',
-            'thumb.png': new Buffer(require('./fixtures/cat-jpg')),
+            'thumb.png': jpg,
             'vertebra': {
-                'thumb.jpg': new Buffer(require('./fixtures/cat-jpg')),
+                'thumb.jpg': jpg,
                 'info.yml': 'label: Vertebra',
                 '_vertebra': {
-                    'diffuse.png': new Buffer(require('./fixtures/cat-jpg')),
-                    'normal.png': new Buffer(require('./fixtures/cat-jpg')),
+                    'diffuse.png': jpg,
+                    'normal.png': jpg,
                     'vertebra.mtl': '...',
                     'vertebra.obj': '...'
                 }
@@ -50,27 +54,27 @@ before(async () => {
         },
         '/collection': {
             'info.yml': 'label: My Test Collection',
-            'thumb.png': new Buffer(require('./fixtures/cat-jpg')),
+            'thumb.png': jpg,
             'a_manifest': {
                 'info.yml': 'label: A Manifest',
-                'thumb.png': new Buffer(require('./fixtures/cat-jpg')),
+                'thumb.png': jpg,
                 '_canvas': {
                     'info.yml': 'label: A Canvas',
-                    'page_1.jpg': new Buffer(require('./fixtures/cat-jpg')),
-                    'thumb.png': new Buffer(require('./fixtures/cat-jpg'))
+                    'page_1.jpg': jpg,
+                    'thumb.png': jpg
                 }
             },
             'manifests.yml': require('./fixtures/manifests'),
             'sub-collection': {
                 'info.yml': 'label: My Test Sub-collection',
-                'thumb.png': new Buffer(require('./fixtures/cat-jpg')),
+                'thumb.png': jpg,
                 'manifest': {
-                    'thumb.png': new Buffer(require('./fixtures/cat-jpg')),
+                    'thumb.png': jpg,
                     'info.yml': 'label: My Test Submanifest',
                     '_canvas': {
                         'info.yml': 'label: My Test Subcanvas',
-                        'page_1.jpg': new Buffer(require('./fixtures/cat-jpg')),
-                        'thumb.png': new Buffer(require('./fixtures/cat-jpg'))
+                        'page_1.jpg': jpg,
+                        'thumb.png': jpg
                     }
                 }
             }
@@ -78,37 +82,37 @@ before(async () => {
         '/file-annotation-collection': {
             'canvas-per-file': {
                 '_crt': {
-                    'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                    'file.crt': blob
                 },
                 '_drc': {
-                    'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                    'file.drc': blob
                 },
                 '_gltf': {
                     'file.gltf': 'gltf'
                 },
                 '_jpg': {
-                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                    'file.jpg': jpg
                 },
                 '_json': {
                     'file.json': 'json'
                 },
                 '_mp3': {
-                    'file.mp3': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                    'file.mp3': blob
                 },
                 '_mp4': {
-                    'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                    'file.mp4': blob
                 },
                 '_obj': {
                     'file.obj': 'obj'
                 },
                 '_pdf': {
-                    'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9])
+                    'file.pdf': blob
                 },
                 '_ply': {
                     'file.ply': 'ply'
                 },
                 '_png': {
-                    'file.png': new Buffer(require('./fixtures/cat-jpg'))
+                    'file.png': jpg
                 }              
             },
             'erroneous-file': {
@@ -118,142 +122,142 @@ before(async () => {
             },
             'files-per-canvas': {
                 '_files': {
-                    'file.crt': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'file.drc': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.crt': blob,
+                    'file.drc': blob,
                     'file.gltf': 'gltf',
-                    'file.jpg': new Buffer(require('./fixtures/cat-jpg')),
+                    'file.jpg': jpg,
                     'file.json': 'json',
-                    'file.mp3': new Buffer([8, 6, 7, 5, 3, 0, 9]),
-                    'file.mp4': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.mp3': blob,
+                    'file.mp4': blob,
                     'file.obj': 'obj',
-                    'file.pdf': new Buffer([8, 6, 7, 5, 3, 0, 9]),
+                    'file.pdf': blob,
                     'file.ply': 'ply',
-                    'file.png': new Buffer(require('./fixtures/cat-jpg')),
+                    'file.png': jpg,
                 }        
             }
         },
         '/sort-canvases-manifest': {
             '_a-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_b-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_c-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_d-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_e-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_f-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_g-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_h-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_i-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_j-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_k-canvas': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/sort-canvases-numeric-manifest': {
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-2': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-3': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-4': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-5': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-6': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-7': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-8': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-9': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-10': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-11': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-12': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-13': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-14': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-15': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-16': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-17': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-18': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-19': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-20': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-21': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/sort-files-numeric-manifest': {
-            'page1.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page2.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page3.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page4.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page5.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page6.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page7.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page8.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page9.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page10.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page11.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page12.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page13.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page14.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page15.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page16.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page17.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page18.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page19.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page20.jpg': new Buffer(require('./fixtures/cat-jpg')),
-            'page21.jpg': new Buffer(require('./fixtures/cat-jpg'))
+            'page1.jpg': jpg,
+            'page2.jpg': jpg,
+            'page3.jpg': jpg,
+            'page4.jpg': jpg,
+            'page5.jpg': jpg,
+            'page6.jpg': jpg,
+            'page7.jpg': jpg,
+            'page8.jpg': jpg,
+            'page9.jpg': jpg,
+            'page10.jpg': jpg,
+            'page11.jpg': jpg,
+            'page12.jpg': jpg,
+            'page13.jpg': jpg,
+            'page14.jpg': jpg,
+            'page15.jpg': jpg,
+            'page16.jpg': jpg,
+            'page17.jpg': jpg,
+            'page18.jpg': jpg,
+            'page19.jpg': jpg,
+            'page20.jpg': jpg,
+            'page21.jpg': jpg
         },
         '/custom-annotations-manifest': {
             '_commenting-text-with-format': {
@@ -280,45 +284,45 @@ before(async () => {
             '_painting-gltf': {
                 'assets': { 
                     'file.gltf': 'gltf',
-                    'texture.png': new Buffer(require('./fixtures/cat-jpg'))
+                    'texture.png': jpg
                 },
                 'painting-gltf.yml': require('./fixtures/painting-gltf')
             },
             '_painting-jpg': {
                 'assets': { 
-                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                    'file.jpg': jpg
                 },
                 'painting-jpg.yml': require('./fixtures/painting-jpg'),
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_painting-threejs-json-with-type': {
                 'assets': { 
                     'file.json': 'json',
-                    'texture.png': new Buffer(require('./fixtures/cat-jpg'))
+                    'texture.png': jpg
                 },
                 'painting-threejs-json-with-type.yml': require('./fixtures/painting-threejs-json-with-type')
             }
         },
         '/generate-thumbs-manifest': {
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-2': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/generate-thumbs-dat-manifest': {
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-2': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/canvas-with-dimensions-manifest': {
             '_canvas-with-dimensions': {
                 'assets': {
-                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                    'file.jpg': jpg
                 },
                 'painting-jpg-with-xywh.yml': require('./fixtures/painting-jpg-with-xywh'),
                 'info.yml': require('./fixtures/dimensions-info')
@@ -332,24 +336,24 @@ before(async () => {
         '/behavior-paged-manifest': {
             'info.yml': require('./fixtures/behavior-paged'),
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-2': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/multiple-behavior-manifest': {
             'info.yml': require('./fixtures/multiple-behavior'),
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             },
             '_page-2': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/image-dimensions-manifest': {
             '_page-1': {
-                'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                'file.jpg': jpg
             }
         },
         '/external-resource-annotation-manifest': {
@@ -360,7 +364,7 @@ before(async () => {
         '/canvas-label-annotation-manifest': {
             '_canvas-label-annotation': {
                 'assets': {
-                    'file.jpg': new Buffer(require('./fixtures/cat-jpg'))
+                    'file.jpg': jpg
                 },
                 'label.yml': require('./fixtures/canvas-label-annotation')
             }

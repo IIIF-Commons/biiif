@@ -21,6 +21,12 @@
                         "format": "application/draco"
                     }
                 ],
+                ".epub": [
+                    {
+                        "type": "EBook",
+                        "format": "application/epub+zip"
+                    }
+                ],
                 ".glb": [
                     {
                         "type": "PhysicalObject",
@@ -99,6 +105,12 @@
                     {
                         "type": "PhysicalObject",
                         "format": "text/plain"
+                    }
+                ],
+                ".opf": [
+                    {
+                        "type": "EBook",
+                        "format": "application/oebps-package+xml"
                     }
                 ],
                 ".pdf": [
