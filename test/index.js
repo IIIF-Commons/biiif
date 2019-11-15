@@ -372,6 +372,18 @@ before(async () => {
         '/readme-manifest': {
             'README.md': "readme contents"
         },
+        '/epub-collection': {
+            'alice-in-wonderland': {
+                '_alice-in-wonderland': {
+                    'alice-in-wonderland.yml': require('./fixtures/epub-external-resource-annotation')
+                }           
+            },
+            'cc-shared-culture': {
+                '_cc-shared-culture': {
+                    'cc-shared-culture.epub': blob
+                } 
+            }
+        }
     });
 })
 
@@ -406,3 +418,4 @@ importTest('image-dimensions-manifest', './tests/image-dimensions-manifest');
 importTest('external-resource-annotation-manifest', './tests/external-resource-annotation-manifest');
 importTest('canvas-label-annotation-manifest', './tests/canvas-label-annotation-manifest');
 importTest('readme-manifest', './tests/readme-manifest');
+importTest('epub-collection', './tests/epub-collection');

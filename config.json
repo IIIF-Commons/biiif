@@ -11,43 +11,43 @@
             "painting": {
                 ".crt": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/corto"
                     }
                 ],
                 ".drc": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/draco"
                     }
                 ],
                 ".epub": [
                     {
-                        "type": "EBook",
+                        "type": "Text",
                         "format": "application/epub+zip"
                     }
                 ],
                 ".glb": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "model/gltf-binary"
                     }
                 ],
                 ".gltf": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "model/gltf+json"
                     }
                 ],
                 ".gz": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/gzip"
                     }
                 ],
                 ".stl": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "model/stl"
                     }
                 ],
@@ -69,7 +69,7 @@
                         "format": "application/json"
                     },
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/vnd.threejs+json"
                     },
                     {
@@ -91,25 +91,25 @@
                 ],
                 ".nii": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/octet-stream"
                     }
                 ],
                 ".nrrd": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/octet-stream"
                     }
                 ],
                 ".obj": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "text/plain"
                     }
                 ],
                 ".opf": [
                     {
-                        "type": "EBook",
+                        "type": "Text",
                         "format": "application/oebps-package+xml"
                     }
                 ],
@@ -121,7 +121,7 @@
                 ],
                 ".ply": [
                     {
-                        "type": "PhysicalObject",
+                        "type": "Model",
                         "format": "application/ply"
                     }
                 ],
