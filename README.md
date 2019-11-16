@@ -148,8 +148,6 @@ Collection for the [Nomad Project](https://nomad-project.co.uk): https://github.
 
 IIIF 3D manifests: https://github.com/edsilv/iiif-3d-manifests
 
-Code of Ethics Zine workshop: https://github.com/edsilv/code-of-ethics-zine-workshop
-
 ...
 
 Here is an example of how to organise your files/folders for biiif.
