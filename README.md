@@ -140,6 +140,8 @@ Including a `manifests.yml` file in a folder without any sub-folders forces it t
 
 ## Examples
 
+MozFest zine workshop published on glitch: https://glitch.com/~edsilv-mozfest-zine
+
 A repo of test manifests: https://github.com/edsilv/biiif-test-manifests
 
 Collection for the [Nomad Project](https://nomad-project.co.uk): https://github.com/nomadproject/objects
