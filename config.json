@@ -130,6 +130,12 @@
                         "type": "Image",
                         "format": "image/png"
                     }
+                ],
+                ".vtt": [
+                    {
+                        "type": "Text",
+                        "format": "text/vtt"
+                    }
                 ]
             },
             "commenting": {

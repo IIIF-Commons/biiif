@@ -66,8 +66,6 @@ export class Canvas {
                 return Utils.compare(a, b);
             });
 
-            let hasPaintingAnnotation: boolean = false;
-
             await Promise.all(customAnnotationFiles.map(async (file: string) => {
                 
                 let directoryName: string = dirname(file);
@@ -95,7 +93,6 @@ export class Canvas {
 
                 // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
                 if ((motivation.toLowerCase() === Utils.normaliseType(AnnotationMotivation.PAINTING) || !this._config.annotation.motivations[motivation]) && yml.value && extname(yml.value)) {                    
-                    hasPaintingAnnotation = true;
 
                     if (Utils.isURL(yml.value)) {
                         id = yml.value;
@@ -204,22 +201,20 @@ export class Canvas {
                 canvasJson.items[0].items.push(annotationJson); 
             }));
 
-            if (!hasPaintingAnnotation) {
-                // for each jpg/pdf/mp4/obj in the canvas directory
-                // add a painting annotation
-                const paintableFiles: string[] = await glob(this.directoryPath + '/*.*', {
-                    ignore: [
-                        '**/thumb.*' // ignore thumbs
-                    ]
-                });
+            // for each jpg/pdf/mp4/obj in the canvas directory
+            // add a painting annotation
+            const paintableFiles: string[] = await glob(this.directoryPath + '/*.*', {
+                ignore: [
+                    '**/thumb.*' // ignore thumbs
+                ]
+            });
 
-                // sort files 
-                paintableFiles.sort((a, b) => {
-                    return Utils.compare(a, b);
-                });
+            // sort files 
+            paintableFiles.sort((a, b) => {
+                return Utils.compare(a, b);
+            });
 
-                await this._annotateFiles(canvasJson, paintableFiles);
-            }
+            await this._annotateFiles(canvasJson, paintableFiles);
 
         } else {
             // a file was passed (not a directory starting with an underscore)
