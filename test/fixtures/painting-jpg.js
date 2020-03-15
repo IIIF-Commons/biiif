@@ -1,2 +1,1 @@
-module.exports = 
-'value: assets/file.jpg'
+module.exports = "value: assets/file.jpg";

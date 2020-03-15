@@ -4,213 +4,255 @@ const build = common.build;
 const Utils = common.Utils;
 
 let manifestJson, canvasJson, annotation, annotationPage, annotationBody;
-const manifest = '/custom-annotations-manifest';
-const customAnnotationsManifestUrl = 'http://test.com/custom-annotations-manifest';
+const manifest = "/custom-annotations-manifest";
+const customAnnotationsManifestUrl =
+  "http://test.com/custom-annotations-manifest";
 
-it('can build custom annotations collection', async () => {
-    assert(await Utils.fileExists(manifest));
-    return build(manifest, customAnnotationsManifestUrl);
+it("can build custom annotations collection", async () => {
+  assert(await Utils.fileExists(manifest));
+  return build(manifest, customAnnotationsManifestUrl);
 }).timeout(1000); // should take less than a second
 
-it('can find manifest index.json', async () => {
-    const file = '/custom-annotations-manifest/index.json';
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+it("can find manifest index.json", async () => {
+  const file = "/custom-annotations-manifest/index.json";
+  assert(await Utils.fileExists(file));
+  manifestJson = await Utils.readJson(file);
 });
 
-describe('commenting text with format', async () => {
+describe("commenting text with format", async () => {
+  it("can find canvas", async () => {
+    canvasJson = manifestJson.items[0];
+    assert(canvasJson);
+  });
 
-    it('can find canvas', async () => {
-        canvasJson = manifestJson.items[0];
-        assert(canvasJson);
-    });
+  it("has correct canvas id", async () => {
+    assert(
+      canvasJson.id === customAnnotationsManifestUrl + "/index.json/canvas/0"
+    );
+  });
 
-    it('has correct canvas id', async () => {
-        assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/0');
-    });
+  it("has correct canvas label", async () => {
+    assert(canvasJson.label["@none"][0] === "_commenting-text-with-format");
+  });
 
-    it('has correct canvas label', async () => {
-        assert(canvasJson.label['@none'][0] === '_commenting-text-with-format');
-    });
+  it("has an annotation page", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+  });
 
-    it('has an annotation page', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage);
-    });
+  it("has the correct annotation page id", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(
+      annotationPage.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/0/annotationpage/0"
+    );
+  });
 
-    it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotationpage/0');
-    });
+  it("has annotation", async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+  });
 
-    it('has annotation', async () => {
-        annotation = annotationPage.items[0];
-        assert(annotation);
-    });
+  it("has correct annotation id", async () => {
+    assert(
+      annotation.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/0/annotation/0"
+    );
+  });
 
-    it('has correct annotation id', async () => {
-        assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/0/annotation/0');
-    });
+  it("has correct annotation motivation", async () => {
+    assert(annotation.motivation === "commenting");
+  });
 
-    it('has correct annotation motivation', async () => {
-        assert(annotation.motivation === 'commenting');
-    });
+  it("has correct annotation target", async () => {
+    assert(
+      annotation.target ===
+        customAnnotationsManifestUrl + "/index.json/canvas/0"
+    );
+  });
 
-    it('has correct annotation target', async () => {
-        assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/0');
-    });
+  it("has an annotation body", async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+  });
 
-    it('has an annotation body', async () => {
-        annotationBody = annotation.body;
-        assert(annotationBody);
-    });
+  it("has correct annotation body id", async () => {
+    assert(
+      annotationBody.id ===
+        customAnnotationsManifestUrl +
+          "/index.json/annotations/commenting-text-with-format"
+    );
+  });
 
-    it('has correct annotation body id', async () => {
-        assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting-text-with-format');
-    });
+  it("has correct annotation body type", async () => {
+    assert(annotationBody.type === "TextualBody");
+  });
 
-    it('has correct annotation body type', async () => {
-        assert(annotationBody.type === 'TextualBody');
-    });
+  it("has correct annotation body format", async () => {
+    assert(annotationBody.format === "text/plain");
+  });
 
-    it('has correct annotation body format', async () => {
-        assert(annotationBody.format === 'text/plain');
-    });
-
-    it('has correct annotation body value', async () => {
-        assert(annotationBody.value === 'This is a comment on the image');
-    });
-
+  it("has correct annotation body value", async () => {
+    assert(annotationBody.value === "This is a comment on the image");
+  });
 });
 
-describe('commenting text with type', async () => {
+describe("commenting text with type", async () => {
+  it("can find canvas", async () => {
+    canvasJson = manifestJson.items[1];
+    assert(canvasJson);
+  });
 
-    it('can find canvas', async () => {
-        canvasJson = manifestJson.items[1];
-        assert(canvasJson);
-    });
+  it("has correct canvas id", async () => {
+    assert(
+      canvasJson.id === customAnnotationsManifestUrl + "/index.json/canvas/1"
+    );
+  });
 
-    it('has correct canvas id', async () => {
-        assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/1');
-    });
+  it("has correct canvas label", async () => {
+    assert(canvasJson.label["@none"][0] === "_commenting-text-with-type");
+  });
 
-    it('has correct canvas label', async () => {
-        assert(canvasJson.label['@none'][0] === '_commenting-text-with-type');
-    });
+  it("has an annotation page", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+  });
 
-    it('has an annotation page', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage);
-    });
+  it("has the correct annotation page id", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(
+      annotationPage.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/1/annotationpage/0"
+    );
+  });
 
-    it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/1/annotationpage/0');
-    });
+  it("has annotation", async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+  });
 
-    it('has annotation', async () => {
-        annotation = annotationPage.items[0];
-        assert(annotation);
-    });
+  it("has correct annotation id", async () => {
+    assert(
+      annotation.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/1/annotation/0"
+    );
+  });
 
-    it('has correct annotation id', async () => {
-        assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/1/annotation/0');
-    });
+  it("has correct annotation motivation", async () => {
+    assert(annotation.motivation === "commenting");
+  });
 
-    it('has correct annotation motivation', async () => {
-        assert(annotation.motivation === 'commenting');
-    });
+  it("has correct annotation target", async () => {
+    assert(
+      annotation.target ===
+        customAnnotationsManifestUrl + "/index.json/canvas/1"
+    );
+  });
 
-    it('has correct annotation target', async () => {
-        assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/1');
-    });
+  it("has an annotation body", async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+  });
 
-    it('has an annotation body', async () => {
-        annotationBody = annotation.body;
-        assert(annotationBody);
-    });
+  it("has correct annotation body id", async () => {
+    assert(
+      annotationBody.id ===
+        customAnnotationsManifestUrl +
+          "/index.json/annotations/commenting-text-with-type"
+    );
+  });
 
-    it('has correct annotation body id', async () => {
-        assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting-text-with-type');
-    });
+  it("has correct annotation body type", async () => {
+    assert(annotationBody.type === "TextualBody");
+  });
 
-    it('has correct annotation body type', async () => {
-        assert(annotationBody.type === 'TextualBody');
-    });
+  it("has correct annotation body format", async () => {
+    assert(annotationBody.format === "text/plain");
+  });
 
-    it('has correct annotation body format', async () => {
-        assert(annotationBody.format === 'text/plain');
-    });
-
-    it('has correct annotation body value', async () => {
-        assert(annotationBody.value === 'This is a comment on the image');
-    });
-
+  it("has correct annotation body value", async () => {
+    assert(annotationBody.value === "This is a comment on the image");
+  });
 });
 
-describe('commenting text without type and format', async () => {
+describe("commenting text without type and format", async () => {
+  it("can find canvas", async () => {
+    canvasJson = manifestJson.items[2];
+    assert(canvasJson);
+  });
 
-    it('can find canvas', async () => {
-        canvasJson = manifestJson.items[2];
-        assert(canvasJson);
-    });
+  it("has correct canvas id", async () => {
+    assert(
+      canvasJson.id === customAnnotationsManifestUrl + "/index.json/canvas/2"
+    );
+  });
 
-    it('has correct canvas id', async () => {
-        assert(canvasJson.id === customAnnotationsManifestUrl + '/index.json/canvas/2');
-    });
+  it("has correct canvas label", async () => {
+    assert(
+      canvasJson.label["@none"][0] === "_commenting-text-without-type-format"
+    );
+  });
 
-    it('has correct canvas label', async () => {
-        assert(canvasJson.label['@none'][0] === '_commenting-text-without-type-format');
-    });
+  it("has an annotation page", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+  });
 
-    it('has an annotation page', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage);
-    });
+  it("has the correct annotation page id", async () => {
+    annotationPage = canvasJson.items[0];
+    assert(
+      annotationPage.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/2/annotationpage/0"
+    );
+  });
 
-    it('has the correct annotation page id', async () => {
-        annotationPage = canvasJson.items[0];
-        assert(annotationPage.id === customAnnotationsManifestUrl + '/index.json/canvas/2/annotationpage/0');
-    });
+  it("has annotation", async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+  });
 
-    it('has annotation', async () => {
-        annotation = annotationPage.items[0];
-        assert(annotation);
-    });
+  it("has correct annotation id", async () => {
+    assert(
+      annotation.id ===
+        customAnnotationsManifestUrl + "/index.json/canvas/2/annotation/0"
+    );
+  });
 
-    it('has correct annotation id', async () => {
-        assert(annotation.id === customAnnotationsManifestUrl + '/index.json/canvas/2/annotation/0');
-    });
+  it("has correct annotation motivation", async () => {
+    assert(annotation.motivation === "commenting");
+  });
 
-    it('has correct annotation motivation', async () => {
-        assert(annotation.motivation === 'commenting');
-    });
+  it("has correct annotation target", async () => {
+    assert(
+      annotation.target ===
+        customAnnotationsManifestUrl + "/index.json/canvas/2"
+    );
+  });
 
-    it('has correct annotation target', async () => {
-        assert(annotation.target === customAnnotationsManifestUrl + '/index.json/canvas/2');
-    });
+  it("has an annotation body", async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+  });
 
-    it('has an annotation body', async () => {
-        annotationBody = annotation.body;
-        assert(annotationBody);
-    });
+  it("has correct annotation body id", async () => {
+    assert(
+      annotationBody.id ===
+        customAnnotationsManifestUrl +
+          "/index.json/annotations/commenting-text-without-type-format"
+    );
+  });
 
-    it('has correct annotation body id', async () => {
-        assert(annotationBody.id === customAnnotationsManifestUrl + '/index.json/annotations/commenting-text-without-type-format');
-    });
+  it("has no annotation body type", async () => {
+    assert(annotationBody.type === undefined);
+  });
 
-    it('has no annotation body type', async () => {
-        assert(annotationBody.type === undefined);
-    });
+  it("has no annotation body format", async () => {
+    assert(annotationBody.format === undefined);
+  });
 
-    it('has no annotation body format', async () => {
-        assert(annotationBody.format === undefined);
-    });
-
-    it('has correct annotation body value', async () => {
-        assert(annotationBody.value === 'This is a comment on the image');
-    });
-
+  it("has correct annotation body value", async () => {
+    assert(annotationBody.value === "This is a comment on the image");
+  });
 });
 /*
 describe('json value with format', async () => {

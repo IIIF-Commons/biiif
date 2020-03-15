@@ -1,3 +1,2 @@
-module.exports = 
-'type: PhysicalObject \n\
-value: assets/file.json'
+module.exports = "type: PhysicalObject \n\
+value: assets/file.json";

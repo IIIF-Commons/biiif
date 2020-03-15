@@ -1,39 +1,39 @@
 import { TypeFormat } from "./TypeFormat";
 
 export interface IConfigJSON {
-    settings: settings;
-    thumbnails: thumbnails;
-    annotation: annotation;
+  settings: settings;
+  thumbnails: thumbnails;
+  annotation: annotation;
 }
 
 export interface settings {
-    jimpEnabled: boolean;
+  jimpEnabled: boolean;
 }
 
 export interface thumbnails {
-    width: number;
-    height: number;
+  width: number;
+  height: number;
 }
 
 export interface painting {
-    [key: string]: TypeFormat[];
+  [key: string]: TypeFormat[];
 }
 
 export interface commenting {
-    [key: string]: TypeFormat[];
+  [key: string]: TypeFormat[];
 }
 
 export interface motivations {
-    painting: painting;
-    commenting: commenting;
+  painting: painting;
+  commenting: commenting;
 }
 
 export interface annotation {
-    motivations: motivations;
+  motivations: motivations;
 }
 
 export interface RootObject {
-    settings: settings;
-    thumbnails: thumbnails;
-    annotation: annotation;
+  settings: settings;
+  thumbnails: thumbnails;
+  annotation: annotation;
 }

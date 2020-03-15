@@ -8,6 +8,8 @@
     "url": "git+https://github.com/edsilv/biiif.git"
   },
   "scripts": {
+    "build": "npm run lint:all && tsc",
+    "lint:all": "prettier --write \"./**/*.{js,jsx,json,css,ts,tsx}\"",
     "test": "tsc && mocha",
     "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'http://test.com/collection')\""
   },
@@ -43,6 +45,10 @@
     "@types/node": "^11.13.8",
     "mocha": "4.0.1",
     "mock-fs": "4.9.0",
-    "typescript": "3.4.5"
+    "prettier": "^1.19.1",
+    "prettier-check": "^2.0.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "3.4.5",
+    "typescript-tslint-plugin": "^0.5.5"
   }
 }

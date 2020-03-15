@@ -1,157 +1,157 @@
 {
-    "settings": {
-        "jimpEnabled": true
-    },
-    "thumbnails": {
-        "width": 100,
-        "height": 100
-    },
-    "annotation": {
-        "motivations": {
-            "painting": {
-                ".crt": [
-                    {
-                        "type": "Model",
-                        "format": "application/corto"
-                    }
-                ],
-                ".drc": [
-                    {
-                        "type": "Model",
-                        "format": "application/draco"
-                    }
-                ],
-                ".epub": [
-                    {
-                        "type": "Text",
-                        "format": "application/epub+zip"
-                    }
-                ],
-                ".glb": [
-                    {
-                        "type": "Model",
-                        "format": "model/gltf-binary"
-                    }
-                ],
-                ".gltf": [
-                    {
-                        "type": "Model",
-                        "format": "model/gltf+json"
-                    }
-                ],
-                ".gz": [
-                    {
-                        "type": "Model",
-                        "format": "application/gzip"
-                    }
-                ],
-                ".stl": [
-                    {
-                        "type": "Model",
-                        "format": "model/stl"
-                    }
-                ],
-                ".jpg": [
-                    {
-                        "type": "Image",
-                        "format": "image/jpeg"
-                    }
-                ],
-                ".jpeg": [
-                    {
-                        "type": "Image",
-                        "format": "image/jpeg"
-                    }
-                ],
-                ".json": [
-                    {
-                        "type": "Text",
-                        "format": "application/json"
-                    },
-                    {
-                        "type": "Model",
-                        "format": "application/vnd.threejs+json"
-                    },
-                    {
-                        "type": "Image",
-                        "format": "image/jpeg"
-                    }
-                ],
-                ".mp3": [
-                    {
-                        "type": "Sound",
-                        "format": "audio/mp3"
-                    }
-                ],
-                ".mp4": [
-                    {
-                        "type": "Video",
-                        "format": "video/mp4"
-                    }
-                ],
-                ".nii": [
-                    {
-                        "type": "Model",
-                        "format": "application/octet-stream"
-                    }
-                ],
-                ".nrrd": [
-                    {
-                        "type": "Model",
-                        "format": "application/octet-stream"
-                    }
-                ],
-                ".obj": [
-                    {
-                        "type": "Model",
-                        "format": "text/plain"
-                    }
-                ],
-                ".opf": [
-                    {
-                        "type": "Text",
-                        "format": "application/oebps-package+xml"
-                    }
-                ],
-                ".pdf": [
-                    {
-                        "type": "PDF",
-                        "format": "application/pdf"
-                    }
-                ],
-                ".ply": [
-                    {
-                        "type": "Model",
-                        "format": "application/ply"
-                    }
-                ],
-                ".png": [
-                    {
-                        "type": "Image",
-                        "format": "image/png"
-                    }
-                ],
-                ".usdz": [
-                    {
-                        "type": "Model",
-                        "format": "model/vnd.usd+zip"
-                    }
-                ],
-                ".vtt": [
-                    {
-                        "type": "Text",
-                        "format": "text/vtt"
-                    }
-                ]
-            },
-            "commenting": {
-                ".txt": [
-                    {
-                        "type": "TextualBody",
-                        "format": "text/plain"
-                    }
-                ]
-            }
-        }
+  "settings": {
+    "jimpEnabled": true
+  },
+  "thumbnails": {
+    "width": 100,
+    "height": 100
+  },
+  "annotation": {
+    "motivations": {
+      "painting": {
+        ".crt": [
+          {
+            "type": "Model",
+            "format": "application/corto"
+          }
+        ],
+        ".drc": [
+          {
+            "type": "Model",
+            "format": "application/draco"
+          }
+        ],
+        ".epub": [
+          {
+            "type": "Text",
+            "format": "application/epub+zip"
+          }
+        ],
+        ".glb": [
+          {
+            "type": "Model",
+            "format": "model/gltf-binary"
+          }
+        ],
+        ".gltf": [
+          {
+            "type": "Model",
+            "format": "model/gltf+json"
+          }
+        ],
+        ".gz": [
+          {
+            "type": "Model",
+            "format": "application/gzip"
+          }
+        ],
+        ".stl": [
+          {
+            "type": "Model",
+            "format": "model/stl"
+          }
+        ],
+        ".jpg": [
+          {
+            "type": "Image",
+            "format": "image/jpeg"
+          }
+        ],
+        ".jpeg": [
+          {
+            "type": "Image",
+            "format": "image/jpeg"
+          }
+        ],
+        ".json": [
+          {
+            "type": "Text",
+            "format": "application/json"
+          },
+          {
+            "type": "Model",
+            "format": "application/vnd.threejs+json"
+          },
+          {
+            "type": "Image",
+            "format": "image/jpeg"
+          }
+        ],
+        ".mp3": [
+          {
+            "type": "Sound",
+            "format": "audio/mp3"
+          }
+        ],
+        ".mp4": [
+          {
+            "type": "Video",
+            "format": "video/mp4"
+          }
+        ],
+        ".nii": [
+          {
+            "type": "Model",
+            "format": "application/octet-stream"
+          }
+        ],
+        ".nrrd": [
+          {
+            "type": "Model",
+            "format": "application/octet-stream"
+          }
+        ],
+        ".obj": [
+          {
+            "type": "Model",
+            "format": "text/plain"
+          }
+        ],
+        ".opf": [
+          {
+            "type": "Text",
+            "format": "application/oebps-package+xml"
+          }
+        ],
+        ".pdf": [
+          {
+            "type": "PDF",
+            "format": "application/pdf"
+          }
+        ],
+        ".ply": [
+          {
+            "type": "Model",
+            "format": "application/ply"
+          }
+        ],
+        ".png": [
+          {
+            "type": "Image",
+            "format": "image/png"
+          }
+        ],
+        ".usdz": [
+          {
+            "type": "Model",
+            "format": "model/vnd.usd+zip"
+          }
+        ],
+        ".vtt": [
+          {
+            "type": "Text",
+            "format": "text/vtt"
+          }
+        ]
+      },
+      "commenting": {
+        ".txt": [
+          {
+            "type": "TextualBody",
+            "format": "text/plain"
+          }
+        ]
+      }
     }
+  }
 }

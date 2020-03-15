@@ -1,2 +1,1 @@
-module.exports = 
-'value: assets/file.json'
+module.exports = "value: assets/file.json";

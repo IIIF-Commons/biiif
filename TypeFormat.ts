@@ -1,4 +1,4 @@
 export interface TypeFormat {
-    type: string;
-    format: string;
+  type: string;
+  format: string;
 }

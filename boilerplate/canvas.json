@@ -1,13 +1,11 @@
 {
-    "id": "",
-    "type": "Canvas",
-    "items": [
-        {
-            "id": "",
-            "type": "AnnotationPage",
-            "items": [
-                
-            ]
-        }
-    ]
+  "id": "",
+  "type": "Canvas",
+  "items": [
+    {
+      "id": "",
+      "type": "AnnotationPage",
+      "items": []
+    }
+  ]
 }

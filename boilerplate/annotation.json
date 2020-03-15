@@ -1,12 +1,12 @@
 {
+  "id": "",
+  "type": "Annotation",
+  "motivation": "",
+  "body": {
     "id": "",
-    "type": "Annotation",
-    "motivation": "",
-    "body": {
-        "id": "",
-        "type": "",
-        "format": "",
-        "label": ""
-    },
-    "target": ""
+    "type": "",
+    "format": "",
+    "label": ""
+  },
+  "target": ""
 }

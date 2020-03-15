@@ -1,2 +1,1 @@
-module.exports = 
-'behavior: paged'
+module.exports = "behavior: paged";

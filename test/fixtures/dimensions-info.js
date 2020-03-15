@@ -1,3 +1,2 @@
-module.exports = 
-'width: 600 \n\
-height: 400'
+module.exports = "width: 600 \n\
+height: 400";

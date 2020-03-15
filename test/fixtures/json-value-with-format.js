@@ -1,4 +1,4 @@
-module.exports = 
-'motivation: data \n\
+module.exports =
+  "motivation: data \n\
 format: application/json \n\
-value: assets/data.json'
+value: assets/data.json";

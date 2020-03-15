@@ -1,2 +1,1 @@
-module.exports = 
-'value: assets/file.gltf'
+module.exports = "value: assets/file.gltf";

@@ -1,4 +1,3 @@
-module.exports = 
-'behavior: \n\
+module.exports = "behavior: \n\
   - paged \n\
-  - unordered'
+  - unordered";
