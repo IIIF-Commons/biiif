@@ -24,7 +24,7 @@ it('has correct manifest id', async () => {
 });
 
 it('has correct number of canvases', async () => {
-    assert(manifestJson.items.length === 5);
+    assert(manifestJson.items.length === 6);
 });
 
 // first canvas
@@ -200,4 +200,39 @@ it('fifth canvas has an annotation body', async () => {
 
 it('fifth canvas has correct annotation id', async () => {
     assert(annotationBody.id === 'http://test.com/files-only-manifest/file.png');
+});
+
+// sixth canvas
+
+it('can find sixth canvas', async () => {
+    canvasJson = manifestJson.items[5];
+    assert(canvasJson);
+});
+
+it('sixth canvas has correct id', async () => {
+    assert(canvasJson.id === 'http://test.com/files-only-manifest/index.json/canvas/5');
+});
+
+it('sixth canvas has an annotation page', async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage);
+});
+
+it('sixth canvas has the correct annotation page id', async () => {
+    annotationPage = canvasJson.items[0];
+    assert(annotationPage.id === 'http://test.com/files-only-manifest/index.json/canvas/5/annotationpage/0');
+});
+
+it('sixth canvas has an annotation', async () => {
+    annotation = annotationPage.items[0];
+    assert(annotation);
+});
+
+it('sixth canvas has an annotation body', async () => {
+    annotationBody = annotation.body;
+    assert(annotationBody);
+});
+
+it('sixth canvas has correct annotation id', async () => {
+    assert(annotationBody.id === 'http://test.com/files-only-manifest/file.usdz');
 });

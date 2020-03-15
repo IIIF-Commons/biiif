@@ -29,7 +29,7 @@ describe('canvas per file', async () => {
         assert(await Utils.fileExists(file));
         manifestJson = await Utils.readJson(file);
         canvases = manifestJson.items;
-        assert(canvases.length === 11);
+        assert(canvases.length === 12);
     });
 
     it('has all content annotations', async () => {
@@ -44,6 +44,7 @@ describe('canvas per file', async () => {
         canvasHasContentAnnotations(canvases[8], ['file.pdf']);
         canvasHasContentAnnotations(canvases[9], ['file.ply']);
         canvasHasContentAnnotations(canvases[10], ['file.png']);
+        canvasHasContentAnnotations(canvases[11], ['file.usdz']);
     });
 
 });
@@ -67,7 +68,7 @@ describe('files per canvas', async () => {
     });
 
     it('has all content annotations', async () => {
-        canvasHasContentAnnotations(canvasJson, ['file.crt', 'file.drc', 'file.gltf', 'file.jpg', 'file.json', 'file.mp3', 'file.mp4', 'file.obj', 'file.pdf', 'file.ply', 'file.png']);
+        canvasHasContentAnnotations(canvasJson, ['file.crt', 'file.drc', 'file.gltf', 'file.jpg', 'file.json', 'file.mp3', 'file.mp4', 'file.obj', 'file.pdf', 'file.ply', 'file.png', 'file.usdz']);
     });
 
 });

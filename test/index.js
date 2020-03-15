@@ -18,19 +18,20 @@ before(async () => {
         },
         '/files-only-manifest': {
             'file.glb': jpg,
-            'file.gltf': 'gltf',
+            'file.gltf': blob,
             'file.jpeg': jpg,
             'file.jpg': jpg,
-            'file.png': jpg
+            'file.png': jpg,
+            'file.usdz': blob
         },
         '/files-only-manifest-dat': {
-            'file.gltf': 'gltf',
+            'file.gltf': blob,
             'file.jpg': jpg,
             'file.png': jpg
         },
         '/files-only-collection': {
             'files-only-manifest': {
-                'file.gltf': 'gltf',
+                'file.gltf': blob,
                 'file.jpg': jpg,
                 'file.png': jpg
             }
@@ -113,6 +114,9 @@ before(async () => {
                 },
                 '_png': {
                     'file.png': jpg
+                },
+                '_usdz': {
+                    'file.usdz': blob
                 }              
             },
             'erroneous-file': {
@@ -133,6 +137,7 @@ before(async () => {
                     'file.pdf': blob,
                     'file.ply': 'ply',
                     'file.png': jpg,
+                    'file.usdz': blob
                 }        
             }
         },
@@ -301,7 +306,7 @@ before(async () => {
                     'texture.png': jpg
                 },
                 'painting-threejs-json-with-type.yml': require('./fixtures/painting-threejs-json-with-type')
-            }
+            },
         },
         '/generate-thumbs-manifest': {
             '_page-1': {

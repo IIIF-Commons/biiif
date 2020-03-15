@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/edsilv/biiif#readme",
   "dependencies": {
-    "@iiif/vocabulary": "1.0.11",
+    "@iiif/vocabulary": "^1.0.16",
     "chalk": "^2.3.0",
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^3.0.0",

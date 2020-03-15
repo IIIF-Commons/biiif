@@ -131,6 +131,12 @@
                         "format": "image/png"
                     }
                 ],
+                ".usdz": [
+                    {
+                        "type": "Model",
+                        "format": "model/vnd.usd+zip"
+                    }
+                ],
                 ".vtt": [
                     {
                         "type": "Text",
