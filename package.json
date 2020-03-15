@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "npm run lint:all && tsc",
-    "lint:all": "prettier --write \"./**/*.{js,jsx,json,css,ts,tsx}\"",
+    "lint:all": "prettier --write \"./*.ts\" \"./tests/*.js\" \"!./test/fixtures/* \"",
     "test": "tsc && mocha",
     "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'http://test.com/collection')\""
   },

@@ -9,6 +9,6 @@
     "esModuleInterop": true,
     "types": ["@iiif/vocabulary", "@types/node"]
   },
-  "include": ["*"],
+  "include": ["./"],
   "exclude": ["node_modules"]
 }
