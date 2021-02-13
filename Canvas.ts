@@ -1,6 +1,6 @@
 import {
   AnnotationMotivation,
-  ExternalResourceType
+  ExternalResourceType,
 } from "@iiif/vocabulary/dist-commonjs/";
 import { basename, dirname, extname, join } from "path";
 import { Directory } from "./Directory";
@@ -64,7 +64,7 @@ export class Canvas {
       const customAnnotationFiles: string[] = await glob(
         this.directoryPath + "/*.yml",
         {
-          ignore: ["**/info.yml"]
+          ignore: ["**/info.yml"],
         }
       );
 
@@ -284,8 +284,8 @@ export class Canvas {
       // add a painting annotation
       const paintableFiles: string[] = await glob(this.directoryPath + "/*.*", {
         ignore: [
-          "**/thumb.*" // ignore thumbs
-        ]
+          "**/thumb.*", // ignore thumbs
+        ],
       });
 
       // sort files

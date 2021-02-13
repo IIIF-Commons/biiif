@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/edsilv/biiif.png?branch=master)](https://travis-ci.org/edsilv/biiif)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif?ref=badge_shield)
 [![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
+
 <!-- ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png) -->
 
 ```bash
@@ -26,12 +27,12 @@ Building static sites with biiif workshop: https://github.com/edsilv/biiif-works
 
 ## Parameters
 
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `folder` | string | The source folder of your IIIF collection/manifest on disk |
-| `url` | string | The Url to use as the root for all generated manifest, asset identifiers |
-| `generateThumbs` | boolean | Generate thumbnails for images (100 x 100px) |
-| `virtualName` | string | Overrides the source folder name when generating identifiers e.g. a dat archive id you need to appear in Urls instead of the source folder name
+| Parameter        | Type    | Description                                                                                                                                     |
+| :--------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `folder`         | string  | The source folder of your IIIF collection/manifest on disk                                                                                      |
+| `url`            | string  | The Url to use as the root for all generated manifest, asset identifiers                                                                        |
+| `generateThumbs` | boolean | Generate thumbnails for images (100 x 100px)                                                                                                    |
+| `virtualName`    | string  | Overrides the source folder name when generating identifiers e.g. a dat archive id you need to appear in Urls instead of the source folder name |
 
 ## Conventions
 
@@ -99,9 +100,9 @@ label: The Lord of the Rings
 description: The Lord of the Rings Trilogy
 attribution: J. R. R. Tolkien
 metadata:
-    License: Copyright Tolkien Estate
-    Author: J. R. R. Tolkien
-    Published Date: 29 July 1954
+  License: Copyright Tolkien Estate
+  Author: J. R. R. Tolkien
+  Published Date: 29 July 1954
 ```
 
 Here's an example of an `info.yml` supplying descriptive + rights properties and metadata for a gold-broach image manifest:
@@ -126,12 +127,12 @@ Often it's necessary to include IIIF manifests in your collection from elsewhere
 
 ```yml
 manifests:
-- id: http://test.com/collection/linkedmanifest1/index.json
-  label: Linked Manifest 1
-  thumbnail: http://test.com/collection/linkedmanifest1/thumb.jpg
-- id: http://test.com/collection/linkedmanifest2/index.json
-  label: Linked Manifest 2
-- id: http://test.com/collection/linkedmanifest3/index.json
+  - id: http://test.com/collection/linkedmanifest1/index.json
+    label: Linked Manifest 1
+    thumbnail: http://test.com/collection/linkedmanifest1/thumb.jpg
+  - id: http://test.com/collection/linkedmanifest2/index.json
+    label: Linked Manifest 2
+  - id: http://test.com/collection/linkedmanifest3/index.json
 ```
 
 If you leave the `label` property blank, it will default to the name of the last folder in the `id` URL.
@@ -152,7 +153,7 @@ IIIF 3D manifests: https://github.com/edsilv/iiif-3d-manifests
 
 Here is an example of how to organise your files/folders for biiif.
 
-This example only has a single root collection, but biiif will happily build collections to any nested depth. 
+This example only has a single root collection, but biiif will happily build collections to any nested depth.
 
 biiif will accept a manifest folder too, generating a single manifest `index.json`.
 
@@ -179,9 +180,9 @@ lord-of-the-rings                  // collection
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
 └── 2-the-return-of-the-king       // manifest
-    ├── _page-1                    // canvas
-    ├── _page-2                    // canvas
-    ├── _page-n                    // canvas
-    ├── info.yml                   // manifest metadata
-    └── thumb.jpg                  // manifest thumbnail
+├── _page-1                    // canvas
+├── _page-2                    // canvas
+├── _page-n                    // canvas
+├── info.yml                   // manifest metadata
+└── thumb.jpg                  // manifest thumbnail
 ```

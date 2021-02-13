@@ -77,7 +77,7 @@ describe("files per canvas", async () => {
       "file.pdf",
       "file.ply",
       "file.png",
-      "file.usdz"
+      "file.usdz",
     ]);
   });
 });

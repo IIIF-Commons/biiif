@@ -44,7 +44,7 @@ export class Directory {
     const canvasesPattern: string = this.directoryPath + "/_*";
 
     const canvases: string[] = await glob(canvasesPattern, {
-      ignore: ["**/*.yml", "**/thumb.*"]
+      ignore: ["**/*.yml", "**/thumb.*"],
     });
 
     // sort canvases
@@ -66,8 +66,8 @@ export class Directory {
     const directories: string[] = await glob(directoriesPattern, {
       ignore: [
         "**/*.{crt,drc,epub,glb,gltf,gz,stl,jpg,jpeg,json,md,mp3,mp4,nii,obj,opf,pdf,ply,png,usdz,vtt,yml}", // ignore files (must include file extensions explicitly, otherwise directories with a . are matched)
-        "**/_*" // ignore canvas folders
-      ]
+        "**/_*", // ignore canvas folders
+      ],
     });
 
     // sort canvases
@@ -97,7 +97,7 @@ export class Directory {
     // create a canvas for each.
     if (!this.directories.length && !canvases.length) {
       const paintableFiles: string[] = await glob(this.directoryPath + "/*.*", {
-        ignore: ["**/*.yml", "**/thumb.*", "**/index.json"]
+        ignore: ["**/*.yml", "**/thumb.*", "**/index.json"],
       });
 
       // sort files
@@ -312,7 +312,7 @@ export class Directory {
         this.indexJson.behavior = [];
 
         if (Array.isArray(this.infoYml.behavior)) {
-          this.infoYml.behavior.forEach(behavior => {
+          this.infoYml.behavior.forEach((behavior) => {
             this.indexJson.behavior.push(behavior);
           });
         } else {

@@ -1,0 +1,9 @@
+node_modules
+test/fixtures
+collection
+.gitignore
+.npmignore
+.prettierignore
+.vscode
+*.txt
+*.js

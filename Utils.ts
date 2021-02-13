@@ -1,6 +1,6 @@
 import {
   AnnotationMotivation,
-  ExternalResourceType
+  ExternalResourceType,
 } from "@iiif/vocabulary/dist-commonjs/";
 import { Directory } from "./Directory";
 import { dirname, extname } from "path";
@@ -27,7 +27,7 @@ export class Utils {
   public static compare(a: string, b: string): number {
     const collator: Intl.Collator = new Intl.Collator(undefined, {
       numeric: true,
-      sensitivity: "base"
+      sensitivity: "base",
     });
     return collator.compare(a, b);
   }
@@ -149,7 +149,7 @@ export class Utils {
   }
 
   public static timeout(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   public static cloneJson(json: any): any {
@@ -464,7 +464,7 @@ export class Utils {
 
   public static async writeJson(path: string, json: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      fs.writeFile(path, json, err => {
+      fs.writeFile(path, json, (err) => {
         if (err) reject(err);
         else resolve();
       });
@@ -495,7 +495,7 @@ export class Utils {
     return new Promise<boolean>((resolve, reject) => {
       const manifestsPath: string = join(path, "manifests.yml");
 
-      Utils.fileExists(manifestsPath).then(exists => {
+      Utils.fileExists(manifestsPath).then((exists) => {
         resolve(exists);
       });
     });
