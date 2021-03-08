@@ -4,7 +4,8 @@ import { promise as glob } from "glob-promise";
 import { URL } from "url";
 import { Utils } from "./Utils";
 import chalk from "chalk";
-import urljoin from "url-join";
+// import urljoin from "url-join";
+const urljoin = require("url-join");
 // boilerplate json
 import canvasBoilerplate from "./boilerplate/canvas.json";
 import collectionBoilerplate from "./boilerplate/collection.json";
@@ -254,6 +255,8 @@ export class Directory {
 
       for (const canvas of this.items) {
         const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
+
+        console.log(urljoin(this.url.href, "index.json/canvas", index));
 
         canvasJson.id = urljoin(this.url.href, "index.json/canvas", index);
         canvasJson.items[0].id = urljoin(

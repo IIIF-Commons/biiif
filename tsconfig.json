@@ -7,7 +7,8 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["@iiif/vocabulary", "@types/node"]
+    "types": ["@iiif/vocabulary", "@types/node"],
+    "sourceMap": true
   },
   "include": ["./"],
   "exclude": ["node_modules"]

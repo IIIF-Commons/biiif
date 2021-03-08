@@ -4,3 +4,4 @@ node_modules
 testroot/**/index.json
 collection
 npm-debug.log.*
+*.map

@@ -5,5 +5,8 @@ collection
 .npmignore
 .prettierignore
 .vscode
+.travis.yml
 *.txt
 *.js
+*.js.map
+*.json
