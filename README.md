@@ -19,7 +19,7 @@ Organise your files according to a simple [naming convention](https://github.com
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
-Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/) (currently in beta), but is compatible with the [Universal Viewer](http://universalviewer.io) v3 (in beta).
+Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/), and is compatible with the [Universal Viewer](http://universalviewer.io) v3.
 
 If you want to build a website with biiif, try [uv-app-starter](https://github.com/UniversalViewer/uv-app-starter) which comes with the [Universal Viewer](http://universalviewer.io) and biiif already set up.
 
@@ -180,9 +180,9 @@ lord-of-the-rings                  // collection
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
 └── 2-the-return-of-the-king       // manifest
-├── _page-1                    // canvas
-├── _page-2                    // canvas
-├── _page-n                    // canvas
-├── info.yml                   // manifest metadata
-└── thumb.jpg                  // manifest thumbnail
+    ├── _page-1                    // canvas
+    ├── _page-2                    // canvas
+    ├── _page-n                    // canvas
+    ├── info.yml                   // manifest metadata
+    └── thumb.jpg                  // manifest thumbnail
 ```
