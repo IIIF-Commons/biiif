@@ -364,8 +364,8 @@ export class Utils {
               const duration: number = Number(info.streams[0].duration);
               canvasJson.duration = duration;
             }
-          } catch {
-            console.warn(`ffprobe couldn't load ${file}`);
+          } catch (error) {
+            console.warn(`ffprobe couldn't load ${file}`, error);
           }
 
           break;
@@ -473,14 +473,12 @@ export class Utils {
 
   public static async readYml(path: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      fs.readFile(path, (err, fileBuffer) => {
-        if (err) {
-          reject(err);
-        } else {
-          const yml: string = yaml.safeLoad(fileBuffer);
-          resolve(yml);
-        }
-      });
+      try {
+        const doc = yaml.load(fs.readFileSync(path, "utf8"));
+        resolve(doc);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 

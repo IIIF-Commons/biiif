@@ -96,12 +96,12 @@ before(async () => {
         _json: {
           "file.json": "json",
         },
-        _mp3: {
-          "file.mp3": blob,
-        },
-        _mp4: {
-          "file.mp4": blob,
-        },
+        // _mp3: {
+        //   "file.mp3": blob,
+        // },
+        // _mp4: {
+        //   "file.mp4": blob,
+        // },
         _obj: {
           "file.obj": "obj",
         },
@@ -130,8 +130,8 @@ before(async () => {
           "file.gltf": "gltf",
           "file.jpg": jpg,
           "file.json": "json",
-          "file.mp3": blob,
-          "file.mp4": blob,
+          // "file.mp3": blob,
+          // "file.mp4": blob,
           "file.obj": "obj",
           "file.pdf": blob,
           "file.ply": "ply",
@@ -395,58 +395,58 @@ after(async () => {
   mock.restore();
 });
 
-// importTest("utils", "./tests/utils");
-// importTest("do-promises-work", "./tests/do-promises-work");
-// importTest("thumbs-single-manifest", "./tests/thumbs-single-manifest");
-// importTest("thumbs-single-manifest-dat", "./tests/thumbs-single-manifest-dat");
-// importTest("files-only-manifest", "./tests/files-only-manifest");
-// importTest("files-only-manifest-dat", "./tests/files-only-manifest-dat");
-// importTest("files-only-collection", "./tests/files-only-collection");
-// importTest("gh-pages", "./tests/gh-pages");
-// importTest("collection-no-manifests", "./tests/collection-no-manifests");
-// importTest("collection", "./tests/collection");
-// importTest("file-annotation-collection", "./tests/file-annotation-collection");
-// importTest("sort-canvases-manifest", "./tests/sort-canvases-manifest");
-// importTest(
-//   "sort-canvases-numeric-manifest",
-//   "./tests/sort-canvases-numeric-manifest"
-// );
-// importTest(
-//   "sort-files-numeric-manifest",
-//   "./tests/sort-files-numeric-manifest"
-// );
-// importTest(
-//   "custom-annotations-manifest",
-//   "./tests/custom-annotations-manifest"
-// );
-// importTest("generate-thumbs-manifest", "./tests/generate-thumbs-manifest");
-// importTest(
-//   "generate-thumbs-dat-manifest",
-//   "./tests/generate-thumbs-dat-manifest"
-// );
-// importTest(
-//   "generate-thumbs-http-gateway-dat-manifest",
-//   "./tests/generate-thumbs-http-gateway-dat-manifest"
-// );
-// importTest("dat-gateway", "./tests/dat-gateway");
+importTest("utils", "./tests/utils");
+importTest("do-promises-work", "./tests/do-promises-work");
+importTest("thumbs-single-manifest", "./tests/thumbs-single-manifest");
+importTest("thumbs-single-manifest-dat", "./tests/thumbs-single-manifest-dat");
+importTest("files-only-manifest", "./tests/files-only-manifest");
+importTest("files-only-manifest-dat", "./tests/files-only-manifest-dat");
+importTest("files-only-collection", "./tests/files-only-collection");
+importTest("gh-pages", "./tests/gh-pages");
+importTest("collection-no-manifests", "./tests/collection-no-manifests");
+importTest("collection", "./tests/collection");
+importTest("file-annotation-collection", "./tests/file-annotation-collection");
+importTest("sort-canvases-manifest", "./tests/sort-canvases-manifest");
+importTest(
+  "sort-canvases-numeric-manifest",
+  "./tests/sort-canvases-numeric-manifest"
+);
+importTest(
+  "sort-files-numeric-manifest",
+  "./tests/sort-files-numeric-manifest"
+);
+importTest(
+  "custom-annotations-manifest",
+  "./tests/custom-annotations-manifest"
+);
+importTest("generate-thumbs-manifest", "./tests/generate-thumbs-manifest");
+importTest(
+  "generate-thumbs-dat-manifest",
+  "./tests/generate-thumbs-dat-manifest"
+);
+importTest(
+  "generate-thumbs-http-gateway-dat-manifest",
+  "./tests/generate-thumbs-http-gateway-dat-manifest"
+);
+importTest("dat-gateway", "./tests/dat-gateway");
 importTest(
   "canvas-with-dimensions-manifest",
   "./tests/canvas-with-dimensions-manifest"
 );
-// importTest(
-//   "canvas-with-presentation-3-image-service-manifest",
-//   "./tests/canvas-with-presentation-3-image-service-manifest"
-// );
-// importTest("behavior-paged-manifest", "./tests/behavior-paged-manifest");
-// importTest("multiple-behavior-manifest", "./tests/multiple-behavior-manifest");
-// importTest("image-dimensions-manifest", "./tests/image-dimensions-manifest");
-// importTest(
-//   "external-resource-annotation-manifest",
-//   "./tests/external-resource-annotation-manifest"
-// );
-// importTest(
-//   "canvas-label-annotation-manifest",
-//   "./tests/canvas-label-annotation-manifest"
-// );
-// importTest("readme-manifest", "./tests/readme-manifest");
-// importTest("epub-collection", "./tests/epub-collection");
+importTest(
+  "canvas-with-presentation-3-image-service-manifest",
+  "./tests/canvas-with-presentation-3-image-service-manifest"
+);
+importTest("behavior-paged-manifest", "./tests/behavior-paged-manifest");
+importTest("multiple-behavior-manifest", "./tests/multiple-behavior-manifest");
+importTest("image-dimensions-manifest", "./tests/image-dimensions-manifest");
+importTest(
+  "external-resource-annotation-manifest",
+  "./tests/external-resource-annotation-manifest"
+);
+importTest(
+  "canvas-label-annotation-manifest",
+  "./tests/canvas-label-annotation-manifest"
+);
+importTest("readme-manifest", "./tests/readme-manifest");
+importTest("epub-collection", "./tests/epub-collection");
