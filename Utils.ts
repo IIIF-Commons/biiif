@@ -20,6 +20,7 @@ import labelBoilerplate from "./boilerplate/label.json";
 import thumbnailBoilerplate from "./boilerplate/thumbnail.json";
 import urljoin from "url-join";
 import yaml from "js-yaml";
+const sharp = require('sharp');
 
 export class Utils {
   private static _config: IConfigJSON = config;
@@ -371,6 +372,41 @@ export class Utils {
           break;
       }
     }
+  }
+  
+  public static async generateImageTiles(
+    image: string,
+    url: string,
+    directoryName: string,
+    directory: string,
+    annotationJson: any
+  ): Promise<void> {
+    return new Promise<void>( async (resolve) => {
+      console.log(chalk.green("generating image tiles for: ") + image);
+
+      const id: string = urljoin(url, directoryName, "+tiles");
+
+      annotationJson.body.service = [
+        {
+          "@id": id,
+          "@type": "ImageService2",
+          "profile": "http://iiif.io/api/image/2/level2.json"
+        }
+      ];
+  
+      await sharp(image)
+        .tile({
+          layout: "iiif",
+          id: "www.hello.com"
+        })
+        .toFile(join(directory, "+tiles"), (err, _info) => {
+          if (err) {
+            console.warn(chalk.yellow("generating image tiles for: ") + image + " failed");
+          }
+          
+          resolve();
+        });      
+    });
   }
 
   /*

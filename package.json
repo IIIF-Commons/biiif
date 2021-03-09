@@ -11,7 +11,8 @@
     "build": "npm run format && tsc",
     "format": "prettier --write \"**/*.*\"",
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('collection', 'http://test.com/collection')\""
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('test/collection', 'https://biiif-test.netlify.app')\"",
+    "serve": "serve test"
   },
   "engines": {
     "node": ">=8.9.1",
@@ -39,6 +40,7 @@
     "jimp": "^0.16.1",
     "js-yaml": "^4.0.0",
     "jsonfile": "^6.1.0",
+    "sharp": "^0.27.2",
     "url-join": "^2.0.5"
   },
   "devDependencies": {
@@ -47,6 +49,7 @@
     "mock-fs": "4.13.0",
     "prettier": "^2.2.1",
     "prettier-check": "^2.0.0",
+    "serve": "^11.3.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "4.1.5",
     "typescript-tslint-plugin": "^1.0.1"
