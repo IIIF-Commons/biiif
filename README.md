@@ -1,7 +1,5 @@
 # biiif (build iiif) 👷✨📃
 
-[![Build Status](https://travis-ci.org/edsilv/biiif.png?branch=master)](https://travis-ci.org/edsilv/biiif)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fedsilv%2Fbiiif?ref=badge_shield)
 [![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
 
 <!-- ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png) -->
@@ -73,7 +71,7 @@ What about the gltf example? Here's how `my-3d-object.yml` could look:
 value: assets/myobject.gltf
 ```
 
-Here we've excluded the `motivation` (`painting` is assumed), `type` (`PhysicalObject` is assumed), and `format` (`model/gltf+json` is assumed).
+Here we've excluded the `motivation` (`painting` is assumed), `type` (`Model` is assumed), and `format` (`model/gltf+json` is assumed).
 
 biiif knows that because it's a gltf file, it's likely to have all of the above values. You just need to include a `value` property pointing to where you've put the gltf file itself. In this case, an `assets` folder within the canvas directory. The associated image textures can live in the `assets` folder too, they won't get annotated unless you specifically ask for them to be.
 
