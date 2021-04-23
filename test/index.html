@@ -7,17 +7,15 @@
     <title>Static Template</title>
   </head>
   <body>
-    <div id="seadragon-viewer" style="width:800px; height:600px;"></div>
+    <div id="seadragon-viewer" style="width: 800px; height: 600px"></div>
     <script src="//openseadragon.github.io/openseadragon/openseadragon.js"></script>
     <script>
-      var tileSet = [
-        "/collection/+tiles/info.json"
-      ];
+      var tileSet = ["/collection/+tiles/info.json"];
 
       var viewer = OpenSeadragon({
         id: "seadragon-viewer",
         prefixUrl: "//openseadragon.github.io/openseadragon/images/",
-        tileSources: tileSet
+        tileSources: tileSet,
       });
     </script>
   </body>

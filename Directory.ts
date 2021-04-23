@@ -45,11 +45,7 @@ export class Directory {
     const canvasesPattern: string = this.directoryPath + "/_*";
 
     const canvases: string[] = await glob(canvasesPattern, {
-      ignore: [
-        "**/*.yml", 
-        "**/thumb.*",
-        "**/!*"
-      ],
+      ignore: ["**/*.yml", "**/thumb.*", "**/!*"],
     });
 
     // sort canvases
@@ -70,7 +66,7 @@ export class Directory {
 
     const directories: string[] = await glob(directoriesPattern, {
       ignore: [
-        "**/*.{crt,drc,epub,glb,gltf,gz,stl,jpg,jpeg,json,md,mp3,mp4,nii,obj,opf,pdf,ply,png,usdz,vtt,yml}", // ignore files (must include file extensions explicitly, otherwise directories with a . are matched)
+        "**/*.{crt,drc,epub,glb,gltf,gz,stl,jpg,jpeg,json,md,mp3,mp4,nii,obj,opf,pdf,ply,png,toml,usdz,vtt,yml}", // ignore files (must include file extensions explicitly, otherwise directories with a . are matched)
         "**/_*", // ignore canvas folders
         "**/+*", // ignore generated folders
         "**/!*", // ignore folders starting with a !

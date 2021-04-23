@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "0.3.26",
+  "version": "0.3.27",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
@@ -11,7 +11,7 @@
     "build": "npm run format && tsc",
     "format": "prettier --write \"**/*.*\"",
     "test": "tsc && mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('test/collection', 'https://biiif-test.netlify.app')\"",
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('test/collection', 'https://example.netlify.app')\"",
     "serve": "serve test"
   },
   "engines": {
@@ -40,7 +40,7 @@
     "jimp": "^0.16.1",
     "js-yaml": "^4.0.0",
     "jsonfile": "^6.1.0",
-    "sharp": "^0.27.2",
+    "sharp": "^0.28.0",
     "url-join": "^2.0.5"
   },
   "devDependencies": {

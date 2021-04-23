@@ -364,7 +364,10 @@ export class Canvas {
             canvasJson,
             annotationJson
           );
-          if (defaultPaintingExtension.type.toLowerCase() === ExternalResourceType.IMAGE) {
+          if (
+            defaultPaintingExtension.type.toLowerCase() ===
+            ExternalResourceType.IMAGE
+          ) {
             await Utils.generateImageTiles(
               file,
               this.url.href,
