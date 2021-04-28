@@ -25,12 +25,11 @@ Building static sites with biiif workshop: https://github.com/edsilv/biiif-works
 
 ## Parameters
 
-| Parameter        | Type    | Description                                                                                                                                     |
-| :--------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `folder`         | string  | The source folder of your IIIF collection/manifest on disk                                                                                      |
-| `url`            | string  | The Url to use as the root for all generated manifest, asset identifiers                                                                        |
-| `generateThumbs` | boolean | Generate thumbnails for images (100 x 100px)                                                                                                    |
-| `virtualName`    | string  | Overrides the source folder name when generating identifiers e.g. a dat archive id you need to appear in Urls instead of the source folder name |
+| Parameter     | Type   | Description                                                                                                                                     |
+| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `folder`      | string | The source folder of your IIIF collection/manifest on disk                                                                                      |
+| `url`         | string | The Url to use as the root for all generated manifest, asset identifiers                                                                        |
+| `virtualName` | string | Overrides the source folder name when generating identifiers e.g. a dat archive id you need to appear in Urls instead of the source folder name |
 
 ## Conventions
 

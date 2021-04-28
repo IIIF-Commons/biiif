@@ -14,7 +14,6 @@ import ffprobe from "ffprobe";
 import ffprobeStatic from "ffprobe-static";
 import fs from "fs";
 import isURL from "is-url";
-import Jimp from "jimp";
 import jsonfile from "jsonfile";
 import labelBoilerplate from "./boilerplate/label.json";
 import thumbnailBoilerplate from "./boilerplate/thumbnail.json";
@@ -243,10 +242,8 @@ export class Utils {
         Utils.getVirtualFilePath(thumbnail, directory)
       );
       json.thumbnail = thumbnailJson;
-    } else if (directory.generateThumbs) {
+    } else {
       // there isn't a thumbnail in the directory, so we'll need to generate it.
-
-      // if debugging: jimp item.getitem is not a function
       // generate thumbnail
       if (json.items && json.items.length && json.items[0].items) {
         // find an annotation with a painting motivation of type image.
@@ -273,18 +270,15 @@ export class Utils {
                 join(fp, imageName)
               );
               let pathToThumb: string = Utils.normaliseFilePath(
-                join(dirname(imagePath), "thumb.")
+                join(dirname(imagePath), "thumb.jpg")
               );
 
               // todo: this currently assumes that the image to generate a thumb from is within the directory,
               // but it may be in an assets folder and painted by a custom annotation.
               // see canvas-with-dimensions-manifest.js
-              if (
-                this._config.settings.jimpEnabled &&
-                (await Utils.fileExists(imagePath))
-              ) {
-                const image: any = await Jimp.read(imagePath);
-                const thumb: any = image.clone();
+              if (await Utils.fileExists(imagePath)) {
+                //const image: any = await Jimp.read(imagePath);
+                //const thumb: any = image.clone();
                 // write image buffer to disk for testing
                 // image.getBuffer(Jimp.AUTO, (err, buffer) => {
                 //     const arrBuffer = [...buffer];
@@ -292,8 +286,8 @@ export class Utils {
                 //     fs.writeFile(pathToBuffer, arrBuffer);
                 // });
                 //thumb.cover(this._config.thumbnails.width, this._config.thumbnails.height);
-                thumb.resize(this._config.thumbnails.width, Jimp.AUTO);
-                pathToThumb += image.getExtension();
+                //thumb.resize(this._config.thumbnails.width, Jimp.AUTO);
+                //pathToThumb += image.getExtension();
 
                 // a thumbnail may already exist at this path (when generating from a flat collection of images)
                 const thumbExists: boolean = await Utils.fileExists(
@@ -301,15 +295,24 @@ export class Utils {
                 );
 
                 if (!thumbExists) {
-                  thumb.write(pathToThumb, () => {
-                    console.log(chalk.green("generated thumbnail for: ") + fp);
-                  });
+                  await sharp(imagePath)
+                    .resize({
+                      width: this._config.thumbnails.width,
+                      height: this._config.thumbnails.height,
+                      fit: sharp.fit.cover,
+                    })
+                    .toFormat("jpeg")
+                    .toFile(pathToThumb);
+
+                  // thumb.write(pathToThumb, () => {
+                  console.log(chalk.green("generated thumbnail for: ") + fp);
+                  // });
                 } else {
                   console.log(chalk.green("found thumbnail for: ") + fp);
                 }
               } else {
                 // placeholder img path
-                pathToThumb += "jpeg";
+                pathToThumb += "jpg";
               }
 
               const thumbnailJson: any = Utils.cloneJson(thumbnailBoilerplate);
@@ -348,9 +351,9 @@ export class Utils {
       switch (type.toLowerCase()) {
         // if it's an image, get the width and height and add to the annotation body and canvas
         case ExternalResourceType.IMAGE:
-          const image: any = await Jimp.read(file);
-          const width: number = image.bitmap.width;
-          const height: number = image.bitmap.height;
+          const image: any =  await sharp(file).metadata();
+          const width: number = image.width;
+          const height: number = image.height;
           canvasJson.width = Math.max(canvasJson.width || 0, width);
           canvasJson.height = Math.max(canvasJson.height || 0, height);
           annotationJson.body.width = width;

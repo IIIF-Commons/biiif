@@ -1,7 +1,6 @@
 import { TypeFormat } from "./TypeFormat";
 
 export interface IConfigJSON {
-  settings: settings;
   thumbnails: thumbnails;
   annotation: annotation;
 }

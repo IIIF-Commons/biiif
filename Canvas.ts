@@ -39,7 +39,6 @@ export class Canvas {
     this.directory = new Directory(
       this.directoryPath,
       this.parentDirectory.url.href,
-      this.parentDirectory.generateThumbs,
       undefined,
       this.parentDirectory
     );

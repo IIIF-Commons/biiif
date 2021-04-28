@@ -5,7 +5,6 @@ import chalk from "chalk";
 export const build = async (
   dir: string,
   url: string,
-  generateThumbs: boolean = false,
   virtualName?: string
 ): Promise<void> => {
   console.log(chalk.white("started biiifing " + dir));
@@ -22,12 +21,7 @@ export const build = async (
     throw new Error("You must pass a url parameter");
   }
 
-  const directory: Directory = new Directory(
-    dir,
-    url,
-    generateThumbs,
-    virtualName
-  );
+  const directory: Directory = new Directory(dir, url, virtualName);
 
   await directory.read();
 

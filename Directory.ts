@@ -29,12 +29,10 @@ export class Directory {
   constructor(
     directoryPath: string,
     url: string,
-    generateThumbs: boolean = false,
     virtualName?: string,
     parentDirectory?: Directory
   ) {
     this.directoryPath = directoryPath;
-    this.generateThumbs = generateThumbs;
     this.url = new URL(url);
     this.parentDirectory = parentDirectory;
     this.virtualName = virtualName;
@@ -86,7 +84,6 @@ export class Directory {
         const newDirectory: Directory = new Directory(
           directory,
           url,
-          this.generateThumbs,
           undefined,
           this
         );

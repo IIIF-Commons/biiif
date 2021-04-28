@@ -43,5 +43,5 @@ it("has a canvas thumbnail", async () => {
 });
 
 it("has correct canvas thumbnail url", async () => {
-  assert(thumbnailJson.id === manifestUrl + "/thumb.jpeg");
+  assert(thumbnailJson.id === manifestUrl + "/thumb.jpg");
 });
