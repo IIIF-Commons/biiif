@@ -8,5 +8,5 @@ const manifestUrl = "http://test.com/readme-manifest";
 
 it("can build manifest", async () => {
   assert(await Utils.fileExists(manifest));
-  return build(manifest, manifestUrl, true);
+  return build(manifest, manifestUrl);
 }).timeout(1000); // should take less than a second

@@ -295,18 +295,21 @@ export class Utils {
                 );
 
                 if (!thumbExists) {
-                  await sharp(imagePath)
-                    .resize({
-                      width: this._config.thumbnails.width,
-                      height: this._config.thumbnails.height,
-                      fit: sharp.fit.cover,
-                    })
-                    .toFormat("jpeg")
-                    .toFile(pathToThumb);
+                  try {
+                    await sharp(imagePath)
+                      .resize({
+                        width: this._config.thumbnails.width,
+                        height: this._config.thumbnails.height,
+                        fit: sharp.fit.cover,
+                      })
+                      .toFormat("jpeg")
+                      .toFile(pathToThumb);
 
-                  // thumb.write(pathToThumb, () => {
-                  console.log(chalk.green("generated thumbnail for: ") + fp);
-                  // });
+                    // thumb.write(pathToThumb, () => {
+                    console.log(chalk.green("generated thumbnail for: ") + fp);
+                  } catch {
+                    console.warn(chalk.red("unable to generate thumbnail for: ") + fp);
+                  }
                 } else {
                   console.log(chalk.green("found thumbnail for: ") + fp);
                 }
@@ -351,13 +354,19 @@ export class Utils {
       switch (type.toLowerCase()) {
         // if it's an image, get the width and height and add to the annotation body and canvas
         case ExternalResourceType.IMAGE:
-          const image: any =  await sharp(file).metadata();
-          const width: number = image.width;
-          const height: number = image.height;
-          canvasJson.width = Math.max(canvasJson.width || 0, width);
-          canvasJson.height = Math.max(canvasJson.height || 0, height);
-          annotationJson.body.width = width;
-          annotationJson.body.height = height;
+          try {
+            const image: any = await sharp(file).metadata();
+            const width: number = image.width;
+            const height: number = image.height;
+            canvasJson.width = Math.max(canvasJson.width || 0, width);
+            canvasJson.height = Math.max(canvasJson.height || 0, height);
+            annotationJson.body.width = width;
+            annotationJson.body.height = height;
+          } catch {
+            console.warn(
+              chalk.red("getting file dimensions failed for: ") + file
+            );
+          }
           break;
         // if it's a sound, get the duration and add to the canvas
         case ExternalResourceType.SOUND:
@@ -384,7 +393,8 @@ export class Utils {
     directory: string,
     annotationJson: any
   ): Promise<void> {
-    return new Promise<void>(async (resolve) => {
+    // return new Promise<void>(async (resolve) => {
+    try {
       console.log(chalk.green("generating image tiles for: ") + image);
 
       const id: string = urljoin(url, directoryName, "+tiles");
@@ -402,16 +412,11 @@ export class Utils {
           layout: "iiif",
           id: urljoin(url, directoryName),
         })
-        .toFile(join(directory, "+tiles"), (err, _info) => {
-          if (err) {
-            console.warn(
-              chalk.yellow("generating image tiles for: ") + image + " failed"
-            );
-          }
-
-          resolve();
-        });
-    });
+        .toFile(join(directory, "+tiles"));
+    } catch {
+      console.warn(chalk.red("generating image tiles failed for: ") + image);
+    }
+    // });
   }
 
   /*

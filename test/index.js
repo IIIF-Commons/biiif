@@ -16,7 +16,7 @@ before(async () => {
       "file.jpg": jpg,
     },
     "/files-only-manifest": {
-      "file.glb": jpg,
+      "file.glb": blob,
       "file.gltf": blob,
       "file.jpeg": jpg,
       "file.jpg": jpg,

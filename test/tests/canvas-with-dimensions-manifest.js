@@ -9,7 +9,7 @@ const manifestUrl = "http://test.com/canvas-with-dimensions-manifest";
 
 it("can build manifest", async () => {
   assert(await Utils.fileExists(manifest));
-  return build(manifest, manifestUrl, true);
+  return build(manifest, manifestUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find manifest index.json", async () => {

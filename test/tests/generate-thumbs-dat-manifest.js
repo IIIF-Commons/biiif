@@ -11,7 +11,7 @@ const generateThumbsManifestUrl = "dat://" + datId;
 
 it("can build generate-thumbs-dat-manifest", async () => {
   assert(await Utils.fileExists(manifest));
-  return build(manifest, generateThumbsManifestUrl, true, datId);
+  return build(manifest, generateThumbsManifestUrl, datId);
 }).timeout(1000); // should take less than a second
 
 it("can find manifest index.json", async () => {
