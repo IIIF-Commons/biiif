@@ -6,9 +6,8 @@ import { basename, dirname, extname, join } from "path";
 import { Directory } from "./Directory";
 import { IConfigJSON } from "./IConfigJSON";
 import { promise as glob } from "glob-promise";
-import { cloneJson, compare, fileExists, formatMetadata, generateImageTiles, getFileDimensions, getFormatByExtension, getFormatByExtensionAndType, getFormatByType, getLabel, getThumbnail, getTypeByExtension, getTypeByFormat, isDirectory, isURL, normaliseFilePath, normaliseType, readYml } from "./Utils";
+import { cloneJson, compare, fileExists, formatMetadata, generateImageTiles, getFileDimensions, getFormatByExtension, getFormatByExtensionAndType, getFormatByType, getLabel, getThumbnail, getTypeByExtension, getTypeByFormat, isDirectory, isURL, log, normaliseFilePath, normaliseType, readYml, warn } from "./Utils";
 import annotationBoilerplate from "./boilerplate/annotation.json";
-import chalk from "chalk";
 import config from "./config.json";
 import imageServiceBoilerplate from "./boilerplate/imageservice.json";
 import urljoin from "url-join";
@@ -91,14 +90,7 @@ export class Canvas {
           if (!motivation) {
             // assume painting
             motivation = normaliseType(AnnotationMotivation.PAINTING);
-            console.warn(
-              chalk.yellow(
-                "motivation property missing in " +
-                  file +
-                  ", guessed " +
-                  motivation
-              )
-            );
+            warn(`motivation property missing in ${file} guessed ${motivation}`)
           }
 
           motivation = normaliseType(motivation);
@@ -143,11 +135,7 @@ export class Canvas {
 
             if (type) {
               annotationJson.body.type = type;
-              console.warn(
-                chalk.yellow(
-                  "type property missing in " + file + ", guessed " + type
-                )
-              );
+              warn(`type property missing in ${file}, guessed ${type}`);
             }
           } else if (yml.format) {
             // guess the type from the format
@@ -158,17 +146,13 @@ export class Canvas {
 
             if (type) {
               annotationJson.body.type = type;
-              console.warn(
-                chalk.yellow(
-                  "type property missing in " + file + ", guessed " + type
-                )
-              );
+              warn(`type property missing in ${file}, guessed ${type}`);
             }
           }
 
           if (!annotationJson.body.type) {
             delete annotationJson.body.type;
-            console.warn(chalk.yellow("unable to determine type of " + file));
+            warn(`unable to determine type of ${file}`);
           }
 
           if (yml.format) {
@@ -183,11 +167,7 @@ export class Canvas {
 
             if (format) {
               annotationJson.body.format = format;
-              console.warn(
-                chalk.yellow(
-                  "format property missing in " + file + ", guessed " + format
-                )
-              );
+              warn(`format property missing in ${file}, guessed ${format}`);
             }
           } else if (yml.value && extname(yml.value)) {
             // guess the format from the extension
@@ -198,11 +178,7 @@ export class Canvas {
 
             if (format) {
               annotationJson.body.format = format;
-              console.warn(
-                chalk.yellow(
-                  "format property missing in " + file + ", guessed " + format
-                )
-              );
+              warn(`format property missing in ${file}, guessed ${format}`);
             }
           } else if (yml.type) {
             // can only guess the format from the type if there is one typeformat for this motivation.
@@ -213,17 +189,13 @@ export class Canvas {
 
             if (format) {
               annotationJson.body.format = format;
-              console.warn(
-                chalk.yellow(
-                  "format property missing in " + file + ", guessed " + format
-                )
-              );
+              warn(`format property missing in ${file}, guessed ${format}`);
             }
           }
 
           if (!annotationJson.body.format) {
             delete annotationJson.body.format;
-            console.warn(chalk.yellow("unable to determine format of " + file));
+            warn(`unable to determine format of ${file}`);
           }
 
           if (yml.label) {
@@ -300,11 +272,7 @@ export class Canvas {
     }
 
     if (!canvasJson.items[0].items.length) {
-      console.warn(
-        chalk.yellow(
-          "Could not find any files to annotate onto " + this.directoryPath
-        )
-      );
+      warn(`Could not find any files to annotate onto ${this.directoryPath}`);
     }
 
     // if there's no thumb.[jpg, gif, png]
@@ -391,9 +359,9 @@ export class Canvas {
 
     if (exists) {
       this.infoYml = await readYml(ymlPath);
-      console.log(chalk.green("got metadata for: ") + this.directoryPath);
+      log(`got metadata for: ${this.directoryPath}`);
     } else {
-      console.log(chalk.green("no metadata found for: ") + this.directoryPath);
+      log(`no metadata found for: ${this.directoryPath}`);
     }
 
     if (!this.infoYml.label) {

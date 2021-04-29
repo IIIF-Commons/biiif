@@ -1,5 +1,5 @@
 import { Directory } from "./Directory";
-import { fileExists } from "./Utils";
+import { fileExists, log } from "./Utils";
 import chalk from "chalk";
 
 export const build = async (
@@ -7,7 +7,7 @@ export const build = async (
   url: string,
   virtualName?: string
 ): Promise<void> => {
-  console.log(chalk.white("started biiifing " + dir));
+  log(`started biiifing ${dir}`);
 
   // validate inputs
 
@@ -25,5 +25,5 @@ export const build = async (
 
   await directory.read();
 
-  console.log(chalk.white("finished biiifing " + dir));
+  log(`finished biiifing ${dir}`);
 };

@@ -545,3 +545,22 @@ export const hasManifestsYml = (path: string): Promise<boolean> => {
 export const isURL = (path: string): boolean => {
   return isurl(path);
 }
+
+export const log = (message: string): void => {
+  console.log(
+    chalk.green(message)
+  );
+}
+
+export const warn = (message: string): void => {
+  console.warn(
+    chalk.yellow(message)
+  );
+}
+
+export const error = (message: string): void => {
+  console.warn(
+    chalk.red(message)
+  );
+}
+

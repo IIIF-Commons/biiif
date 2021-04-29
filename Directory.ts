@@ -2,8 +2,7 @@ import { Canvas } from "./Canvas";
 import { join, basename } from "path";
 import { promise as glob } from "glob-promise";
 import { URL } from "url";
-import { cloneJson, compare, fileExists, formatMetadata, getLabel, getThumbnail, hasManifestsYml, readYml, writeJson } from "./Utils";
-import chalk from "chalk";
+import { cloneJson, compare, fileExists, formatMetadata, getLabel, getThumbnail, hasManifestsYml, log, readYml, warn, writeJson } from "./Utils";
 // import urljoin from "url-join";
 const urljoin = require("url-join");
 // boilerplate json
@@ -53,7 +52,7 @@ export class Directory {
 
     await Promise.all(
       canvases.map(async (canvas: string) => {
-        console.log(chalk.green("creating canvas for: ") + canvas);
+        log(`creating canvas for: ${canvas}`);
         this.items.push(new Canvas(canvas, this));
       })
     );
@@ -78,7 +77,7 @@ export class Directory {
 
     await Promise.all(
       directories.map(async (directory: string) => {
-        console.log(chalk.green("creating directory for: ") + directory);
+        log(`creating directory for: ${directory}`);
         const name: string = basename(directory);
         const url: string = urljoin(this.url.href, name);
         const newDirectory: Directory = new Directory(
@@ -106,7 +105,7 @@ export class Directory {
       });
 
       paintableFiles.forEach((file: string) => {
-        console.log(chalk.green("creating canvas for: ") + file);
+        log(`creating canvas for: ${file}`);
         this.items.push(new Canvas(file, this));
       });
     }
@@ -119,28 +118,16 @@ export class Directory {
     await this._createIndexJson();
 
     if (this.isCollection) {
-      console.log(chalk.green("created collection: ") + this.directoryPath);
+      log(`created collection: ${this.directoryPath}`);
       // if there are canvases, warn that they are being ignored
       if (this.items.length) {
-        console.warn(
-          chalk.yellow(
-            this.items.length +
-              " unused canvas directories (starting with an underscore) found in the " +
-              this.directoryPath +
-              " collection. Remove directories not starting with an underscore to convert into a manifest."
-          )
-        );
+        warn(`${this.items.length} unused canvas directories (starting with an underscore) found in the ${this.directoryPath} collection. Remove directories not starting with an underscore to convert into a manifest.`);
       }
     } else {
-      console.log(chalk.green("created manifest: ") + this.directoryPath);
+      log(`created manifest: ${this.directoryPath}`);
       // if there aren't any canvases, warn that there should be
       if (!this.items.length) {
-        console.warn(
-          chalk.yellow(
-            this.directoryPath +
-              " is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content."
-          )
-        );
+        warn(`${this.directoryPath} is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.`);
       }
     }
   }
@@ -155,9 +142,9 @@ export class Directory {
 
     if (exists) {
       this.infoYml = await readYml(ymlPath);
-      console.log(chalk.green("got metadata for: ") + this.directoryPath);
+      log(`got metadata for: ${this.directoryPath}`);
     } else {
-      console.log(chalk.green("no metadata found for: ") + this.directoryPath);
+      log(`no metadata found for: ${this.directoryPath}`);
     }
 
     if (!this.infoYml.label) {
@@ -229,13 +216,9 @@ export class Directory {
           this.indexJson.items.push(itemJson);
         });
 
-        console.log(
-          chalk.green("parsed manifests.yml for: ") + this.directoryPath
-        );
+        log(`parsed manifests.yml for ${this.directoryPath}`);
       } else {
-        console.log(
-          chalk.green("no manifests.yml found for: ") + this.directoryPath
-        );
+        log(`no manifests.yml found for: ${this.directoryPath}`);
       }
 
       // sort items
@@ -288,7 +271,7 @@ export class Directory {
     const path: string = join(this.directoryPath, "index.json");
     const json: string = JSON.stringify(this.indexJson, null, "  ");
 
-    console.log(chalk.green("creating index.json for: ") + this.directoryPath);
+    log(`creating index.json for: ${this.directoryPath}`);
 
     await writeJson(path, json);
   }
