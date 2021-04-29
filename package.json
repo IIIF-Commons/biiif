@@ -11,7 +11,7 @@
     "build": "npm run format && tsc",
     "format": "prettier --write \"**/*.*\"",
     "test": "mocha",
-    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('test/collection', 'https://moop-home.netlify.app')\"",
+    "testbuild": "node --nolazy --inspect-brk=5858 -e \"require('./index').build('test/collection', 'https://sitename.netlify.app')\"",
     "serve": "serve test"
   },
   "engines": {
