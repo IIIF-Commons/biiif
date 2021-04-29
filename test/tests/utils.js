@@ -1,6 +1,4 @@
-const common = require("../common");
-const assert = common.assert;
-const URL = common.URL;
+const { assert, URL } = require("../common");
 const { mergePaths } = require("../../Utils");
 
 let url, filePath, id;

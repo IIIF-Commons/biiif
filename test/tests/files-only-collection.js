@@ -1,6 +1,4 @@
-const common = require("../common");
-const assert = common.assert;
-const build = common.build;
+const { assert, build } = require("../common");
 const { fileExists, readJson } = require("../../Utils");
 
 let collectionJson, manifestJson, canvasJson, annotationPage;

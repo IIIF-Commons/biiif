@@ -1,7 +1,4 @@
-const common = require("../common");
-const assert = common.assert;
-const build = common.build;
-const urljoin = common.urljoin;
+const { assert, build, urljoin } = require("../common");
 const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvasJson, annotationPage, annotation, annotationBody;

@@ -1,9 +1,5 @@
-const common = require("../common");
-const assert = common.assert;
-const build = common.build;
-const urljoin = common.urljoin;
+const { assert, build, urljoin, canvasHasContentAnnotations } = require("../common");
 const { fileExists, readJson } = require("../../Utils");
-const canvasHasContentAnnotations = common.canvasHasContentAnnotations;
 
 const collection = "/file-annotation-collection";
 const collectionUrl = "http://test.com/file-annotation-collection";

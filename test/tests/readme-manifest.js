@@ -1,7 +1,5 @@
-const common = require("../common");
-const assert = common.assert;
-const build = common.build;
-const { fileExists, readJson } = require("../../Utils");
+const { assert, build } = require("../common");
+const { fileExists } = require("../../Utils");
 
 const manifest = "/readme-manifest";
 const manifestUrl = "http://test.com/readme-manifest";
