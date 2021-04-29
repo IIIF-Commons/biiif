@@ -1,7 +1,7 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvasJson, annotation, annotationPage, annotationBody;
 const manifest = "/custom-annotations-manifest";
@@ -9,14 +9,14 @@ const customAnnotationsManifestUrl =
   "http://test.com/custom-annotations-manifest";
 
 it("can build custom annotations collection", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(manifest, customAnnotationsManifestUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find manifest index.json", async () => {
   const file = "/custom-annotations-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 describe("commenting text with format", async () => {

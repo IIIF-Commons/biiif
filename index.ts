@@ -1,5 +1,5 @@
 import { Directory } from "./Directory";
-import { Utils } from "./Utils";
+import { fileExists } from "./Utils";
 import chalk from "chalk";
 
 export const build = async (
@@ -11,7 +11,7 @@ export const build = async (
 
   // validate inputs
 
-  const exists: boolean = await Utils.fileExists(dir);
+  const exists: boolean = await fileExists(dir);
 
   if (!exists) {
     throw new Error("Directory does not exist");

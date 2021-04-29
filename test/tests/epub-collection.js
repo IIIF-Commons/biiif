@@ -2,20 +2,20 @@ const common = require("../common");
 const assert = common.assert;
 const build = common.build;
 const urljoin = common.urljoin;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 const collection = "/epub-collection";
 const collectionUrl = "http://test.com/epub-collection";
 
 it("can build epub collection", async () => {
-  assert(await Utils.fileExists(collection));
+  assert(await fileExists(collection));
   return build(collection, collectionUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find collection index.json", async () => {
   const file = "/epub-collection/index.json";
-  assert(await Utils.fileExists(file));
-  collectionJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  collectionJson = await readJson(file);
 });
 
 describe("painting opf", async () => {
@@ -24,8 +24,8 @@ describe("painting opf", async () => {
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
     canvases = manifestJson.items;
     assert(canvases.length === 1);
   });
@@ -105,8 +105,8 @@ describe("painting epub", async () => {
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
     canvases = manifestJson.items;
     assert(canvases.length === 1);
   });

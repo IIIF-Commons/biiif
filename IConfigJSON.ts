@@ -6,7 +6,7 @@ export interface IConfigJSON {
 }
 
 export interface settings {
-  jimpEnabled: boolean;
+
 }
 
 export interface thumbnails {

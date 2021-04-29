@@ -2,21 +2,21 @@ const common = require("../common");
 const assert = common.assert;
 const build = common.build;
 const urljoin = common.urljoin;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 const canvasHasContentAnnotations = common.canvasHasContentAnnotations;
 
 const collection = "/file-annotation-collection";
 const collectionUrl = "http://test.com/file-annotation-collection";
 
 it("can build collection", async () => {
-  assert(await Utils.fileExists(collection));
+  assert(await fileExists(collection));
   return build(collection, collectionUrl);
 }).timeout(2000);
 
 it("can find collection index.json", async () => {
   const file = urljoin(collection, "/index.json");
-  assert(await Utils.fileExists(file));
-  collectionJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  collectionJson = await readJson(file);
 });
 
 describe("canvas per file", async () => {
@@ -25,8 +25,8 @@ describe("canvas per file", async () => {
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
     canvases = manifestJson.items;
     assert(canvases.length === 10);
   });
@@ -55,14 +55,14 @@ describe("files per canvas", async () => {
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
   });
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
     canvasJson = manifestJson.items[0];
   });
 
@@ -90,8 +90,8 @@ describe("erroneous file", async () => {
 
   it("can find " + manifest + " index.json", async () => {
     const file = urljoin(collection, manifest, "index.json");
-    assert(await Utils.fileExists(file));
-    manifestJson = await Utils.readJson(file);
+    assert(await fileExists(file));
+    manifestJson = await readJson(file);
     canvasJson = manifestJson.items[0];
   });
 

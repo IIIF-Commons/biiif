@@ -6,7 +6,7 @@ import { basename, dirname, extname, join } from "path";
 import { Directory } from "./Directory";
 import { IConfigJSON } from "./IConfigJSON";
 import { promise as glob } from "glob-promise";
-import { Utils } from "./Utils";
+import { cloneJson, compare, fileExists, formatMetadata, generateImageTiles, getFileDimensions, getFormatByExtension, getFormatByExtensionAndType, getFormatByType, getLabel, getThumbnail, getTypeByExtension, getTypeByFormat, isDirectory, isURL, normaliseFilePath, normaliseType, readYml } from "./Utils";
 import annotationBoilerplate from "./boilerplate/annotation.json";
 import chalk from "chalk";
 import config from "./config.json";
@@ -27,7 +27,7 @@ export class Canvas {
   constructor(filePath: string, parentDirectory: Directory) {
     this.filePath = filePath;
 
-    if (!Utils.isDirectory(this.filePath)) {
+    if (!isDirectory(this.filePath)) {
       this.directoryPath = dirname(this.filePath);
     } else {
       this.directoryPath = this.filePath;
@@ -69,7 +69,7 @@ export class Canvas {
 
       // sort files
       customAnnotationFiles.sort((a, b) => {
-        return Utils.compare(a, b);
+        return compare(a, b);
       });
 
       await Promise.all(
@@ -77,8 +77,8 @@ export class Canvas {
           let directoryName: string = dirname(file);
           directoryName = directoryName.substr(directoryName.lastIndexOf("/"));
           const name: string = basename(file, extname(file));
-          const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
-          const yml: any = await Utils.readYml(file);
+          const annotationJson: any = cloneJson(annotationBoilerplate);
+          const yml: any = await readYml(file);
 
           annotationJson.id = urljoin(
             canvasJson.id,
@@ -90,7 +90,7 @@ export class Canvas {
 
           if (!motivation) {
             // assume painting
-            motivation = Utils.normaliseType(AnnotationMotivation.PAINTING);
+            motivation = normaliseType(AnnotationMotivation.PAINTING);
             console.warn(
               chalk.yellow(
                 "motivation property missing in " +
@@ -101,7 +101,7 @@ export class Canvas {
             );
           }
 
-          motivation = Utils.normaliseType(motivation);
+          motivation = normaliseType(motivation);
 
           annotationJson.motivation = motivation;
           annotationJson.target = canvasJson.id;
@@ -111,12 +111,12 @@ export class Canvas {
           // if the motivation is painting, or isn't recognised, set the id to the path of the yml value
           if (
             (motivation.toLowerCase() ===
-              Utils.normaliseType(AnnotationMotivation.PAINTING) ||
+              normaliseType(AnnotationMotivation.PAINTING) ||
               !this._config.annotation.motivations[motivation]) &&
             yml.value &&
             extname(yml.value)
           ) {
-            if (Utils.isURL(yml.value)) {
+            if (isURL(yml.value)) {
               id = yml.value;
             } else {
               id = urljoin(this.url.href, directoryName, yml.value);
@@ -136,7 +136,7 @@ export class Canvas {
             annotationJson.body.type = yml.type;
           } else if (yml.value && extname(yml.value)) {
             // guess the type from the extension
-            const type: string | null = Utils.getTypeByExtension(
+            const type: string | null = getTypeByExtension(
               motivation,
               extname(yml.value)
             );
@@ -151,7 +151,7 @@ export class Canvas {
             }
           } else if (yml.format) {
             // guess the type from the format
-            const type: string | null = Utils.getTypeByFormat(
+            const type: string | null = getTypeByFormat(
               motivation,
               yml.format
             );
@@ -175,7 +175,7 @@ export class Canvas {
             annotationJson.body.format = yml.format;
           } else if (yml.value && extname(yml.value) && yml.type) {
             // guess the format from the extension and type
-            const format: string | null = Utils.getFormatByExtensionAndType(
+            const format: string | null = getFormatByExtensionAndType(
               motivation,
               extname(yml.value),
               yml.type
@@ -191,7 +191,7 @@ export class Canvas {
             }
           } else if (yml.value && extname(yml.value)) {
             // guess the format from the extension
-            const format: string | null = Utils.getFormatByExtension(
+            const format: string | null = getFormatByExtension(
               motivation,
               extname(yml.value)
             );
@@ -206,7 +206,7 @@ export class Canvas {
             }
           } else if (yml.type) {
             // can only guess the format from the type if there is one typeformat for this motivation.
-            const format: string | null = Utils.getFormatByType(
+            const format: string | null = getFormatByType(
               motivation,
               yml.type
             );
@@ -227,10 +227,10 @@ export class Canvas {
           }
 
           if (yml.label) {
-            annotationJson.body.label = Utils.getLabel(yml.label);
-            canvasJson.label = Utils.getLabel(yml.label);
+            annotationJson.body.label = getLabel(yml.label);
+            canvasJson.label = getLabel(yml.label);
           } else {
-            annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+            annotationJson.body.label = getLabel(this.infoYml.label);
           }
 
           // if the annotation is an image and the id points to an info.json
@@ -241,7 +241,7 @@ export class Canvas {
               ExternalResourceType.IMAGE &&
             extname(annotationJson.body.id) === ".json"
           ) {
-            const service: any = Utils.cloneJson(imageServiceBoilerplate);
+            const service: any = cloneJson(imageServiceBoilerplate);
             service[0].id = annotationJson.body.id.substr(
               0,
               annotationJson.body.id.lastIndexOf("/")
@@ -253,21 +253,21 @@ export class Canvas {
           if (
             yml.value &&
             this._config.annotation.motivations[motivation] &&
-            motivation !== Utils.normaliseType(AnnotationMotivation.PAINTING)
+            motivation !== normaliseType(AnnotationMotivation.PAINTING)
           ) {
             annotationJson.body.value = yml.value;
           }
 
           if (
             yml.value &&
-            !Utils.isURL(yml.value) &&
+            !isURL(yml.value) &&
             annotationJson.body.type
           ) {
             // get the path to the annotated file
             const dirName: string = dirname(file);
             let path: string = join(dirName, yml.value);
-            path = Utils.normaliseFilePath(path);
-            await Utils.getFileDimensions(
+            path = normaliseFilePath(path);
+            await getFileDimensions(
               annotationJson.body.type,
               path,
               canvasJson,
@@ -289,7 +289,7 @@ export class Canvas {
 
       // sort files
       paintableFiles.sort((a, b) => {
-        return Utils.compare(a, b);
+        return compare(a, b);
       });
 
       await this._annotateFiles(canvasJson, paintableFiles);
@@ -309,7 +309,7 @@ export class Canvas {
 
     // if there's no thumb.[jpg, gif, png]
     // generate one from the first painted image
-    await Utils.getThumbnail(
+    await getThumbnail(
       this.canvasJson,
       this.directory,
       this.directoryPath
@@ -322,7 +322,7 @@ export class Canvas {
   ): Promise<void> {
     await Promise.all(
       files.map(async (file: string) => {
-        file = Utils.normaliseFilePath(file);
+        file = normaliseFilePath(file);
         const extName: string = extname(file);
 
         // if this._config.annotation has a matching extension
@@ -342,22 +342,22 @@ export class Canvas {
 
         if (defaultPaintingExtension) {
           defaultPaintingExtension = defaultPaintingExtension[0];
-          const annotationJson: any = Utils.cloneJson(annotationBoilerplate);
+          const annotationJson: any = cloneJson(annotationBoilerplate);
           annotationJson.id = urljoin(
             canvasJson.id,
             "annotation",
             canvasJson.items[0].items.length
           );
-          annotationJson.motivation = Utils.normaliseType(
+          annotationJson.motivation = normaliseType(
             AnnotationMotivation.PAINTING
           );
           annotationJson.target = canvasJson.id;
           annotationJson.body.id = id;
           annotationJson.body.type = defaultPaintingExtension.type;
           annotationJson.body.format = defaultPaintingExtension.format;
-          annotationJson.body.label = Utils.getLabel(this.infoYml.label);
+          annotationJson.body.label = getLabel(this.infoYml.label);
           canvasJson.items[0].items.push(annotationJson);
-          await Utils.getFileDimensions(
+          await getFileDimensions(
             defaultPaintingExtension.type,
             file,
             canvasJson,
@@ -368,7 +368,7 @@ export class Canvas {
             defaultPaintingExtension.type.toLowerCase() ===
             ExternalResourceType.IMAGE
           ) {
-            await Utils.generateImageTiles(
+            await generateImageTiles(
               file,
               this.url.href,
               directoryName,
@@ -387,10 +387,10 @@ export class Canvas {
     // if there's an info.yml
     const ymlPath: string = join(this.directoryPath, "info.yml");
 
-    const fileExists: boolean = await Utils.fileExists(ymlPath);
+    const exists: boolean = await fileExists(ymlPath);
 
-    if (fileExists) {
-      this.infoYml = await Utils.readYml(ymlPath);
+    if (exists) {
+      this.infoYml = await readYml(ymlPath);
       console.log(chalk.green("got metadata for: ") + this.directoryPath);
     } else {
       console.log(chalk.green("no metadata found for: ") + this.directoryPath);
@@ -403,7 +403,7 @@ export class Canvas {
   }
 
   private _applyInfo(): void {
-    this.canvasJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
+    this.canvasJson.label = getLabel(this.infoYml.label); // defaults to directory name
 
     if (this.infoYml.width) {
       this.canvasJson.width = this.infoYml.width;
@@ -418,7 +418,7 @@ export class Canvas {
     }
 
     if (this.infoYml.metadata) {
-      this.canvasJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
+      this.canvasJson.metadata = formatMetadata(this.infoYml.metadata);
     }
   }
 }

@@ -1,21 +1,21 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let collectionJson, manifestJson, canvasJson, annotationPage;
 const collection = "/files-only-collection";
 const collectionUrl = "http://test.com/files-only-collection";
 
 it("can build collection", async () => {
-  assert(await Utils.fileExists(collection));
+  assert(await fileExists(collection));
   return build(collection, collectionUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find collection index.json", async () => {
   const file = "/files-only-collection/index.json";
-  assert(await Utils.fileExists(file));
-  collectionJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  collectionJson = await readJson(file);
 });
 
 it("has correct collection id", async () => {
@@ -26,8 +26,8 @@ it("has correct collection id", async () => {
 
 it("can find manifest index.json", async () => {
   const file = "/files-only-collection/files-only-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("has correct manifest id", async () => {

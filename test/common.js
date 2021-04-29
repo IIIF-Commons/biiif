@@ -1,7 +1,6 @@
 const { basename } = require("path");
-const { build, JIMP_ENABLED } = require("../index");
+const { build } = require("../index");
 const { URL } = require("url");
-const { Utils } = require("../Utils");
 const assert = require("assert");
 const config = require("../IConfigJSON");
 const fs = require("fs");
@@ -18,7 +17,6 @@ exports.jsonfile = jsonfile;
 exports.mock = mock;
 exports.URL = URL;
 exports.urljoin = urljoin;
-exports.Utils = Utils;
 
 exports.canvasHasContentAnnotations = (canvasJson, files) => {
   assert(canvasJson);

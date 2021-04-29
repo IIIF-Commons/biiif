@@ -2,7 +2,7 @@ import { Canvas } from "./Canvas";
 import { join, basename } from "path";
 import { promise as glob } from "glob-promise";
 import { URL } from "url";
-import { Utils } from "./Utils";
+import { cloneJson, compare, fileExists, formatMetadata, getLabel, getThumbnail, hasManifestsYml, readYml, writeJson } from "./Utils";
 import chalk from "chalk";
 // import urljoin from "url-join";
 const urljoin = require("url-join");
@@ -48,7 +48,7 @@ export class Directory {
 
     // sort canvases
     canvases.sort((a, b) => {
-      return Utils.compare(a, b);
+      return compare(a, b);
     });
 
     await Promise.all(
@@ -73,7 +73,7 @@ export class Directory {
 
     // sort canvases
     directories.sort((a, b) => {
-      return Utils.compare(a, b);
+      return compare(a, b);
     });
 
     await Promise.all(
@@ -102,7 +102,7 @@ export class Directory {
 
       // sort files
       paintableFiles.sort((a, b) => {
-        return Utils.compare(a, b);
+        return compare(a, b);
       });
 
       paintableFiles.forEach((file: string) => {
@@ -113,7 +113,7 @@ export class Directory {
 
     this.isCollection =
       this.directories.length > 0 ||
-      (await Utils.hasManifestsYml(this.directoryPath));
+      (await hasManifestsYml(this.directoryPath));
 
     await this._getInfo();
     await this._createIndexJson();
@@ -151,10 +151,10 @@ export class Directory {
     // if there's an info.yml
     const ymlPath: string = join(this.directoryPath, "info.yml");
 
-    const fileExists: boolean = await Utils.fileExists(ymlPath);
+    const exists: boolean = await fileExists(ymlPath);
 
-    if (fileExists) {
-      this.infoYml = await Utils.readYml(ymlPath);
+    if (exists) {
+      this.infoYml = await readYml(ymlPath);
       console.log(chalk.green("got metadata for: ") + this.directoryPath);
     } else {
       console.log(chalk.green("no metadata found for: ") + this.directoryPath);
@@ -168,7 +168,7 @@ export class Directory {
 
   private async _createIndexJson(): Promise<void> {
     if (this.isCollection) {
-      this.indexJson = Utils.cloneJson(collectionBoilerplate);
+      this.indexJson = cloneJson(collectionBoilerplate);
 
       // for each child directory, add a collectionitem or manifestitem json boilerplate to items.
 
@@ -177,48 +177,48 @@ export class Directory {
           let itemJson: any;
 
           if (directory.isCollection) {
-            itemJson = Utils.cloneJson(collectionItemBoilerplate);
+            itemJson = cloneJson(collectionItemBoilerplate);
           } else {
-            itemJson = Utils.cloneJson(manifestItemBoilerplate);
+            itemJson = cloneJson(manifestItemBoilerplate);
           }
 
           itemJson.id = urljoin(directory.url.href, "index.json");
-          itemJson.label = Utils.getLabel(directory.infoYml.label);
+          itemJson.label = getLabel(directory.infoYml.label);
 
-          await Utils.getThumbnail(itemJson, directory);
+          await getThumbnail(itemJson, directory);
 
           this.indexJson.items.push(itemJson);
         })
       );
 
       // check for manifests.yml. if it exists, parse and add to items
-      const hasManifestsYml: boolean = await Utils.hasManifestsYml(
+      const hasYml: boolean = await hasManifestsYml(
         this.directoryPath
       );
 
-      if (hasManifestsYml) {
+      if (hasYml) {
         const manifestsPath: string = join(this.directoryPath, "manifests.yml");
-        const manifestsYml: any = await Utils.readYml(manifestsPath);
+        const manifestsYml: any = await readYml(manifestsPath);
 
         manifestsYml.manifests.forEach((manifest: any) => {
-          const itemJson: any = Utils.cloneJson(collectionItemBoilerplate);
+          const itemJson: any = cloneJson(collectionItemBoilerplate);
           itemJson.id = manifest.id;
 
           if (manifest.label) {
-            itemJson.label = Utils.getLabel(manifest.label);
+            itemJson.label = getLabel(manifest.label);
           } else {
             // no label supplied, use the last fragment of the url
             const url: URL = new URL(itemJson.id);
             const pathname: string[] = url.pathname.split("/");
 
             if (pathname.length > 1) {
-              itemJson.label = Utils.getLabel(pathname[pathname.length - 2]);
+              itemJson.label = getLabel(pathname[pathname.length - 2]);
             }
           }
 
           if (manifest.thumbnail) {
             if (typeof manifest.thumbnail === "string") {
-              const thumbnail: any[] = Utils.cloneJson(thumbnailBoilerplate);
+              const thumbnail: any[] = cloneJson(thumbnailBoilerplate);
               thumbnail[0].id = manifest.thumbnail;
               itemJson.thumbnail = thumbnail;
             } else {
@@ -240,20 +240,20 @@ export class Directory {
 
       // sort items
       this.indexJson.items.sort((a, b) => {
-        return Utils.compare(
+        return compare(
           a.label["@none"][0].toLowerCase(),
           b.label["@none"][0].toLowerCase()
         );
       });
     } else {
-      this.indexJson = Utils.cloneJson(manifestBoilerplate);
+      this.indexJson = cloneJson(manifestBoilerplate);
 
       // for each canvas, add canvas json
 
       let index: number = 0;
 
       for (const canvas of this.items) {
-        const canvasJson: any = Utils.cloneJson(canvasBoilerplate);
+        const canvasJson: any = cloneJson(canvasBoilerplate);
 
         console.log(urljoin(this.url.href, "index.json/canvas", index));
 
@@ -274,7 +274,7 @@ export class Directory {
       }
 
       this.indexJson.items.sort((a, b) => {
-        return Utils.compare(a.id, b.id);
+        return compare(a.id, b.id);
       });
     }
 
@@ -282,7 +282,7 @@ export class Directory {
 
     this._applyInfo();
 
-    await Utils.getThumbnail(this.indexJson, this);
+    await getThumbnail(this.indexJson, this);
 
     // write index.json
     const path: string = join(this.directoryPath, "index.json");
@@ -290,14 +290,14 @@ export class Directory {
 
     console.log(chalk.green("creating index.json for: ") + this.directoryPath);
 
-    await Utils.writeJson(path, json);
+    await writeJson(path, json);
   }
 
   private _applyInfo(): void {
-    this.indexJson.label = Utils.getLabel(this.infoYml.label); // defaults to directory name
+    this.indexJson.label = getLabel(this.infoYml.label); // defaults to directory name
 
     if (this.infoYml.metadata) {
-      this.indexJson.metadata = Utils.formatMetadata(this.infoYml.metadata);
+      this.indexJson.metadata = formatMetadata(this.infoYml.metadata);
     }
 
     // add manifest-specific properties

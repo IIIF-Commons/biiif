@@ -1,7 +1,7 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvasJson, thumbnailJson;
 const manifest = "/thumbs-single-manifest";
@@ -9,7 +9,7 @@ const manifestUrl =
   "http://174.138.105.19:3000/0cd3f6a6b3b11700b299f70fe4dbc054d83590676ec18d7d623ccd31791fc772";
 
 it("can build manifest", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(
     manifest,
     manifestUrl,
@@ -20,8 +20,8 @@ it("can build manifest", async () => {
 
 it("can find manifest index.json", async () => {
   const file = "/thumbs-single-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("can find canvas", async () => {

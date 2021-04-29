@@ -1,7 +1,7 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvasJson, thumbnailJson;
 const manifest = "/generate-thumbs-dat-manifest";
@@ -10,14 +10,14 @@ const datId =
 const generateThumbsManifestUrl = "http://174.138.105.19:3000/" + datId;
 
 it("can build generate-thumbs-dat-manifest", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(manifest, generateThumbsManifestUrl, datId);
 }).timeout(1000); // should take less than a second
 
 it("can find manifest index.json", async () => {
   const file = "/generate-thumbs-dat-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("can find canvas", async () => {

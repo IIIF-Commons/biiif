@@ -2,21 +2,21 @@ const common = require("../common");
 const assert = common.assert;
 const build = common.build;
 const urljoin = common.urljoin;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvasJson, annotationPage, annotation, annotationBody;
 const manifest = "/files-only-manifest";
 const manifestUrl = "http://test.com/files-only-manifest";
 
 it("can build manifest", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(manifest, manifestUrl);
 }).timeout(100000000); // should take less than a second
 
 it("can find " + manifest + " index.json", async () => {
   const file = urljoin(manifest, "index.json");
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("has correct manifest id", async () => {

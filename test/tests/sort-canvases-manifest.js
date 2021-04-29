@@ -1,21 +1,21 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson, canvases;
 const manifest = "/sort-canvases-manifest";
 const manifestUrl = "http://test.com/sort-canvases-manifest";
 
 it("can build sort canvases manifest", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(manifest, manifestUrl);
 }).timeout(2000);
 
 it("can find manifest index.json", async () => {
   const file = "/sort-canvases-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("sorts canvases correctly", async () => {

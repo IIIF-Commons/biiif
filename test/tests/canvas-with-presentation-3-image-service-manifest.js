@@ -1,7 +1,7 @@
 const common = require("../common");
 const assert = common.assert;
 const build = common.build;
-const Utils = common.Utils;
+const { fileExists, readJson } = require("../../Utils");
 
 let manifestJson,
   canvasJson,
@@ -14,14 +14,14 @@ const manifestUrl =
   "http://test.com/canvas-with-presentation-3-image-service-manifest";
 
 it("can build manifest", async () => {
-  assert(await Utils.fileExists(manifest));
+  assert(await fileExists(manifest));
   return build(manifest, manifestUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find manifest index.json", async () => {
   const file = "/canvas-with-presentation-3-image-service-manifest/index.json";
-  assert(await Utils.fileExists(file));
-  manifestJson = await Utils.readJson(file);
+  assert(await fileExists(file));
+  manifestJson = await readJson(file);
 });
 
 it("can find canvas", async () => {
