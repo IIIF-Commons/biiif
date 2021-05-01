@@ -237,9 +237,6 @@ export class Directory {
 
       for (const canvas of this.items) {
         const canvasJson: any = cloneJson(canvasBoilerplate);
-
-        console.log(urljoin(this.url.href, "index.json/canvas", index));
-
         canvasJson.id = urljoin(this.url.href, "index.json/canvas", index);
         canvasJson.items[0].id = urljoin(
           this.url.href,

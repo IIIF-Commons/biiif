@@ -1,6 +1,5 @@
 import { Directory } from "./Directory";
 import { fileExists, log } from "./Utils";
-import chalk from "chalk";
 
 export const build = async (
   dir: string,

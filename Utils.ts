@@ -233,7 +233,7 @@ export const getThumbnail = async (
 
   if (thumbnails.length) {
     // there's alrady a thumbnail in the directory, add it to the canvas
-    console.log(chalk.green("found thumbnail for: ") + fp);
+    log(`found thumbnail for: ${fp}`);
     let thumbnail: string = thumbnails[0];
     const thumbnailJson: any = cloneJson(thumbnailBoilerplate);
     thumbnailJson[0].id = mergePaths(
@@ -295,7 +295,9 @@ export const getThumbnail = async (
 
               if (!thumbExists) {
                 try {
-                  await sharp(imagePath)
+                  await sharp(imagePath, {
+                    limitInputPixels: true
+                  })
                     .resize({
                       width: _config.thumbnails.width,
                       height: _config.thumbnails.height,
@@ -305,12 +307,12 @@ export const getThumbnail = async (
                     .toFile(pathToThumb);
 
                   // thumb.write(pathToThumb, () => {
-                  console.log(chalk.green("generated thumbnail for: ") + fp);
+                  log(`generated thumbnail for: ${fp}`);
                 } catch {
-                  console.warn(chalk.red("unable to generate thumbnail for: ") + fp);
+                  warn(`unable to generate thumbnail for: ${fp}`);
                 }
               } else {
-                console.log(chalk.green("found thumbnail for: ") + fp);
+                log(`found thumbnail for: ${fp}`);
               }
             } else {
               // placeholder img path
@@ -347,24 +349,24 @@ export const getFileDimensions = async (
   canvasJson: any,
   annotationJson: any
 ): Promise<void> => {
-  console.log(chalk.green("getting file dimensions for: ") + file);
+  log(`getting file dimensions for: ${file}`);
 
   if (!isJsonFile(file)) {
     switch (type.toLowerCase()) {
       // if it's an image, get the width and height and add to the annotation body and canvas
       case ExternalResourceType.IMAGE:
         try {
-          const image: any = await sharp(file).metadata();
+          const image: any = await sharp(file, {
+            limitInputPixels: true
+          }).metadata();
           const width: number = image.width;
           const height: number = image.height;
           canvasJson.width = Math.max(canvasJson.width || 0, width);
           canvasJson.height = Math.max(canvasJson.height || 0, height);
           annotationJson.body.width = width;
           annotationJson.body.height = height;
-        } catch {
-          console.warn(
-            chalk.red("getting file dimensions failed for: ") + file
-          );
+        } catch (e) {
+          warn(`getting file dimensions failed for: ${file}`);
         }
         break;
       // if it's a sound, get the duration and add to the canvas
@@ -377,7 +379,7 @@ export const getFileDimensions = async (
             canvasJson.duration = duration;
           }
         } catch (error) {
-          console.warn(`ffprobe couldn't load ${file}`, error);
+          warn(`ffprobe couldn't load ${file}`);
         }
 
         break;
@@ -393,7 +395,7 @@ export const generateImageTiles = async (
   annotationJson: any
 ): Promise<void> => {
   try {
-    console.log(chalk.green("generating image tiles for: ") + image);
+    log(`generating image tiles for: ${image}`);
 
     const id: string = urljoin(url, directoryName, "+tiles");
 
@@ -405,14 +407,16 @@ export const generateImageTiles = async (
       },
     ];
 
-    await sharp(image)
+    await sharp(image, {
+      limitInputPixels: true
+    })
       .tile({
         layout: "iiif",
         id: urljoin(url, directoryName),
       })
       .toFile(join(directory, "+tiles"));
   } catch {
-    console.warn(chalk.red("generating image tiles failed for: ") + image);
+    warn(`generating image tiles failed for: ${image}`);
   }
 }
 
