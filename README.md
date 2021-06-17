@@ -107,7 +107,7 @@ Under these you can add a `metadata` section that is essentially a list of key v
 
 To add a thumbnail to your collection, manifest, or canvas simply include a file named `thumb.jpg` (any image file extension will work) in the directory.
 
-If no thumb image is found in a canvas directory, and the `generateThumbs` parameter is set to `true`, biiif checks to see if an image is being annotated onto the canvas with a painting motivation. If so, a thumb is generated (100 x 100px) from that.
+If no thumb image is found in a canvas directory, biiif checks to see if an image is being annotated onto the canvas with a painting motivation. If so, a thumb is generated (100 x 100px) from that.
 
 ## Linked Manifests
 
