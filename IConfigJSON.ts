@@ -5,9 +5,7 @@ export interface IConfigJSON {
   annotation: annotation;
 }
 
-export interface settings {
-
-}
+export interface settings {}
 
 export interface thumbnails {
   width: number;

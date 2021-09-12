@@ -29,7 +29,7 @@ export const compare = (a: string, b: string): number => {
     sensitivity: "base",
   });
   return collator.compare(a, b);
-}
+};
 
 export const normaliseType = (type: string): string => {
   type = type.toLowerCase();
@@ -40,7 +40,7 @@ export const normaliseType = (type: string): string => {
   }
 
   return type;
-}
+};
 
 export const getTypeByExtension = (
   motivation: string,
@@ -57,7 +57,7 @@ export const getTypeByExtension = (
   }
 
   return null;
-}
+};
 
 export const getFormatByExtension = (
   motivation: string,
@@ -74,7 +74,7 @@ export const getFormatByExtension = (
   }
 
   return null;
-}
+};
 
 export const getFormatByExtensionAndType = (
   motivation: string,
@@ -98,7 +98,7 @@ export const getFormatByExtensionAndType = (
   }
 
   return null;
-}
+};
 
 export const getTypeByFormat = (
   motivation: string,
@@ -121,7 +121,7 @@ export const getTypeByFormat = (
   }
 
   return null;
-}
+};
 
 export const getFormatByType = (
   motivation: string,
@@ -145,15 +145,15 @@ export const getFormatByType = (
   }
 
   return null;
-}
+};
 
 export const timeout = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
 export const cloneJson = (json: any): any => {
   return JSON.parse(JSON.stringify(json));
-}
+};
 
 export const formatMetadata = (metadata: any): any => {
   const formattedMetadata: any[] = [];
@@ -172,7 +172,7 @@ export const formatMetadata = (metadata: any): any => {
   }
 
   return formattedMetadata;
-}
+};
 
 // If filePath is:
 // C://Users/edsilv/github/edsilv/biiif-workshop/collection/_abyssinian/thumb.jpeg
@@ -210,15 +210,15 @@ export const getVirtualFilePath = (
   filePath = filePath.replace(realPathString, virtualPathString);
 
   return filePath;
-}
+};
 
 export const isJsonFile = (path: string): boolean => {
   return extname(path) === ".json";
-}
+};
 
 export const isDirectory = (path: string): boolean => {
   return fs.lstatSync(path).isDirectory();
-}
+};
 
 export const getThumbnail = async (
   json: any,
@@ -253,8 +253,7 @@ export const getThumbnail = async (
         const body: any = item.body;
         if (
           body &&
-          item.motivation ===
-            normaliseType(AnnotationMotivation.PAINTING)
+          item.motivation === normaliseType(AnnotationMotivation.PAINTING)
         ) {
           // is it an image? (without an info.json)
           if (
@@ -265,9 +264,7 @@ export const getThumbnail = async (
             if (imageName.includes("#")) {
               imageName = imageName.substr(0, imageName.lastIndexOf("#"));
             }
-            const imagePath: string = normaliseFilePath(
-              join(fp, imageName)
-            );
+            const imagePath: string = normaliseFilePath(join(fp, imageName));
             let pathToThumb: string = normaliseFilePath(
               join(dirname(imagePath), "thumb.jpg")
             );
@@ -289,14 +286,12 @@ export const getThumbnail = async (
               //pathToThumb += image.getExtension();
 
               // a thumbnail may already exist at this path (when generating from a flat collection of images)
-              const thumbExists: boolean = await fileExists(
-                pathToThumb
-              );
+              const thumbExists: boolean = await fileExists(pathToThumb);
 
               if (!thumbExists) {
                 try {
                   await sharp(imagePath, {
-                    limitInputPixels: true
+                    limitInputPixels: true,
                   })
                     .resize({
                       width: _config.thumbnails.width,
@@ -324,10 +319,7 @@ export const getThumbnail = async (
               pathToThumb,
               directory
             );
-            const mergedPath: string = mergePaths(
-              directory.url,
-              virtualPath
-            );
+            const mergedPath: string = mergePaths(directory.url, virtualPath);
             thumbnailJson[0].id = mergedPath;
             json.thumbnail = thumbnailJson;
           }
@@ -335,13 +327,13 @@ export const getThumbnail = async (
       }
     }
   }
-}
+};
 
 export const getLabel = (value: string): any => {
   const labelJson: any = cloneJson(labelBoilerplate);
   labelJson["@none"].push(value);
   return labelJson;
-}
+};
 
 export const getFileDimensions = async (
   type: string,
@@ -357,7 +349,7 @@ export const getFileDimensions = async (
       case ExternalResourceType.IMAGE:
         try {
           const image: any = await sharp(file, {
-            limitInputPixels: true
+            limitInputPixels: true,
           }).metadata();
           const width: number = image.width;
           const height: number = image.height;
@@ -385,7 +377,7 @@ export const getFileDimensions = async (
         break;
     }
   }
-}
+};
 
 export const generateImageTiles = async (
   image: string,
@@ -408,7 +400,7 @@ export const generateImageTiles = async (
     ];
 
     await sharp(image, {
-      limitInputPixels: true
+      limitInputPixels: true,
     })
       .tile({
         layout: "iiif",
@@ -418,7 +410,7 @@ export const generateImageTiles = async (
   } catch {
     warn(`generating image tiles failed for: ${image}`);
   }
-}
+};
 
 /*
       merge these two example paths:
@@ -474,11 +466,11 @@ export const mergePaths = (url: URL, filePath: string): string => {
   let id: string = urljoin(origin, ...newPath.reverse());
 
   return id;
-}
+};
 
 export const normaliseFilePath = (filePath: string): string => {
   return filePath.replace(/\\/g, "/").replace(/\/\//g, "/");
-}
+};
 
 export const getUrlParts = (url: URL): string[] => {
   let origin: string = url.origin;
@@ -498,7 +490,7 @@ export const getUrlParts = (url: URL): string[] => {
   }
 
   return urlParts;
-}
+};
 
 export const readJson = (path: string): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
@@ -507,7 +499,7 @@ export const readJson = (path: string): Promise<string> => {
       else resolve(json);
     });
   });
-}
+};
 
 export const writeJson = (path: string, json: string): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
@@ -516,7 +508,7 @@ export const writeJson = (path: string, json: string): Promise<void> => {
       else resolve();
     });
   });
-}
+};
 
 export const readYml = (path: string): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
@@ -527,14 +519,14 @@ export const readYml = (path: string): Promise<string> => {
       reject(e);
     }
   });
-}
+};
 
 export const fileExists = (path: string): Promise<boolean> => {
   return new Promise<boolean>((resolve, reject) => {
     const exists: boolean = fs.existsSync(path);
     resolve(exists);
   });
-}
+};
 
 export const hasManifestsYml = (path: string): Promise<boolean> => {
   return new Promise<boolean>((resolve, reject) => {
@@ -544,27 +536,20 @@ export const hasManifestsYml = (path: string): Promise<boolean> => {
       resolve(exists);
     });
   });
-}
+};
 
 export const isURL = (path: string): boolean => {
   return isurl(path);
-}
+};
 
 export const log = (message: string): void => {
-  console.log(
-    chalk.green(message)
-  );
-}
+  console.log(chalk.green(message));
+};
 
 export const warn = (message: string): void => {
-  console.warn(
-    chalk.yellow(message)
-  );
-}
+  console.warn(chalk.yellow(message));
+};
 
 export const error = (message: string): void => {
-  console.warn(
-    chalk.red(message)
-  );
-}
-
+  console.warn(chalk.red(message));
+};

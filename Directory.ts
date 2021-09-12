@@ -2,7 +2,19 @@ import { Canvas } from "./Canvas";
 import { join, basename } from "path";
 import { promise as glob } from "glob-promise";
 import { URL } from "url";
-import { cloneJson, compare, fileExists, formatMetadata, getLabel, getThumbnail, hasManifestsYml, log, readYml, warn, writeJson } from "./Utils";
+import {
+  cloneJson,
+  compare,
+  fileExists,
+  formatMetadata,
+  getLabel,
+  getThumbnail,
+  hasManifestsYml,
+  log,
+  readYml,
+  warn,
+  writeJson,
+} from "./Utils";
 // import urljoin from "url-join";
 const urljoin = require("url-join");
 // boilerplate json
@@ -121,13 +133,17 @@ export class Directory {
       log(`created collection: ${this.directoryPath}`);
       // if there are canvases, warn that they are being ignored
       if (this.items.length) {
-        warn(`${this.items.length} unused canvas directories (starting with an underscore) found in the ${this.directoryPath} collection. Remove directories not starting with an underscore to convert into a manifest.`);
+        warn(
+          `${this.items.length} unused canvas directories (starting with an underscore) found in the ${this.directoryPath} collection. Remove directories not starting with an underscore to convert into a manifest.`
+        );
       }
     } else {
       log(`created manifest: ${this.directoryPath}`);
       // if there aren't any canvases, warn that there should be
       if (!this.items.length) {
-        warn(`${this.directoryPath} is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.`);
+        warn(
+          `${this.directoryPath} is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.`
+        );
       }
     }
   }
@@ -179,9 +195,7 @@ export class Directory {
       );
 
       // check for manifests.yml. if it exists, parse and add to items
-      const hasYml: boolean = await hasManifestsYml(
-        this.directoryPath
-      );
+      const hasYml: boolean = await hasManifestsYml(this.directoryPath);
 
       if (hasYml) {
         const manifestsPath: string = join(this.directoryPath, "manifests.yml");

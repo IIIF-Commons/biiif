@@ -17,7 +17,17 @@ export const build = async (
   }
 
   if (!url) {
-    throw new Error("You must pass a url parameter");
+    // if a url hasn't been passed, check if running on Netlify or Vercel and use the appropriate url
+    if (process.env.NETLIFY) {
+      url =
+        process.env.PULL_REQUEST === "true"
+          ? process.env.DEPLOY_PRIME_URL
+          : process.env.URL;
+    } else if (process.env.VERCEL) {
+      url = process.env.VERCEL_URL;
+    } else {
+      throw new Error("You must pass a url parameter");
+    }
   }
 
   const directory: Directory = new Directory(dir, url, virtualName);

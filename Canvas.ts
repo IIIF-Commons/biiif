@@ -6,7 +6,28 @@ import { basename, dirname, extname, join } from "path";
 import { Directory } from "./Directory";
 import { IConfigJSON } from "./IConfigJSON";
 import { promise as glob } from "glob-promise";
-import { cloneJson, compare, fileExists, formatMetadata, generateImageTiles, getFileDimensions, getFormatByExtension, getFormatByExtensionAndType, getFormatByType, getLabel, getThumbnail, getTypeByExtension, getTypeByFormat, isDirectory, isURL, log, normaliseFilePath, normaliseType, readYml, warn } from "./Utils";
+import {
+  cloneJson,
+  compare,
+  fileExists,
+  formatMetadata,
+  generateImageTiles,
+  getFileDimensions,
+  getFormatByExtension,
+  getFormatByExtensionAndType,
+  getFormatByType,
+  getLabel,
+  getThumbnail,
+  getTypeByExtension,
+  getTypeByFormat,
+  isDirectory,
+  isURL,
+  log,
+  normaliseFilePath,
+  normaliseType,
+  readYml,
+  warn,
+} from "./Utils";
 import annotationBoilerplate from "./boilerplate/annotation.json";
 import config from "./config.json";
 import imageServiceBoilerplate from "./boilerplate/imageservice.json";
@@ -90,7 +111,9 @@ export class Canvas {
           if (!motivation) {
             // assume painting
             motivation = normaliseType(AnnotationMotivation.PAINTING);
-            warn(`motivation property missing in ${file} guessed ${motivation}`)
+            warn(
+              `motivation property missing in ${file} guessed ${motivation}`
+            );
           }
 
           motivation = normaliseType(motivation);
@@ -139,10 +162,7 @@ export class Canvas {
             }
           } else if (yml.format) {
             // guess the type from the format
-            const type: string | null = getTypeByFormat(
-              motivation,
-              yml.format
-            );
+            const type: string | null = getTypeByFormat(motivation, yml.format);
 
             if (type) {
               annotationJson.body.type = type;
@@ -182,10 +202,7 @@ export class Canvas {
             }
           } else if (yml.type) {
             // can only guess the format from the type if there is one typeformat for this motivation.
-            const format: string | null = getFormatByType(
-              motivation,
-              yml.type
-            );
+            const format: string | null = getFormatByType(motivation, yml.type);
 
             if (format) {
               annotationJson.body.format = format;
@@ -230,11 +247,7 @@ export class Canvas {
             annotationJson.body.value = yml.value;
           }
 
-          if (
-            yml.value &&
-            !isURL(yml.value) &&
-            annotationJson.body.type
-          ) {
+          if (yml.value && !isURL(yml.value) && annotationJson.body.type) {
             // get the path to the annotated file
             const dirName: string = dirname(file);
             let path: string = join(dirName, yml.value);
@@ -277,11 +290,7 @@ export class Canvas {
 
     // if there's no thumb.[jpg, gif, png]
     // generate one from the first painted image
-    await getThumbnail(
-      this.canvasJson,
-      this.directory,
-      this.directoryPath
-    );
+    await getThumbnail(this.canvasJson, this.directory, this.directoryPath);
   }
 
   private async _annotateFiles(
@@ -331,7 +340,7 @@ export class Canvas {
             canvasJson,
             annotationJson
           );
-          
+
           if (
             defaultPaintingExtension.type.toLowerCase() ===
             ExternalResourceType.IMAGE
