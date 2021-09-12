@@ -396,6 +396,7 @@ after(async () => {
 });
 
 importTest("utils", "./tests/utils");
+importTest("url", "./tests/url");
 importTest("do-promises-work", "./tests/do-promises-work");
 importTest("thumbs-single-manifest", "./tests/thumbs-single-manifest");
 importTest("thumbs-single-manifest-dat", "./tests/thumbs-single-manifest-dat");

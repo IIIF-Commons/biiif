@@ -24,7 +24,7 @@ export const build = async (
           ? process.env.DEPLOY_PRIME_URL
           : process.env.URL;
     } else if (process.env.VERCEL) {
-      url = process.env.VERCEL_URL;
+      url = `https://${process.env.VERCEL_URL}`;
     } else {
       throw new Error("You must pass a url parameter");
     }
