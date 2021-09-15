@@ -19,7 +19,7 @@ Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
 Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/), and is compatible with the [Universal Viewer](http://universalviewer.io) v3.
 
-Github template repo for hosting IIIF on Netlify and Vercel: https://github.com/edsilv/biiif-template
+Github template repo for hosting IIIF on Netlify and Vercel: https://github.com/iiif-commons/biiif-template
 
 Building static sites with biiif workshop: https://github.com/edsilv/biiif-workshop
 
