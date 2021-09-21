@@ -1,6 +1,6 @@
 {
   "name": "biiif",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A CLI to build IIIF collections",
   "main": "index.js",
   "repository": {
