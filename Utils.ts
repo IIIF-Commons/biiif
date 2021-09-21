@@ -193,7 +193,7 @@ export const getVirtualFilePath = (
   let virtualPath: string[] = [basename(filePath)];
 
   while (directory) {
-    const realName: string = basename(directory.directoryPath);
+    const realName: string = basename(directory.directoryFilePath);
     const virtualName: string = directory.virtualName || realName;
     realPath.push(realName);
     virtualPath.push(virtualName);
@@ -223,9 +223,9 @@ export const isDirectory = (path: string): boolean => {
 export const getThumbnail = async (
   json: any,
   directory: Directory,
-  filePath?: string
+  filePath?: string,
 ): Promise<void> => {
-  let fp: string = filePath || directory.directoryPath;
+  let fp: string = filePath || directory.directoryFilePath;
   fp = normaliseFilePath(fp);
 
   const thumbnailPattern: string = fp + "/thumb.*";
@@ -236,9 +236,10 @@ export const getThumbnail = async (
     log(`found thumbnail for: ${fp}`);
     let thumbnail: string = thumbnails[0];
     const thumbnailJson: any = cloneJson(thumbnailBoilerplate);
+    const virtualFilePath = getVirtualFilePath(thumbnail, directory);
     thumbnailJson[0].id = mergePaths(
       directory.url,
-      getVirtualFilePath(thumbnail, directory)
+      virtualFilePath,
     );
     json.thumbnail = thumbnailJson;
   } else {
@@ -264,6 +265,7 @@ export const getThumbnail = async (
             if (imageName.includes("#")) {
               imageName = imageName.substr(0, imageName.lastIndexOf("#"));
             }
+
             const imagePath: string = normaliseFilePath(join(fp, imageName));
             let pathToThumb: string = normaliseFilePath(
               join(dirname(imagePath), "thumb.jpg")
@@ -315,12 +317,18 @@ export const getThumbnail = async (
             }
 
             const thumbnailJson: any = cloneJson(thumbnailBoilerplate);
-            const virtualPath: string = getVirtualFilePath(
-              pathToThumb,
-              directory
-            );
-            const mergedPath: string = mergePaths(directory.url, virtualPath);
-            thumbnailJson[0].id = mergedPath;
+
+            // const virtualPath: string = getVirtualFilePath(
+            //   pathToThumb,
+            //   directory
+            // );
+            // const mergedPath: string = mergePaths(directory.url, virtualPath);
+            // thumbnailJson[0].id = mergedPath;
+
+            let path = getThumbnailUrl(directory);
+
+            thumbnailJson[0].id = path;
+
             json.thumbnail = thumbnailJson;
           }
         }
@@ -328,6 +336,35 @@ export const getThumbnail = async (
     }
   }
 };
+
+const getThumbnailUrl = (directory: Directory) => {
+
+  let path: string = "";
+
+  while (directory) {
+
+    // if the directory is a manifest and doesn't have a parent collection
+    if (directory.isManifest && (!directory.parentDirectory || !directory.parentDirectory.isCollection)) {
+      break;
+    }
+
+    if (directory.isCollection && !directory.parentDirectory) {
+      break;
+    }
+ 
+    const name = basename(directory.directoryFilePath);
+    path = urljoin(path, name);
+    directory = directory.parentDirectory;
+    // todo: keep going unless you reach a manifest directory with no collection directory parent
+    // if (directory.parentDirectory && directory.parentDirectory.isManifest) {
+    //   break;
+    // } else {
+      
+    // }
+  }
+
+  return urljoin(directory.url.href, path, "thumb.jpg");
+}
 
 export const getLabel = (value: string): any => {
   const labelJson: any = cloneJson(labelBoilerplate);
@@ -436,6 +473,7 @@ export const mergePaths = (url: URL, filePath: string): string => {
   const urlParts = getUrlParts(url);
   filePath = normaliseFilePath(filePath);
   const fileParts: string[] = filePath.split("/");
+
   let newPath: string[] = [];
 
   // if there's a single root folder and none of the file path matches

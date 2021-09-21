@@ -27,23 +27,26 @@ import thumbnailBoilerplate from "./boilerplate/thumbnail.json";
 
 export class Directory {
   public directories: Directory[] = [];
-  public directoryPath: string;
+  public directoryFilePath: string;
   public generateThumbs: boolean;
   public indexJson: any;
   public infoYml: any;
-  public isCollection: boolean;
+  public isCanvas: boolean = false;
+  public isCollection: boolean = false;
+  public isManifest: boolean = false;
   public items: Canvas[] = [];
+  public name: string;
   public parentDirectory: Directory | undefined;
   public url: URL;
   public virtualName: string | undefined; // used when root directories are dat/ipfs keys
 
   constructor(
-    directoryPath: string,
+    directoryFilePath: string,
     url: string,
     virtualName?: string,
     parentDirectory?: Directory
   ) {
-    this.directoryPath = directoryPath;
+    this.directoryFilePath = directoryFilePath;
     this.url = new URL(url);
     this.parentDirectory = parentDirectory;
     this.virtualName = virtualName;
@@ -51,7 +54,7 @@ export class Directory {
 
   public async read(): Promise<void> {
     // canvases are directories starting with an underscore
-    const canvasesPattern: string = this.directoryPath + "/_*";
+    const canvasesPattern: string = this.directoryFilePath + "/_*";
 
     const canvases: string[] = await glob(canvasesPattern, {
       ignore: ["**/*.yml", "**/thumb.*", "**/!*"],
@@ -62,6 +65,7 @@ export class Directory {
       return compare(a, b);
     });
 
+
     await Promise.all(
       canvases.map(async (canvas: string) => {
         log(`creating canvas for: ${canvas}`);
@@ -71,7 +75,7 @@ export class Directory {
 
     // directories not starting with an underscore
     // these can be child manifests or child collections
-    const directoriesPattern: string = this.directoryPath + "/*";
+    const directoriesPattern: string = this.directoryFilePath + "/*";
 
     const directories: string[] = await glob(directoriesPattern, {
       ignore: [
@@ -82,10 +86,17 @@ export class Directory {
       ],
     });
 
-    // sort canvases
+    // sort
     directories.sort((a, b) => {
       return compare(a, b);
     });
+
+    if (canvases.length) {
+      this.isManifest = true;
+    } else if (directories.length > 0 ||
+      (await hasManifestsYml(this.directoryFilePath))) {
+      this.isCollection = true;
+    }
 
     await Promise.all(
       directories.map(async (directory: string) => {
@@ -107,7 +118,7 @@ export class Directory {
     // but there are paintable files in the current directory,
     // create a canvas for each.
     if (!this.directories.length && !canvases.length) {
-      const paintableFiles: string[] = await glob(this.directoryPath + "/*.*", {
+      const paintableFiles: string[] = await glob(this.directoryFilePath + "/*.*", {
         ignore: ["**/*.yml", "**/thumb.*", "**/index.json"],
       });
 
@@ -122,27 +133,23 @@ export class Directory {
       });
     }
 
-    this.isCollection =
-      this.directories.length > 0 ||
-      (await hasManifestsYml(this.directoryPath));
-
     await this._getInfo();
     await this._createIndexJson();
 
     if (this.isCollection) {
-      log(`created collection: ${this.directoryPath}`);
+      log(`created collection: ${this.directoryFilePath}`);
       // if there are canvases, warn that they are being ignored
       if (this.items.length) {
         warn(
-          `${this.items.length} unused canvas directories (starting with an underscore) found in the ${this.directoryPath} collection. Remove directories not starting with an underscore to convert into a manifest.`
+          `${this.items.length} unused canvas directories (starting with an underscore) found in the ${this.directoryFilePath} collection. Remove directories not starting with an underscore to convert into a manifest.`
         );
       }
     } else {
-      log(`created manifest: ${this.directoryPath}`);
+      log(`created manifest: ${this.directoryFilePath}`);
       // if there aren't any canvases, warn that there should be
       if (!this.items.length) {
         warn(
-          `${this.directoryPath} is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.`
+          `${this.directoryFilePath} is a manifest, but no canvases (directories starting with an underscore) were found. Therefore it will not have any content.`
         );
       }
     }
@@ -152,20 +159,20 @@ export class Directory {
     this.infoYml = {};
 
     // if there's an info.yml
-    const ymlPath: string = join(this.directoryPath, "info.yml");
+    const ymlPath: string = join(this.directoryFilePath, "info.yml");
 
     const exists: boolean = await fileExists(ymlPath);
 
     if (exists) {
       this.infoYml = await readYml(ymlPath);
-      log(`got metadata for: ${this.directoryPath}`);
+      log(`got metadata for: ${this.directoryFilePath}`);
     } else {
-      log(`no metadata found for: ${this.directoryPath}`);
+      log(`no metadata found for: ${this.directoryFilePath}`);
     }
 
     if (!this.infoYml.label) {
       // default to the directory name
-      this.infoYml.label = basename(this.directoryPath);
+      this.infoYml.label = basename(this.directoryFilePath);
     }
   }
 
@@ -195,10 +202,10 @@ export class Directory {
       );
 
       // check for manifests.yml. if it exists, parse and add to items
-      const hasYml: boolean = await hasManifestsYml(this.directoryPath);
+      const hasYml: boolean = await hasManifestsYml(this.directoryFilePath);
 
       if (hasYml) {
-        const manifestsPath: string = join(this.directoryPath, "manifests.yml");
+        const manifestsPath: string = join(this.directoryFilePath, "manifests.yml");
         const manifestsYml: any = await readYml(manifestsPath);
 
         manifestsYml.manifests.forEach((manifest: any) => {
@@ -230,9 +237,9 @@ export class Directory {
           this.indexJson.items.push(itemJson);
         });
 
-        log(`parsed manifests.yml for ${this.directoryPath}`);
+        log(`parsed manifests.yml for ${this.directoryFilePath}`);
       } else {
-        log(`no manifests.yml found for: ${this.directoryPath}`);
+        log(`no manifests.yml found for: ${this.directoryFilePath}`);
       }
 
       // sort items
@@ -279,10 +286,10 @@ export class Directory {
     await getThumbnail(this.indexJson, this);
 
     // write index.json
-    const path: string = join(this.directoryPath, "index.json");
+    const path: string = join(this.directoryFilePath, "index.json");
     const json: string = JSON.stringify(this.indexJson, null, "  ");
 
-    log(`creating index.json for: ${this.directoryPath}`);
+    log(`creating index.json for: ${this.directoryFilePath}`);
 
     await writeJson(path, json);
   }

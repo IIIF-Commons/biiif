@@ -35,6 +35,12 @@ before(async () => {
         "file.png": jpg,
       },
     },
+    "/vercel-manifest": {
+      "_page-1": {
+        "info.yml": "label: Page 1",
+        "1.jpg": jpg,
+      },
+    },
     "/gh-collection": {
       "info.yml": "label: My Test Collection",
       "thumb.png": jpg,
@@ -68,7 +74,7 @@ before(async () => {
       "sub-collection": {
         "info.yml": "label: My Test Sub-collection",
         "thumb.png": jpg,
-        manifest: {
+        b_manifest: {
           "thumb.png": jpg,
           "info.yml": "label: My Test Submanifest",
           _canvas: {
@@ -403,6 +409,7 @@ importTest("thumbs-single-manifest-dat", "./tests/thumbs-single-manifest-dat");
 importTest("files-only-manifest", "./tests/files-only-manifest");
 importTest("files-only-manifest-dat", "./tests/files-only-manifest-dat");
 importTest("files-only-collection", "./tests/files-only-collection");
+importTest("vercel-manifest", "./tests/vercel-manifest");
 importTest("gh-pages", "./tests/gh-pages");
 importTest("collection-no-manifests", "./tests/collection-no-manifests");
 importTest("collection", "./tests/collection");

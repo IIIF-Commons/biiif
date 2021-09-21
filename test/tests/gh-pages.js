@@ -8,7 +8,7 @@ const githubpagesUrl =
 
 it("can build collection", async () => {
   assert(await fileExists(collection));
-  return build(collection, githubpagesUrl, true);
+  return build(collection, githubpagesUrl);
 }).timeout(1000); // should take less than a second
 
 it("can find collection index.json", async () => {

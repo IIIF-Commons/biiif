@@ -38,7 +38,7 @@ export class Canvas {
   public directory: Directory;
   public parentDirectory: Directory;
   public filePath: string;
-  public directoryPath: string;
+  public directoryFilePath: string;
   public infoYml: any = {};
   public url: URL;
 
@@ -48,28 +48,37 @@ export class Canvas {
     this.filePath = filePath;
 
     if (!isDirectory(this.filePath)) {
-      this.directoryPath = dirname(this.filePath);
+      this.directoryFilePath = dirname(this.filePath);
     } else {
-      this.directoryPath = this.filePath;
+      this.directoryFilePath = this.filePath;
     }
 
     this.parentDirectory = parentDirectory;
     // we only need a directory object to reference the parent directory when determining the virtual path of this canvas
     // this.directory.read() is never called.
     this.directory = new Directory(
-      this.directoryPath,
+      this.directoryFilePath,
       this.parentDirectory.url.href,
       undefined,
       this.parentDirectory
     );
+    
     this.url = parentDirectory.url;
   }
 
   private _isCanvasDirectory(): boolean {
-    return basename(this.directoryPath).startsWith("_");
+    return basename(this.directoryFilePath).startsWith("_");
   }
 
   public async read(canvasJson: any): Promise<void> {
+
+    if (this.directory.parentDirectory.isManifest) {
+      this.directory.isCanvas = true;
+    } else {
+      // there's no parent manifest directory, so this must be a manifest directory
+      this.directory.isManifest = true;
+    }
+
     this.canvasJson = canvasJson;
     await this._getInfo();
     this._applyInfo();
@@ -81,7 +90,7 @@ export class Canvas {
       // if none of them has a motivation of 'painting', loop through all paintable file types adding them to the canvas.
 
       const customAnnotationFiles: string[] = await glob(
-        this.directoryPath + "/*.yml",
+        this.directoryFilePath + "/*.yml",
         {
           ignore: ["**/info.yml"],
         }
@@ -266,9 +275,10 @@ export class Canvas {
 
       // for each jpg/pdf/mp4/obj in the canvas directory
       // add a painting annotation
-      const paintableFiles: string[] = await glob(this.directoryPath + "/*.*", {
+      const paintableFiles: string[] = await glob(this.directoryFilePath + "/*.*", {
         ignore: [
           "**/thumb.*", // ignore thumbs
+          "**/info.yml*", // ignore info.yml
         ],
       });
 
@@ -285,12 +295,12 @@ export class Canvas {
     }
 
     if (!canvasJson.items[0].items.length) {
-      warn(`Could not find any files to annotate onto ${this.directoryPath}`);
+      warn(`Could not find any files to annotate onto ${this.directoryFilePath}`);
     }
 
     // if there's no thumb.[jpg, gif, png]
     // generate one from the first painted image
-    await getThumbnail(this.canvasJson, this.directory, this.directoryPath);
+    await getThumbnail(this.canvasJson, this.directory, this.directoryFilePath);
   }
 
   private async _annotateFiles(
@@ -349,7 +359,7 @@ export class Canvas {
               file,
               this.url.href,
               directoryName,
-              this.directoryPath,
+              this.directoryFilePath,
               annotationJson
             );
           }
@@ -362,20 +372,20 @@ export class Canvas {
     this.infoYml = {};
 
     // if there's an info.yml
-    const ymlPath: string = join(this.directoryPath, "info.yml");
+    const ymlPath: string = join(this.directoryFilePath, "info.yml");
 
     const exists: boolean = await fileExists(ymlPath);
 
     if (exists) {
       this.infoYml = await readYml(ymlPath);
-      log(`got metadata for: ${this.directoryPath}`);
+      log(`got metadata for: ${this.directoryFilePath}`);
     } else {
-      log(`no metadata found for: ${this.directoryPath}`);
+      log(`no metadata found for: ${this.directoryFilePath}`);
     }
 
     if (!this.infoYml.label) {
       // default to the directory name
-      this.infoYml.label = basename(this.directoryPath);
+      this.infoYml.label = basename(this.directoryFilePath);
     }
   }
 

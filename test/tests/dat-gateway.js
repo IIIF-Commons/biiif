@@ -202,7 +202,7 @@ describe("sub-collection", async () => {
   });
 
   it("has correct item id", async () => {
-    assert(item.id === collectionUrl + "/sub-collection/manifest/index.json");
+    assert(item.id === collectionUrl + "/sub-collection/b_manifest/index.json");
   });
 
   it("has correct item label", async () => {
@@ -217,19 +217,19 @@ describe("sub-collection", async () => {
   it("has correct item thumbnail id", async () => {
     assert(
       thumbnailJson[0].id ===
-        collectionUrl + "/sub-collection/manifest/thumb.png"
+        collectionUrl + "/sub-collection/b_manifest/thumb.png"
     );
   });
 
   it("can find manifest index.json", async () => {
-    const file = "/collection/sub-collection/manifest/index.json";
+    const file = "/collection/sub-collection/b_manifest/index.json";
     assert(await fileExists(file));
     manifestJson = await readJson(file);
   });
 
   it("has correct manifest id", async () => {
     assert(
-      manifestJson.id === collectionUrl + "/sub-collection/manifest/index.json"
+      manifestJson.id === collectionUrl + "/sub-collection/b_manifest/index.json"
     );
   });
 
@@ -245,7 +245,7 @@ describe("sub-collection", async () => {
   it("has correct canvas id", async () => {
     assert(
       canvasJson.id ===
-        collectionUrl + "/sub-collection/manifest/index.json/canvas/0"
+        collectionUrl + "/sub-collection/b_manifest/index.json/canvas/0"
     );
   });
 
@@ -261,7 +261,7 @@ describe("sub-collection", async () => {
   it("has the correct canvas thumbnail id", async () => {
     const id = urljoin(
       collectionUrl,
-      "/sub-collection/manifest/_canvas/thumb.png"
+      "/sub-collection/b_manifest/_canvas/thumb.png"
     );
     assert(thumbnailJson.id === id);
   });
@@ -276,7 +276,7 @@ describe("sub-collection", async () => {
     assert(
       annotationPage.id ===
         collectionUrl +
-          "/sub-collection/manifest/index.json/canvas/0/annotationpage/0"
+          "/sub-collection/b_manifest/index.json/canvas/0/annotationpage/0"
     );
   });
 
@@ -298,7 +298,7 @@ describe("sub-collection", async () => {
   it("image annotation has correct id", async () => {
     assert(
       imageAnnotation.id ===
-        collectionUrl + "/sub-collection/manifest/_canvas/page_1.jpg"
+        collectionUrl + "/sub-collection/b_manifest/_canvas/page_1.jpg"
     );
   });
 });
