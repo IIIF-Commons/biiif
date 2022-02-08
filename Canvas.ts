@@ -62,7 +62,7 @@ export class Canvas {
       undefined,
       this.parentDirectory
     );
-    
+
     this.url = parentDirectory.url;
   }
 
@@ -71,7 +71,6 @@ export class Canvas {
   }
 
   public async read(canvasJson: any): Promise<void> {
-
     if (this.directory.parentDirectory.isManifest) {
       this.directory.isCanvas = true;
     } else {
@@ -275,12 +274,15 @@ export class Canvas {
 
       // for each jpg/pdf/mp4/obj in the canvas directory
       // add a painting annotation
-      const paintableFiles: string[] = await glob(this.directoryFilePath + "/*.*", {
-        ignore: [
-          "**/thumb.*", // ignore thumbs
-          "**/info.yml*", // ignore info.yml
-        ],
-      });
+      const paintableFiles: string[] = await glob(
+        this.directoryFilePath + "/*.*",
+        {
+          ignore: [
+            "**/thumb.*", // ignore thumbs
+            "**/info.yml*", // ignore info.yml
+          ],
+        }
+      );
 
       // sort files
       paintableFiles.sort((a, b) => {
@@ -295,7 +297,9 @@ export class Canvas {
     }
 
     if (!canvasJson.items[0].items.length) {
-      warn(`Could not find any files to annotate onto ${this.directoryFilePath}`);
+      warn(
+        `Could not find any files to annotate onto ${this.directoryFilePath}`
+      );
     }
 
     // if there's no thumb.[jpg, gif, png]

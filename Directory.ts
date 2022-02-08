@@ -65,7 +65,6 @@ export class Directory {
       return compare(a, b);
     });
 
-
     await Promise.all(
       canvases.map(async (canvas: string) => {
         log(`creating canvas for: ${canvas}`);
@@ -93,8 +92,10 @@ export class Directory {
 
     if (canvases.length) {
       this.isManifest = true;
-    } else if (directories.length > 0 ||
-      (await hasManifestsYml(this.directoryFilePath))) {
+    } else if (
+      directories.length > 0 ||
+      (await hasManifestsYml(this.directoryFilePath))
+    ) {
       this.isCollection = true;
     }
 
@@ -118,9 +119,12 @@ export class Directory {
     // but there are paintable files in the current directory,
     // create a canvas for each.
     if (!this.directories.length && !canvases.length) {
-      const paintableFiles: string[] = await glob(this.directoryFilePath + "/*.*", {
-        ignore: ["**/*.yml", "**/thumb.*", "**/index.json"],
-      });
+      const paintableFiles: string[] = await glob(
+        this.directoryFilePath + "/*.*",
+        {
+          ignore: ["**/*.yml", "**/thumb.*", "**/index.json"],
+        }
+      );
 
       // sort files
       paintableFiles.sort((a, b) => {
@@ -205,11 +209,14 @@ export class Directory {
       const hasYml: boolean = await hasManifestsYml(this.directoryFilePath);
 
       if (hasYml) {
-        const manifestsPath: string = join(this.directoryFilePath, "manifests.yml");
+        const manifestsPath: string = join(
+          this.directoryFilePath,
+          "manifests.yml"
+        );
         const manifestsYml: any = await readYml(manifestsPath);
 
         manifestsYml.manifests.forEach((manifest: any) => {
-          const itemJson: any = cloneJson(collectionItemBoilerplate);
+          const itemJson: any = cloneJson(manifestItemBoilerplate);
           itemJson.id = manifest.id;
 
           if (manifest.label) {

@@ -223,7 +223,7 @@ export const isDirectory = (path: string): boolean => {
 export const getThumbnail = async (
   json: any,
   directory: Directory,
-  filePath?: string,
+  filePath?: string
 ): Promise<void> => {
   let fp: string = filePath || directory.directoryFilePath;
   fp = normaliseFilePath(fp);
@@ -237,10 +237,7 @@ export const getThumbnail = async (
     let thumbnail: string = thumbnails[0];
     const thumbnailJson: any = cloneJson(thumbnailBoilerplate);
     const virtualFilePath = getVirtualFilePath(thumbnail, directory);
-    thumbnailJson[0].id = mergePaths(
-      directory.url,
-      virtualFilePath,
-    );
+    thumbnailJson[0].id = mergePaths(directory.url, virtualFilePath);
     json.thumbnail = thumbnailJson;
   } else {
     // there isn't a thumbnail in the directory, so we'll need to generate it.
@@ -338,20 +335,21 @@ export const getThumbnail = async (
 };
 
 const getThumbnailUrl = (directory: Directory) => {
-
   let path: string = "";
 
   while (directory) {
-
     // if the directory is a manifest and doesn't have a parent collection
-    if (directory.isManifest && (!directory.parentDirectory || !directory.parentDirectory.isCollection)) {
+    if (
+      directory.isManifest &&
+      (!directory.parentDirectory || !directory.parentDirectory.isCollection)
+    ) {
       break;
     }
 
     if (directory.isCollection && !directory.parentDirectory) {
       break;
     }
- 
+
     const name = basename(directory.directoryFilePath);
     path = urljoin(path, name);
     directory = directory.parentDirectory;
@@ -359,12 +357,12 @@ const getThumbnailUrl = (directory: Directory) => {
     // if (directory.parentDirectory && directory.parentDirectory.isManifest) {
     //   break;
     // } else {
-      
+
     // }
   }
 
   return urljoin(directory.url.href, path, "thumb.jpg");
-}
+};
 
 export const getLabel = (value: string): any => {
   const labelJson: any = cloneJson(labelBoilerplate);
