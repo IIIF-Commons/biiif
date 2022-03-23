@@ -128,6 +128,12 @@
             "format": "image/png"
           }
         ],
+        ".tiff": [
+          {
+            "type": "Image",
+            "format": "image/tiff"
+          }
+        ],
         ".usdz": [
           {
             "type": "Model",
