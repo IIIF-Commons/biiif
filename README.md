@@ -178,3 +178,5 @@ lord-of-the-rings                  // collection
 ## Tips
 
 If you need to include a folder in your project but don't want biiif to treat it as a manifest, add a `!` to the start of its name, e.g. `!ignorethisfolder`.
+
+Watch out for ":" in metadata descriptions, these will throw an error when parsing the YML.
