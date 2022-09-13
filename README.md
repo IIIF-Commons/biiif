@@ -13,7 +13,7 @@ const { build } = require('biiif');
 build('myfolder', 'http://example.com/myfolder');
 ```
 
-Organise your files according to a simple [naming convention](https://github.com/edsilv/biiif#examples) to generate [IIIF](http://iiif.io) content/data using 100% node.js! [Dat](https://github.com/datproject) and [IPFS](https://github.com/ipfs) compatible.
+Organise your files according to a simple [naming convention](https://github.com/edsilv/biiif#examples) to generate [IIIF](http://iiif.io) content/data using 100% node.js! [IPFS](https://github.com/ipfs) compatible.
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
