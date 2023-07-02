@@ -128,10 +128,16 @@
             "format": "image/png"
           }
         ],
+        ".tif": [
+          {
+            "type": "Image",
+            "format": "image/jpeg"
+          }
+        ],
         ".tiff": [
           {
             "type": "Image",
-            "format": "image/tiff"
+            "format": "image/jpeg"
           }
         ],
         ".usdz": [

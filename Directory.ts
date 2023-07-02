@@ -78,7 +78,7 @@ export class Directory {
 
     const directories: string[] = await glob(directoriesPattern, {
       ignore: [
-        "**/*.{crt,drc,epub,glb,gltf,gz,stl,jpg,jpeg,json,md,mp3,mp4,nii,obj,opf,pdf,ply,png,tiff,toml,usdz,vtt,yml}", // ignore files (must include file extensions explicitly, otherwise directories with a . are matched)
+        "**/*.{crt,drc,epub,glb,gltf,gz,stl,jpg,jpeg,json,md,mp3,mp4,nii,obj,opf,pdf,ply,png,tif,tiff,toml,usdz,vtt,yml}", // ignore files (must include file extensions explicitly, otherwise directories with a . are matched)
         "**/_*", // ignore canvas folders
         "**/+*", // ignore generated folders
         "**/!*", // ignore folders starting with a !
