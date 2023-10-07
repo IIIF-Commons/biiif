@@ -60,7 +60,7 @@ With Biiif, creating and managing IIIF content has never been more efficient!
 
 ## How your folder should look before building with biiif
 
-Let's start with an example
+Let's start with an example of a biiif-ready folder structure
     
     my-collection/:                  # Root collection folder containing collection-level metadata and a thumbnail
       ├── info.yml:                  # Collection metadata (Optional)
