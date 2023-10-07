@@ -2,26 +2,48 @@
 
 Biiif is a tool that simplifies the process of creating [IIIF (International Image Interoperability Framework)](http://iiif.io)  content using Node.js. IIIF is a standard for sharing and presenting digital images and metadata, often used in cultural heritage and digital library projects. With biiif, if you organize your files following a specific convention and then build, it will generate IIIF content using 100% Node.js. [IPFS](https://github.com/ipfs) compatible.
 
-## Build Instructions 
-[![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
+## Building IIIF Content with Biiif
 
-<!-- ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png) -->
+### Installation
+
+First, ensure you have Node.js installed. You can download it [here](http://nodejs.org/download/).
+
+Next, install the biiif package:
 
 ```bash
 npm i biiif --save
 ```
 
-```bash
+### Usage
+
+You can use biiif to build your IIIF content by following these simple steps:
+
+```javascript
 const { build } = require('biiif');
 build('myfolder', 'http://example.com/myfolder');
 ```
-[Parameters Documentation](https://github.com/IIIF-Commons/biiif/blob/master/README.md#parameters)
 
-Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
+#### Parameters
 
-_Note: This uses the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/), and is compatible with the [Universal Viewer](http://universalviewer.io) v3._
+- `folder` (string): The source folder where your IIIF collection/manifest is stored on your local disk.
+- `url` (string): The URL to serve as the root for all generated manifest and asset identifiers.
+- `virtualName` (string): An optional parameter that allows you to override the source folder name when generating identifiers, useful for scenarios like Dat archive IDs.
 
-Github template repo for hosting IIIF on Netlify and Vercel: https://github.com/iiif-commons/biiif-template
+For more detailed parameter documentation, please refer to the [Parameters Documentation](https://github.com/IIIF-Commons/biiif/blob/master/README.md#parameters).
+
+### Additional Tools
+
+For enhanced usability, consider using the [biiif-cli](https://github.com/edsilv/biiif-cli) to run biiif directly from your terminal.
+
+### Compatibility
+
+Biiif utilizes the [IIIF Presentation API v3](http://prezi3.iiif.io/api/presentation/3.0/), ensuring compliance with the latest standards. It also seamlessly integrates with [Universal Viewer](http://universalviewer.io) v3 for a versatile viewing experience.
+
+### Explore Templates
+
+Discover a GitHub template repository designed to simplify the hosting of IIIF content on platforms like Netlify and Vercel: [Biiif Template Repo](https://github.com/iiif-commons/biiif-template).
+
+With Biiif, creating and managing IIIF content has never been more efficient!
 
 
 ## Feature Set 
