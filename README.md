@@ -1,6 +1,21 @@
 # Biiif: Building IIIF Content with Ease! 👷✨📃
 
-Biiif is a tool that simplifies the process of creating [IIIF (International Image Interoperability Framework)](http://iiif.io)  content using Node.js. IIIF is a standard for sharing and presenting digital images and metadata, often used in cultural heritage and digital library projects. With biiif, you can organize your files following a specific convention, and it will generate IIIF content using 100% Node.js.
+Biiif is a tool that simplifies the process of creating [IIIF (International Image Interoperability Framework)](http://iiif.io)  content using Node.js. IIIF is a standard for sharing and presenting digital images and metadata, often used in cultural heritage and digital library projects. With biiif, if you organize your files following a specific convention and then build, it will generate IIIF content using 100% Node.js. [IPFS](https://github.com/ipfs) compatible.
+
+## Build Instructions 
+[![Node version](https://img.shields.io/node/v/biiif.svg?style=flat)](http://nodejs.org/download/)
+
+<!-- ![IIIF Presentation API 3 compliant](https://img.shields.io/badge/iiif--presentation--api-%3E=3-blue.png) -->
+
+```bash
+npm i biiif --save
+```
+
+```bash
+const { build } = require('biiif');
+build('myfolder', 'http://example.com/myfolder');
+```
+[Parameters Documentation](https://github.com/IIIF-Commons/biiif/blob/master/README.md#parameters)
 
 Use [biiif-cli](https://github.com/edsilv/biiif-cli) to run from a terminal.
 
@@ -56,7 +71,7 @@ Let's start with an example
 
 6. **Nested Depth:**
 
-  - In the example, we have a single root collection named `my-collection/`. Inside this root collection, we have three manifests (`my-manifest-1/`, `my-manifest-2/`, `my-manifest-3/`), each containing canvases. However, you can continue nesting collections and manifests to any depth you need. For instance, if you wanted to create a more complex hierarchy, you could do something like this:
+      - In the example, we have a single root collection named `my-collection/`. Inside this root collection, we have three manifests (`my-manifest-1/`, `my-manifest-2/`, `my-manifest-3/`), each containing canvases. However, you can continue nesting collections and manifests to any depth you need. For instance, if you wanted to create a more complex hierarchy, you could do something like this:
 
         ```yml
         my-collection/                      // Root collection folder
@@ -100,7 +115,7 @@ Let's start with an example
 
     - Normally, you would expect **biiif** to generate individual manifests for each canvas within this folder. However, if you want to treat this entire folder as a single manifest, you can do so. **biiif** will recognize this folder as a manifest and generate a single **manifest index.json** that encompasses all the canvases within it. So, the result will be a **manifest index.json** that represents the entire `my-manifest-folder/` as a single manifest, making it easier to manage and present your content.
 
-8. Exclude a Folder
+8. **Exclude a Folder**
 
     - If you need to include a folder in your project but don't want biiif to treat it as a manifest, add a `!` to the start of its name, e.g. 
 
