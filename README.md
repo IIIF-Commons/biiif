@@ -168,11 +168,11 @@ lord-of-the-rings                  // collection
 |   ├── info.yml                   // manifest metadata
 |   └── thumb.jpg                  // manifest thumbnail
 └── 2-the-return-of-the-king       // manifest
-├── _page-1                        // canvas
-├── _page-2                        // canvas
-├── _page-n                        // canvas
-├── info.yml                       // manifest metadata
-└── thumb.jpg                      // manifest thumbnail
+    ├── _page-1                    // canvas
+    ├── _page-2                    // canvas
+    ├── _page-n                    // canvas
+    ├── info.yml                   // manifest metadata
+    └── thumb.jpg                  // manifest thumbnail
 ```
 
 ## Tips
